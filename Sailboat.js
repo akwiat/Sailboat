@@ -24,7 +24,7 @@ Sailboat.getInitObj = function() {
 	var HAPlayer = function() {
 		var ret = new GameStateEntity("player");
 		var ships = new GameStateEntity("shipArray");
-		ships.addComponentArray(HAShip, 3);
+		ships.addComponentArray(HAShip, 2);
 		ret.addComponent(ships);
 
 		var bullets = new GameStateEntity("bulletArray");
