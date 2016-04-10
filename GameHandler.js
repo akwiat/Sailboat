@@ -36,6 +36,9 @@ function GameHandler(GameStateType) {
 	//this.loopnum
 
 }
+GameHandler.prototype.getObjByName = function(name){
+	return this.gs.entity.getChildByIdentifier(name);
+}
 GameHandler.prototype.getFullStateDifObj = function() {
 	var difObj = new DifferenceObj();
 	difObj.timestamp = this.getGameTime();
@@ -108,12 +111,12 @@ GameHandler.prototype.connectionReady = function(id) {
 }
 */
 GameHandler.prototype.receiveUpdate = function(obj) {
-	
+	/*
 	if (console)
 		console.log("receiveUpdate: "+JSON.stringify(obj));
 	else
 		util.log("receiveUpdate: "+JSON.stringify(obj));
-
+*/
 	var difo = DifferenceObj.makeFromObj(obj);
 	this.gs.applyDifObj(difo);
 	//this.sendstate.appendDifObj(difo);

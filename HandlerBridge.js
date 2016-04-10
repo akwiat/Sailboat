@@ -40,7 +40,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var difObj = this["gameHandler"].pullSendstate();
 	//util.log("\n\n\nsendUpdateToAllClients: "+JSON.stringify(difObj));
 	var sendFunction = function(sendable, id) {
-		util.log("sendFunction: "+id);
+		//util.log("sendFunction: "+id);
 		var theReplacer = function(key, value) {
 			var obj = this[key];
 			if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(id))
@@ -51,7 +51,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 				return value;
 		}
 		var msg = JSON.stringify(difObj, theReplacer);
-		util.log(msg);
+		//util.log(msg);
 		sendable.send(msg);
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);

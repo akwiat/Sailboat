@@ -61,6 +61,17 @@ function SailboatGraphics(gameStructure) {
 
 
 	});
+	Crafty.c("PropCircleMover", {
+		required: "GameStateEntity",
+		events: {
+			"UpdateFromGameState": function() {
+				if (this.gameStateEntity) {
+					
+				}
+			}
+		}
+
+	});
 	Crafty.c("PropPosition", {
 		required: "GameStateEntity",
 		events: {
