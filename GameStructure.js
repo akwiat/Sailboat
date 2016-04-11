@@ -43,6 +43,9 @@ function GameStructure(obj, instructions) { //instructions element is {n:name, d
 			this[n][nexti.n] = this[nexti.n]; //should definitely double check this
 		}
 		this[n].gameStructure = this;
+
+		if (this[n].gameStructureHasInitialized != undefined)
+			this[n].gameStructureHasInitialized();
 		//this[n].registerStructure(prev,next,this);
 		}
 	}
@@ -60,7 +63,8 @@ function InitializeClientStructure(obj, instructions) {
 	if (instructions == undefined) {
 		instructions = [{n:"clientSocket", d:ClientSocket},
 		{n:"handlerBridge", d:HandlerBridgeClientSide},
-		{n:"gameHandler", d:GameHandler}
+		{n:"gameHandler", d:GameHandler},
+		{n:"client", d:undefined}
 		];
 	}
 	return new GameStructure(obj, instructions)

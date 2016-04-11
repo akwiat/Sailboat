@@ -6,12 +6,44 @@ if (!this.___alexnorequire) {
 	var Prop = require("./Prop").Prop
 	var util = require("util");
 }
+function Shield() {
+	this.shieldUp = false;
+	this.updateTime = undefined;
+}
+Shield.prototype.getSpecificData = function() {
+	var s;
+	if (this.shieldUp)
+		s = 1;
+	else 
+		s = 0;
+
+	var d = 1000;
+	var ut = Math.round(this.updateTime*d)/d;
+	return {s:s, ut:ut};
+}
+Shield.prototype.applySpecificData = function(obj) {
+	if (obj.s != undefined) {
+		if (obj.s == 1)
+			this.shieldUp = true
+		else
+			this.shieldUp = false;
+	}
+
+	if (obj.ut != undefined) {
+		this.updateTime = obj.ut;
+	}
+
+}
 function Sailboat() {}
 Sailboat.getInitObj = function() {
 	var SAShip = function() {
 		var ret = new GameStateEntity("ship");
 		ret.addComponent( new GameStateEntity("position",
 		new Prop.PropCircleMover() ).setClientProperty());
+
+		ret.addComponent( new GameStateEntity("shield",
+			new Shield() ).setClientProperty()
+			);
 		return ret;
 	}
 	/*
@@ -38,11 +70,12 @@ Sailboat.getInitObj = function() {
 	var SAPlayer = function() {
 		var ret = new GameStateEntity("player");
 		ret.addComponent( new SAShip() );
+		return ret;
 	}
 	var gameStateType = function() {
 		var ret = new GameState();
 		var playerArray = new GameStateEntity("playerArray");
-		playerArray.addComponentArray(HAPlayer, 0);
+		playerArray.addComponentArray(SAPlayer, 0);
 		ret.entity.addComponent(playerArray);
 /*
 		var bulletArray = new GameStateEntity("bulletArray");
@@ -51,7 +84,12 @@ Sailboat.getInitObj = function() {
 */
 		return ret;
 	}
-	return {gameHandler: new GameHandler(gameStateType)};
+
+	var ret = {gameHandler: new GameHandler(gameStateType)};
+	if (Sailboat.Client)
+		ret.client = new Sailboat.Client();
+	return ret;
+	//return {gameHandler: new GameHandler(gameStateType), client: new Sailboat.Client()};
 }
 Sailboat.Server = function(gameStructure) {
 	var callbacks = gameStructure.callbacks;
@@ -59,6 +97,7 @@ Sailboat.Server = function(gameStructure) {
 
 		//var nEnt = this["gameHandler"].gs.entity.children[0].addObjToArrayNextAvailable();
 		var nEnt = this["gameHandler"].getObjByName("playerArray").addObjToArrayNextAvailable();
+		//util.log(JSON.stringify(nEnt));
 		var id = nEnt.getIndex();
 		util.log("onNewConnection: "+id);
 
@@ -72,19 +111,22 @@ Sailboat.Server = function(gameStructure) {
 		//var pEnt = state.entity.children[0].children[gsid];
 		var pEnt = this["gameHandler"].getObjByName("playerArray").children[gsid];
 		var gt = this["gameHandler"].getGameTime();
-		for (var i=0; i < 3; i++) {
+		for (var i=0; i < 1; i++) {
 
 		var iVals = getInitValues(gsid, i);
 		iVals.ut = gt;
-		//pEnt.children[0].children[i].children[0].applySpecificData(iVals);
-		var ship = pEnt.getChildByIdentifier("shipArray").children[i];
+		
+
+		//var ship = pEnt.getChildByIdentifier("shipArray").children[i];
+		var ship = pEnt.getChildByIdentifier("ship");
 		ship.getChildByIdentifier("position").applySpecificData(iVals);
+		ship.getChildByIdentifier("shield").applySpecificData({ut:gt});
 
 		}
 		var others = pEnt.getSpecificFrag();
 		util.log("other: "+JSON.stringify(others));
 		this["gameHandler"].sendstate.add(others);
-		//var pFrag = pEnt.getFrag();
+		
 		var f = state.entity.getFrag();
 		f.updateTime = gt;
 		f.specificData = gsid;
@@ -105,6 +147,8 @@ Sailboat.Server = function(gameStructure) {
 		} else if (gsid == 3) {
 			x = 900; y = 900;
 		} else throw new Error("bad initValues");
+
+		return {x:x,y:y};
 	}
 	/*
 	var getInitValues = function(gsid, shipnum) {

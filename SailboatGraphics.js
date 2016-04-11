@@ -24,7 +24,7 @@ function SailboatGraphics(gameStructure) {
 		ret.y = (InternalGameSize - gameCoordY) * GraphicsRatio;
 		return ret;
 	}
-	var lastInput = {};
+	//var lastInput = {};
 	var onMouseMove = function(e) {
 		/*
 		if (Crafty.mobile)
@@ -66,7 +66,7 @@ function SailboatGraphics(gameStructure) {
 		events: {
 			"UpdateFromGameState": function() {
 				if (this.gameStateEntity) {
-					
+
 				}
 			}
 		}
@@ -139,6 +139,7 @@ function SailboatGraphics(gameStructure) {
 					this.resetHitChecks("HAShipFront");
 				
 			});
+			/*
 			this.bind("KeyDown", function(e) {
 				if (e.key == Crafty.keys.SPACE) {
 					if (this.gameStateEntity.getPlayerIndex() == 
@@ -146,6 +147,7 @@ function SailboatGraphics(gameStructure) {
 					SailboatRunClient.onBulletShoot.call(gameStructure, this.gameStateEntity);
 				}
 			});
+			*/
 			//console.log(this);
 			//debugger;
 		}
@@ -185,14 +187,14 @@ function SailboatGraphics(gameStructure) {
 			});
 		}
 	});
-	Crafty.bind("EnterFrame", function() {
+	Crafty.bind("EnterFrame", function(eventData) {
 		/*
 		var inputData = getInputData();
 		if (inputData)
 			SailboatRunClient.onInput.call(this, inputData);
 		*/
-		SailboatRunClient.onInput.call(this, lastInput);
-		SailboatRunClient.onFrame.call(this);
+		//SailboatRunClient.onInput.call(this, lastInput);
+		SailboatRunClient.onFrame.call(this, eventData);
 		Crafty.trigger("UpdateFromGameState");
 
 		var myP = this["gameHandler"].myPlayer;

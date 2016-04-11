@@ -1,9 +1,10 @@
 SailboatRunClient = function() {
 	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
-	this.client = new Sailboat.Client(this.gameStructure);
+	//this.client = new Sailboat.Client(this.gameStructure);
 	this.graphics = new SailboatGraphics(this.gameStructure);
 	Sailboat.ClientGameStateCallbacks.call(this.gameStructure, this.graphics);
 }
+/*
 SailboatRunClient.onInput = function(obj) {
 	if (obj.x) {
 		if (this["gameHandler"].myPlayer) {
@@ -23,6 +24,7 @@ SailboatRunClient.onInput = function(obj) {
 	//debugger;
 	}
 }
+*/
 SailboatRunClient.onBulletShoot = function(gameStateEntity) {
 	//var bulletArray = this["gameHandler"].gs.entity.getChildByIdentifier("bulletArray");
 	//var nb = bulletArray.addObjToArrayNextAvailable();
@@ -45,12 +47,20 @@ SailboatRunClient.onDeadShip = function(gameStateObj) {
 	this["gameHandler"].officialChange(removeFrag);
 	//debugger;
 }
-SailboatRunClient.onFrame = function() {
+SailboatRunClient.onFrame = function(eventData) {
 	//console.log("onFrame");
+	debugger;
+	this["client"].controlsManager.inputUpdates(eventData.dt, this["gameHandler"].getGameTime())
 	this["gameHandler"].update();
 }
 Sailboat.Client = function(gameStructure) {
-	var callbacks = gameStructure.callbacks;
+	
+
+	//this.graphics = new SailboatGraphics();
+	//Sailboat.ClientGameStateCallbacks();
+}
+Sailboat.Client.prototype.gameStructureHasInitialized = function() {
+	var callbacks = this.gameStructure.callbacks;
 	var updateLoop = function() {
 		if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
@@ -71,6 +81,9 @@ Sailboat.Client = function(gameStructure) {
 			state.applyFrag(frag);
 			this["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
 			
+			this["client"].controlsManager.addControl( 
+				new CraftyControlsCircleMover(this["gameHandler"].myPlayer, "w", "s", "d", "a")
+				);
 			//this["gameHandler"].updateLoop = setInterval
 			//debugger;
 			//var p = state.entity.children[0].children[0];
@@ -86,9 +99,8 @@ Sailboat.Client = function(gameStructure) {
 	}
 	callbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
-	this.updateLoopId = setInterval(updateLoop.bind(gameStructure), 80);
-	//this.graphics = new SailboatGraphics();
-	//Sailboat.ClientGameStateCallbacks();
+	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 80);
+	this.controlsManager = new CraftyControlsManager();
 }
 Sailboat.ClientGameStateCallbacks = function(graphicsObj) {
 	var gs = this["gameHandler"].gs;

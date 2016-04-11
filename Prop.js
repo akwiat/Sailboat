@@ -333,9 +333,9 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 
 }
 Prop.PropCircleMover.prototype.propagate = function(t) {
-	//if (this.circle == undefined) {
+	if (this.circle == undefined) {
 		this.makeCircle();
-	//}
+	}
 	var dt = t - this.updateTime;
 	this.angle.propagate(t);
 	var speed = this.position.velX;

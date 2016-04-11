@@ -330,6 +330,7 @@ GameStateEntity.prototype.clear = function() {
 	}
 }
 
+
 if (!this.___alexnorequire) {
 	exports.GameStateEntity = GameStateEntity;
 }
