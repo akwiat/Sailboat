@@ -1,8 +1,8 @@
 SailboatRunClient = function() {
 	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
 	//this.client = new Sailboat.Client(this.gameStructure);
-	this.graphics = new SailboatGraphics(this.gameStructure);
-	Sailboat.ClientGameStateCallbacks.call(this.gameStructure, this.graphics);
+	
+	//Sailboat.ClientGameStateCallbacks.call(this.gameStructure, this.graphics);
 }
 /*
 SailboatRunClient.onInput = function(obj) {
@@ -25,6 +25,7 @@ SailboatRunClient.onInput = function(obj) {
 	}
 }
 */
+/*
 SailboatRunClient.onBulletShoot = function(gameStateEntity) {
 	//var bulletArray = this["gameHandler"].gs.entity.getChildByIdentifier("bulletArray");
 	//var nb = bulletArray.addObjToArrayNextAvailable();
@@ -40,6 +41,8 @@ SailboatRunClient.onBulletShoot = function(gameStateEntity) {
 	//debugger;
 	var nb = this["gameHandler"].officialNewObj("bulletArray", sd, this["gameHandler"].myPlayer);
 }
+*/
+/*
 SailboatRunClient.onDeadShip = function(gameStateObj) {
 	var shipNum = gameStateObj.getIndex();
 	var playerNum = gameStateObj.getPlayerIndex();
@@ -47,20 +50,32 @@ SailboatRunClient.onDeadShip = function(gameStateObj) {
 	this["gameHandler"].officialChange(removeFrag);
 	//debugger;
 }
+*/
+/*
 SailboatRunClient.onFrame = function(eventData) {
 	//console.log("onFrame");
+	//deprecated
 	debugger;
-	this["client"].controlsManager.inputUpdates(eventData.dt, this["gameHandler"].getGameTime())
+
+}
+*/
+Sailboat.Client = function() {
+}
+Sailboat.Client.prototype.onFrame = function(eventData) {
+	this.controlsManager.inputUpdates(eventData.dt, this["gameHandler"].getGameTime())
 	this["gameHandler"].update();
 }
-Sailboat.Client = function(gameStructure) {
-	
-
-	//this.graphics = new SailboatGraphics();
-	//Sailboat.ClientGameStateCallbacks();
+Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
+	var shipNum = gameStateObj.getIndex();
+	var playerNum = gameStateObj.getPlayerIndex();
+	var removeFrag = gameStateObj.getRemovalFrag();
+	this["gameHandler"].officialChange(removeFrag);
+	//debugger;
 }
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {
-	var callbacks = this.gameStructure.callbacks;
+	
+	
+	var gameStructureCallbacks = this.gameStructure.callbacks;
 	var updateLoop = function() {
 		if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
@@ -97,15 +112,20 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			throw new Error("custom msg bad id");
 		}
 	}
-	callbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
+	gameStructureCallbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
 	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 80);
+	this.graphics = new SailboatGraphics(this.gameStructure);
 	this.controlsManager = new CraftyControlsManager();
+	
+	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
+	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
+	this.registerGameStateCallbacks();
 }
-Sailboat.ClientGameStateCallbacks = function(graphicsObj) {
+Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var gs = this["gameHandler"].gs;
 	var callbacks = gs.callbacks;
-
+	var graphicsObject = this.graphics
 	var onFrame = function() {
 		this["gameHandler"].update();
 		//graphicsObj.
@@ -120,6 +140,7 @@ Sailboat.ClientGameStateCallbacks = function(graphicsObj) {
 		//gObj.alexGameStateObj = shipObj;
 		//shipObj.setGraphicsObj(gObj);
 	}
+	/*
 	var bulletAdded = function(bulletObj) {
 		var gObj = graphicsObj.getNewBulletObj(bulletObj);
 		bulletObj.setGraphicsObj(gObj);
@@ -127,6 +148,7 @@ Sailboat.ClientGameStateCallbacks = function(graphicsObj) {
 	var bulletRemoved = function(bulletObj) {
 		graphicsObj.removeShipObj(bulletObj.graphicsObj);
 	}
+	*/
 	var shipRemoved = function(shipObj) {
 		//console.log("shipRemoved");
 		graphicsObj.removeShipObj(shipObj.graphicsObj);
@@ -134,8 +156,8 @@ Sailboat.ClientGameStateCallbacks = function(graphicsObj) {
 	}
 	callbacks.register(shipAdded, "new", "ship");
 	callbacks.register(shipRemoved, "removed", "ship");
-	callbacks.register(bulletAdded, "new", "bullet");
-	callbacks.register(bulletRemoved, "removed", "bullet");
+	//callbacks.register(bulletAdded, "new", "bullet");
+	//callbacks.register(bulletRemoved, "removed", "bullet");
 
 
 
