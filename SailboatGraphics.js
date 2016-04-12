@@ -1,4 +1,7 @@
-function SailboatGraphics(gameStructure) {
+function SailboatGraphics() {
+	this.callbacks = new Callbacks();
+	var graphicsCallbacks = this.callbacks; //for closure purposes
+	
 	var InternalGameSize = 1000;
 	var ShipWidth = 25;
 	var ShipAspect = 2;
@@ -25,11 +28,12 @@ function SailboatGraphics(gameStructure) {
 		return ret;
 	}
 	//var lastInput = {};
+	/*
 	var onMouseMove = function(e) {
 		/*
 		if (Crafty.mobile)
 			return {x:0, y:-.03};
-		*/
+		* /
 		//var mouseX = e.realX;
 		//var mouseY = e.realY;
 		var obj = Crafty.domHelper.translate(e.clientX, e.clientY);
@@ -43,15 +47,18 @@ function SailboatGraphics(gameStructure) {
 		//console.log(JSON.stringify(lastInput));
 		//debugger;
 	}
+	*/
+	/*
 	var getInputData = function() {
 		if (!Crafty.lastEvent)
 			return undefined;
 
 	}
+	*/
 	//var stageElem
 	Crafty.init(this.size, this.size, document.getElementById('game'));
 	Crafty.background('#DFDFDF');
-	Crafty.addEvent(this, Crafty.stage.elem, "mousemove", onMouseMove);
+	//Crafty.addEvent(this, Crafty.stage.elem, "mousemove", onMouseMove);
 	Crafty.c("GameStateEntity", {
 		required: "2D, Canvas, Color",
 		gameStateEntity: function(entity) {
@@ -72,6 +79,7 @@ function SailboatGraphics(gameStructure) {
 		}
 
 	});
+	/*
 	Crafty.c("PropPosition", {
 		required: "GameStateEntity",
 		events: {
@@ -95,6 +103,7 @@ function SailboatGraphics(gameStructure) {
 			}
 		}
 	});
+	*/
 	Crafty.c("HAShip", {
 		required: "PropPosition, Collision, WiredHitBox",
 		init: function() {
@@ -194,9 +203,13 @@ function SailboatGraphics(gameStructure) {
 			SailboatRunClient.onInput.call(this, inputData);
 		*/
 		//SailboatRunClient.onInput.call(this, lastInput);
-		SailboatRunClient.onFrame.call(this, eventData);
+		
+		
+		//SailboatRunClient.onFrame.call(this, eventData);
+		graphicsCallbacks.trigger(eventData, "OnFrame");
+		//graphicsCallbacks.trigger(eventData, "OnInput");
 		Crafty.trigger("UpdateFromGameState");
-
+	/*
 		var myP = this["gameHandler"].myPlayer;
 		if (myP) {
 		var shipArray = myP.children[0];
@@ -229,12 +242,14 @@ function SailboatGraphics(gameStructure) {
 							debugger;
 					}
 					debugger;
-					*/
+					* /
 				}
 			}
 		}
 		}
-	}.bind(gameStructure));
+	*/
+	} );
+//	}.bind(gameStructure));
 
 	var mobileMotion = function(data) {
 		var cap = 30;
