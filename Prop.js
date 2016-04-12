@@ -275,12 +275,19 @@ Prop.PropCircleMover.prototype.getSpecificData = function() {
 	if (this.updateTime == undefined)
 		throw new Error("getSpecificData, bad updateTime");
 	return {
-		position:this.position
-		,angle:this.angle
-		,updateTime:this.updateTime
+		p:this.position.getSpecificData()
+		,a:this.angle.getSpecificData()
+		,ut:this.updateTime
 	}
 }
-Prop.PropCircleMover.prototype.applyData = function(obj) {
+Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
+	if (obj.p)
+		this.position.applySpecificData(obj.p);
+	if (obj.a)
+		this.angle.applySpecificData(obj.a);
+	if (obj.ut)
+		this.updateTime = obj.ut;
+	/*
 	//debugger;
 
 	var pApplied = this.position.applyData(obj.position);
@@ -292,8 +299,9 @@ Prop.PropCircleMover.prototype.applyData = function(obj) {
 		this.updateTime = updateTime;
 		return true;
 	}
+	* /
 	*/
-	return false;
+	//return false;
 }
 Prop.PropCircleMover.prototype.stripData = function() {
 	this.position = undefined;
