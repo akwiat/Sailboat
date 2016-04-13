@@ -1,14 +1,18 @@
-function SailboatGraphics() {
+function SailboatGraphics(graphicsSettings) {
 	this.callbacks = new Callbacks();
 	var graphicsCallbacks = this.callbacks; //for closure purposes
 	
-	var InternalGameSize = 1000;
+	var InternalGameSize = graphicsSettings.InternalGameSize;
+	/*
 	var ShipWidth = 25;
 	var ShipAspect = 2;
 	var ShipFrontAspect = .5;
 
 	var BulletWidth = 20;
 	var BulletAspect = 1;
+	*/
+	var ShipRadius = graphicsSettings.ShipRadius;
+	
 	this.size = Math.min(window.innerWidth, window.innerHeight);
 	this.ratio = this.size/InternalGameSize;
 	var GraphicsRatio = this.ratio;
