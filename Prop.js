@@ -330,13 +330,13 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 	if (Math.abs(this.angle.velocity) > Prop.PropCircleMover.angleVelocityCutoff) {
 	var completionTime = 1.0/this.angle.velocity;//in units where 2Pi = 1
 	var circumference = completionTime * this.position.velX;
-	circle.radius = circumference; //2PI = 1, sign of radius is for rhanded or lhanded circles
+	circle.radius = circumference; //2PI = 1, sign of radius is for rhanded or lhanded circles (pos is lhanded)
 	circle.currentCircleAngle = this.angle.scalarValue; 
 
 	circle.startTime = this.updateTime;
 	circle.origin = {};
-	circle.origin.x = this.position.x - circle.radius*Math.cos(circle.currentCircleAngle);
-	circle.origin.y = this.position.y - circle.radius*Math.sin(circle.currentCircleAngle);
+	circle.origin.x = this.position.x - circle.radius*Math.sin(circle.currentCircleAngle);
+	circle.origin.y = this.position.y + circle.radius*Math.cos(circle.currentCircleAngle);
 	if (isNaN(circle.origin.y) || isNaN(circle.origin.x))
 
 		throw new Error("PropCircleMover::makeCircle NaN");
@@ -365,12 +365,12 @@ Prop.PropCircleMover.prototype.propagate = function(t) {
 	
 	
 	var circle = this.circle;
-	this.position.x = this.circle.origin.x + circle.radius*Math.cos(curAngle);
-	this.position.y = this.circle.origin.y + circle.radius*Math.sin(curAngle);
+	this.position.x = this.circle.origin.x + circle.radius*Math.cos(curAngle + Math.PI/2); //add PI/2 to convert to angle around the circle
+	this.position.y = this.circle.origin.y + circle.radius*Math.sin(curAngle + Math.PI/2);
 	} else {
 		//debugger;
-		this.position.x += speed*dt*Math.cos(curAngle + Math.PI/2);
-		this.position.y += speed*dt*Math.sin(curAngle + Math.PI/2); //convention thing
+		this.position.x += speed*dt*Math.cos(curAngle);
+		this.position.y += speed*dt*Math.sin(curAngle); 
 	}
 	if (isNaN(this.position.y) || isNaN(this.position.x)) 
 		throw new Error("PropCircleMover::propagate NaN");
