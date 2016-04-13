@@ -5,7 +5,11 @@ function CraftyControlsManager(Crafty) {
 	this.controlsArray = [];
 }
 CraftyControlsManager.prototype.checkKey = function(keyStr) { //string
-	return this.Crafty.keydown[this.Crafty.keys[keyStr]];
+	//debugger;
+	var ret = this.Crafty.keydown[this.Crafty.keys[keyStr]];
+	debugger;
+	if (!!ret) debugger;
+	return ret;
 }
 CraftyControlsManager.prototype.addControl = function(control) {
 	this.controlsArray.push(control);

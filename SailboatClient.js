@@ -62,7 +62,8 @@ SailboatRunClient.onFrame = function(eventData) {
 Sailboat.Client = function() {
 }
 Sailboat.Client.prototype.onFrame = function(eventData) {
-	this.controlsManager.inputUpdates(eventData.dt, this["gameHandler"].getGameTime())
+	console.log(eventData.dt);
+	this.controlsManager.inputUpdates(eventData.dt/1000, this["gameHandler"].getGameTime())
 	this["gameHandler"].update();
 }
 Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
@@ -79,6 +80,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	var updateLoop = function() {
 		if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
+		console.log(JSON.stringify(frag));
 		this["gameHandler"].sendstate.add(frag);
 		this["handlerBridge"].sendUpdateToServer();
 		}
@@ -96,8 +98,10 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			state.applyFrag(frag);
 			this["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
 			
+			
+			var myShipPos = this["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
 			this["client"].controlsManager.addControl( 
-				new CraftyControlsCircleMover(this["gameHandler"].myPlayer, "w", "s", "d", "a")
+				new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a")
 				);
 			//this["gameHandler"].updateLoop = setInterval
 			//debugger;
@@ -114,9 +118,9 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	}
 	gameStructureCallbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
-	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 80);
+	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
 	this.graphics = new SailboatGraphics(this.gameStructure);
-	this.controlsManager = new CraftyControlsManager();
+	this.controlsManager = new ThreexControlsManager(Crafty);
 	
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
@@ -125,8 +129,9 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var gs = this["gameHandler"].gs;
 	var callbacks = gs.callbacks;
-	var graphicsObject = this.graphics
+	var graphicsObj = this.graphics;
 	var onFrame = function() {
+		debugger;
 		this["gameHandler"].update();
 		//graphicsObj.
 	}

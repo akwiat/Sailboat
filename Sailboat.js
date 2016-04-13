@@ -34,6 +34,9 @@ Shield.prototype.applySpecificData = function(obj) {
 	}
 
 }
+Shield.prototype.propagate = function(t) {
+
+}
 function Sailboat() {}
 Sailboat.getInitObj = function() {
 	var SAShip = function() {
@@ -113,8 +116,8 @@ Sailboat.Server = function(gameStructure) {
 		var gt = this["gameHandler"].getGameTime();
 		for (var i=0; i < 1; i++) {
 
-		var iVals = getInitValues(gsid, i);
-		iVals.ut = gt;
+		var iVals = getInitValues(gsid, gt);
+		//iVals.ut = gt;
 		
 
 		//var ship = pEnt.getChildByIdentifier("shipArray").children[i];
@@ -136,8 +139,9 @@ Sailboat.Server = function(gameStructure) {
 		this["serverHandlerLink"].sendToClient(gsid, msg);
 	}
 	callbacks.register(serverInitPlayer, GameStructureCodes.SERVERINITPLAYER);
-	var getInitValues = function(gsid) {
+	var getInitValues = function(gsid, ut) {
 		var x,y;
+		var angle = Math.PI/2;
 		if (gsid == 0) {
 			x = 100; y = 100;
 		} else if (gsid == 1) {
@@ -148,7 +152,7 @@ Sailboat.Server = function(gameStructure) {
 			x = 900; y = 900;
 		} else throw new Error("bad initValues");
 
-		return {x:x,y:y};
+		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
 	}
 	/*
 	var getInitValues = function(gsid, shipnum) {

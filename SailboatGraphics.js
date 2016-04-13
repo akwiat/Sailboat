@@ -27,6 +27,27 @@ function SailboatGraphics() {
 		ret.y = (InternalGameSize - gameCoordY) * GraphicsRatio;
 		return ret;
 	}
+
+	var positionAndRotation = function(gameX, gameY, angle, w, h) {
+		var ret = convertToGraphicsCoord(gameX, gameY);
+		/*
+		if ((vx*vx + vy*vy) > 0.000001) {
+					var radRotation = Math.atan2(posObj.velY, posObj.velX);
+					radRotation -= Math.PI/2;
+					radRotation *= -1;
+					ret.rotation = radRotation*180/Math.PI;
+				}
+		*/
+		var radRotation = angle;
+		radRotation -= Math.PI/2;
+		radRotation *= -1;
+		ret.rotation = radRotation*180/Math.PI;
+
+		ret.x -= w/2;
+		ret.y -= h/2;
+
+		return ret;
+	}
 	//var lastInput = {};
 	/*
 	var onMouseMove = function(e) {
@@ -72,8 +93,16 @@ function SailboatGraphics() {
 		required: "GameStateEntity",
 		events: {
 			"UpdateFromGameState": function() {
+				//debugger;
 				if (this.gameStateEntity) {
+					var posChild = this.gameStateEntity.findChildWithIdentifier("position");
+					var posObj = posChild.getWrappedObj();
 
+					//debugger;
+					var attrObj = positionAndRotation(posObj.position.x, posObj.position.y,
+					posObj.angle.scalarValue, this.w, this.h );
+					console.log(JSON.stringify(attrObj));
+					this.attr(attrObj);
 				}
 			}
 		}
@@ -104,6 +133,26 @@ function SailboatGraphics() {
 		}
 	});
 	*/
+	Crafty.c("SAShip", {
+		required: "PropCircleMover"
+		,init: function() {
+			this.w = ShipWidth*GraphicsRatio;
+			this.h = this.w*ShipAspect;
+			//this.origin(this.w/2, this.h/2);
+			this.origin("center");
+
+			//this.x = this.w; this.y = this.h;
+			this.rotation = 0;
+			this.color("black");
+		}
+		/*
+		,events: {
+			"EnterFrame":function() {
+				this.rotation += .5;
+			}
+		}
+		*/
+	});
 	Crafty.c("HAShip", {
 		required: "PropPosition, Collision, WiredHitBox",
 		init: function() {
@@ -164,6 +213,7 @@ function SailboatGraphics() {
 	Crafty.c("HAShipFront", {
 		required: "2D, Canvas, Color, Collision, WiredHitBox",
 		init: function() {
+			debugger;
 			this.w = ShipWidth*GraphicsRatio;
 			this.h = this.w*ShipFrontAspect;
 			this.origin("center");
@@ -174,6 +224,7 @@ function SailboatGraphics() {
 	Crafty.c("HABullet", {
 		required: "PropPosition, Collision",
 		init: function() {
+			debugger;
 			this.w = BulletWidth*GraphicsRatio;
 			this.h = this.w*BulletAspect;
 			this.origin("center");
@@ -269,7 +320,7 @@ function SailboatGraphics() {
       //Crafty.e('2D, DOM, Color').attr({x: 0, y: 0, w: 100, h: 200}).color('#F00');
 }
 SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
-	var obj = Crafty.e('HAShip').gameStateEntity(gameStateEntity);
+	var obj = Crafty.e('SAShip').gameStateEntity(gameStateEntity);
 	var p = gameStateEntity.getPlayerIndex();
 
 	var collisionStr = "collisionPlayer";
@@ -282,13 +333,14 @@ SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
 	else
 		throw new Error("bad colors");
 
+/*
 	var shipFront = Crafty.e('HAShipFront').attr({x:0, y:0})
 	.color("black");
 	shipFront.gameStateEntity = gameStateEntity;
 	obj.attach(shipFront);
 	//obj.attr({x:-100});
 
-
+*/
 
 	return obj;
 }

@@ -232,15 +232,26 @@ Prop.PropCylindrical.prototype.propagate = function(ut) {
 Prop.PropScalar = function() {
 	this.scalarValue = 0.0;
 	this.velocity = 0.0;
+	this.updateTime = undefined;
 }
-Prop.PropScalar.prototype.applyData = function() {
-	return Prop.applyData.apply(this, arguments);
+Prop.PropScalar.prototype.applySpecificData = function(obj) {
+	if (obj.s)
+		this.scalarValue = obj.s;
+	if (obj.v)
+		this.velocity = obj.v;
+	if (obj.ut)
+		this.updateTime = obj.ut;
+
+	return this;
 }
 Prop.PropScalar.prototype.propagate = function(t) {
 	if (this.updateTime == undefined)
 		throw new Error("PropScalar::propagate bad updateTime");
 	this.scalarValue += this.velocity * (t-this.updateTime);
 	this.updateTime = t;
+}
+Prop.PropScalar.prototype.getSpecificData = function() {
+	return {s:this.scalarValue, v:this.velocity, ut:this.updateTime};
 }
 //-----
 Prop.PropCircleMover = function() {
@@ -302,6 +313,7 @@ Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
 	* /
 	*/
 	//return false;
+	return this;
 }
 Prop.PropCircleMover.prototype.stripData = function() {
 	this.position = undefined;

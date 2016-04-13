@@ -1,7 +1,7 @@
 function ControlsCircleMover(circleMover) {
-	this.accFwd = 40.0;
+	this.accFwd = 40.0/1000;
 	this.accBack = this.accFwd;
-	this.accRight = 1.0; //radians per sec per sec
+	this.accRight = 1.0/1000; //radians per sec per sec
 	this.accLeft = this.accRight;
 
 
