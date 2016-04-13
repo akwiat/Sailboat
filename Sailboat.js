@@ -38,6 +38,10 @@ Shield.prototype.propagate = function(t) {
 
 }
 function Sailboat() {}
+Sailboat.settings = {
+	InternalGameSize:1000
+	,ShipRadius:25
+}
 Sailboat.getInitObj = function() {
 	var SAShip = function() {
 		var ret = new GameStateEntity("ship");
@@ -47,6 +51,19 @@ Sailboat.getInitObj = function() {
 		ret.addComponent( new GameStateEntity("shield",
 			new Shield() ).setClientProperty()
 			);
+			
+		//ret.shipRadius = 25;
+		return ret;
+	}
+	SAShip.prototype.getShipCircle = function() {
+		var cm = this.findChildWithIdentifier("position").getWrappedObj();
+		var p = cm.position;
+		var x = p.x;
+		var y = p.y;
+		var r = Sailboat.settings.ShipRadius;
+		//var a = cm.angle.scalarValue;
+		
+		var ret = new SAT.Circle(new SAT.Vector(x,y), );
 		return ret;
 	}
 	/*
