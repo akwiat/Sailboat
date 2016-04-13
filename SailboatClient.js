@@ -60,11 +60,22 @@ SailboatRunClient.onFrame = function(eventData) {
 }
 */
 Sailboat.Client = function() {
+	/*
+	this.graphicsSettings = {
+		InternalGameSize:1000
+		,ShipRadius:25
+		
+	};
+	*/
+	this.graphicsSettings = Sailboat.settings;
+	this.worldBox = SAT.Box(new SAT.Vector(0,0), this.graphicsSettings.InternalGameSize, this.graphicsSettings.InternalGameSize).toPolygon();
+	
 }
 Sailboat.Client.prototype.onFrame = function(eventData) {
 	console.log(eventData.dt);
 	this.controlsManager.inputUpdates(eventData.dt/1000, this["gameHandler"].getGameTime())
 	this["gameHandler"].update();
+	this.checkCollisions();
 }
 Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	var shipNum = gameStateObj.getIndex();
@@ -119,7 +130,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	gameStructureCallbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
 	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
-	this.graphics = new SailboatGraphics(this.gameStructure);
+	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
 	
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
@@ -166,4 +177,15 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 
 
 
+}
+
+Sailboat.Client.prototype.checkCollisions = function() {
+	var myP = this["gameHandler"].myPlayer;
+	var myShip = myP.findChildWithIdentifier("ship");
+	var circle = myShip.getShipCircle();
+	
+	var resp = new SAT.Response();
+	SAT.testPolygonCircle(this.worldBox, circle, resp)
+	if (!resp.bInA) debugger; //collided with edge
+	
 }
