@@ -138,7 +138,7 @@ function SailboatGraphics(graphicsSettings) {
 	});
 	*/
 	Crafty.c("SAShip", {
-		required: "PropCircleMover"
+		required: "PropCircleMover, ufo"
 		,init: function() {
 			this.w = ShipWidth*GraphicsRatio;
 			this.h = this.w*ShipAspect;
@@ -354,4 +354,19 @@ SailboatGraphics.prototype.removeShipObj = function(craftyEntity) {
 SailboatGraphics.prototype.getNewBulletObj = function(gameStateEntity) {
 	var obj = Crafty.e('HABullet').gameStateEntity(gameStateEntity);
 	return obj;
+}
+SailboatGraphics.loadEverything = function(callback) {
+	var assetsObj = {
+		"sprites":{
+			"ufo.png": {
+				tile:50
+				,tileh:50
+				,map: {
+					ufo:[0,0]
+				}
+			}
+		}
+	};
+	
+	Crafty.load(assetsObj, callback);
 }
