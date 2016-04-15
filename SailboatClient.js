@@ -1,8 +1,12 @@
 SailboatRunClient = function() {
-	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
+	
 	//this.client = new Sailboat.Client(this.gameStructure);
 	
 	//Sailboat.ClientGameStateCallbacks.call(this.gameStructure, this.graphics);
+	SailboatGraphics.loadEverything(this.onLoad.bind(this));
+}
+SailboatRunClient.prototype.onLoad = function() {
+	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
 }
 /*
 SailboatRunClient.onInput = function(obj) {
