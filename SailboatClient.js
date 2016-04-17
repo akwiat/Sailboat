@@ -13,13 +13,13 @@ SailboatRunClient.prototype.onLoad = function() {
 */
 Sailboat.Client = function() {
 	
-	GeneralClient.call(this, SailboatGraphics.loadEverything, Sailboat.getInitObj());
+	//GeneralClient.call(this, SailboatGraphics.loadEverything, Sailboat.getInitObj());
 	this.graphicsSettings = Sailboat.settings;
 	this.worldBox = new SAT.Box(new SAT.Vector(0,0), this.graphicsSettings.InternalGameSize, this.graphicsSettings.InternalGameSize).toPolygon();
 	
 }
-Sailboat.Client.prototype = Object.create(GeneralClient.prototype);
-Sailboat.Client.prototype.constructor = Sailboat.Client;
+//Sailboat.Client.prototype = Object.create(GeneralClient.prototype);
+//Sailboat.Client.prototype.constructor = Sailboat.Client;
 
 Sailboat.Client.prototype.onFrame = function(eventData) {
 	//console.log(eventData.dt);
