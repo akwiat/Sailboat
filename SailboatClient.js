@@ -1,3 +1,5 @@
+
+/*
 SailboatRunClient = function() {
 	
 	//this.client = new Sailboat.Client(this.gameStructure);
@@ -8,73 +10,17 @@ SailboatRunClient = function() {
 SailboatRunClient.prototype.onLoad = function() {
 	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
 }
-/*
-SailboatRunClient.onInput = function(obj) {
-	if (obj.x) {
-		if (this["gameHandler"].myPlayer) {
-		var shipArray = this["gameHandler"].myPlayer.children[0];
-		for (var o of shipArray.children) {
-			if (o) {
-			var ship = o;
-			var scale = 0.2;
-			var shipPos = ship.children[0];
-			shipPos.wrappedObj.velX = obj.x*scale;
-			shipPos.wrappedObj.velY = obj.y*scale;
-			}
-			}
-		}
-		//console.log(JSON.stringify(shipPos.wrappedObj));
-	//console.log(obj);
-	//debugger;
-	}
-}
-*/
-/*
-SailboatRunClient.onBulletShoot = function(gameStateEntity) {
-	//var bulletArray = this["gameHandler"].gs.entity.getChildByIdentifier("bulletArray");
-	//var nb = bulletArray.addObjToArrayNextAvailable();
-	var mult = 1500;
-	var offset = 500;
-	var pos = gameStateEntity.getChildByIdentifier("position").wrappedObj;
-	var vx = -1*pos.velX;
-	var vy = -1*pos.velY;
-	var x = pos.x + vx*mult;
-	var y = pos.y + vy*mult;
-	var ut = this["gameHandler"].getGameTime();
-	var sd = {x:x, y:y, velX:vx, velY:vy, updateTime:ut};
-	//debugger;
-	var nb = this["gameHandler"].officialNewObj("bulletArray", sd, this["gameHandler"].myPlayer);
-}
-*/
-/*
-SailboatRunClient.onDeadShip = function(gameStateObj) {
-	var shipNum = gameStateObj.getIndex();
-	var playerNum = gameStateObj.getPlayerIndex();
-	var removeFrag = gameStateObj.getRemovalFrag();
-	this["gameHandler"].officialChange(removeFrag);
-	//debugger;
-}
-*/
-/*
-SailboatRunClient.onFrame = function(eventData) {
-	//console.log("onFrame");
-	//deprecated
-	debugger;
-
-}
 */
 Sailboat.Client = function() {
-	/*
-	this.graphicsSettings = {
-		InternalGameSize:1000
-		,ShipRadius:25
-		
-	};
-	*/
+	
+	GeneralClient.call(this, SailboatGraphics.loadEverything, Sailboat.getInitObj());
 	this.graphicsSettings = Sailboat.settings;
 	this.worldBox = new SAT.Box(new SAT.Vector(0,0), this.graphicsSettings.InternalGameSize, this.graphicsSettings.InternalGameSize).toPolygon();
 	
 }
+Sailboat.Client.prototype = Object.create(GeneralClient.prototype);
+Sailboat.Client.prototype.constructor = Sailboat.Client;
+
 Sailboat.Client.prototype.onFrame = function(eventData) {
 	//console.log(eventData.dt);
 	this.controlsManager.inputUpdates(eventData.dt/1000, this["gameHandler"].getGameTime())
