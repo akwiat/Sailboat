@@ -43,19 +43,7 @@ Sailboat.settings = {
 	,ShipRadius:25
 }
 Sailboat.getInitObj = function() {
-	var SAShip = function() {
-		var ret = new GameStateEntity("ship");
-		ret.addComponent( new GameStateEntity("position",
-		new Prop.PropCircleMover() ).setClientProperty());
-
-		ret.addComponent( new GameStateEntity("shield",
-			new Shield() ).setClientProperty()
-			);
-			
-		//ret.shipRadius = 25;
-		return ret;
-	}
-	SAShip.prototype.getShipCircle = function() {
+	var getShipCircle = function() {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
 		var x = p.x;
@@ -63,9 +51,34 @@ Sailboat.getInitObj = function() {
 		var r = Sailboat.settings.ShipRadius;
 		//var a = cm.angle.scalarValue;
 		
-		var ret = new SAT.Circle(new SAT.Vector(x,y), );
+		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
+	var SAShip = function() {
+		var boostManager = function(propPos, propAngle) {
+			var maxV = 200.0;
+			var maxA = 5.0;
+			if (propPos.velX > maxV) propPos.velX = maxV;
+			if (propPos.velX < -1.0*maxV) propPos.velX = -1.0*maxV;
+			if (propPos.velY > maxV) propPos.velY = maxV;
+			if (propPos.velY < -1.0*maxV) propPos.velY = -1.0*maxV;
+
+			if (propAngle.velocity > maxA) propAngle.velocity = maxA;
+			if (propAngle.velocity < -1.0*maxA) propAngle.velocity = -1.0*maxA;
+		}
+		var ret = new GameStateEntity("ship");
+		ret.addComponent( new GameStateEntity("position",
+		new Prop.PropCircleMover().setBoostManager(boostManager) ).setClientProperty());
+
+		ret.addComponent( new GameStateEntity("shield",
+			new Shield() ).setClientProperty()
+			);
+			
+		//ret.shipRadius = 25;
+		ret.constructor.prototype.getShipCircle = getShipCircle; 
+		return ret;
+	}
+
 	/*
 	var HABullet = function(sd) {
 		var ret = new GameStateEntity("bullet");
@@ -169,7 +182,7 @@ Sailboat.Server = function(gameStructure) {
 			x = 900; y = 900;
 		} else throw new Error("bad initValues");
 
-		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
+		return { p:{x:x,y:y,vx:40, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
 	}
 	/*
 	var getInitValues = function(gsid, shipnum) {

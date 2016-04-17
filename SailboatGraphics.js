@@ -103,9 +103,10 @@ function SailboatGraphics(graphicsSettings) {
 					var posObj = posChild.getWrappedObj();
 
 					//debugger;
+					//console.log(posObj.position.x +", "+posObj.position.y+", "+posObj.angle.scalarValue);
 					var attrObj = positionAndRotation(posObj.position.x, posObj.position.y,
 					posObj.angle.scalarValue, this.w, this.h );
-					console.log(JSON.stringify(attrObj));
+					//console.log(JSON.stringify(attrObj));
 					this.attr(attrObj);
 				}
 			}
@@ -140,14 +141,16 @@ function SailboatGraphics(graphicsSettings) {
 	Crafty.c("SAShip", {
 		required: "PropCircleMover, ufo"
 		,init: function() {
+			/*
 			this.w = ShipWidth*GraphicsRatio;
 			this.h = this.w*ShipAspect;
+			*/
 			//this.origin(this.w/2, this.h/2);
 			this.origin("center");
 
 			//this.x = this.w; this.y = this.h;
 			this.rotation = 0;
-			this.color("black");
+			//this.color("black");
 		}
 		/*
 		,events: {
@@ -328,6 +331,7 @@ SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
 	var p = gameStateEntity.getPlayerIndex();
 
 	var collisionStr = "collisionPlayer";
+	/*
 	if (p == 0) {
 		obj.color("blue");
 	}
@@ -336,6 +340,7 @@ SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
 	}
 	else
 		throw new Error("bad colors");
+	*/
 
 /*
 	var shipFront = Crafty.e('HAShipFront').attr({x:0, y:0})

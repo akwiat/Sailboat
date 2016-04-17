@@ -1,14 +1,15 @@
 function ControlsCircleMover(circleMover) {
-	this.accFwd = 40.0/1000;
+	this.accFwd = 100.0;
 	this.accBack = this.accFwd;
-	this.accRight = 1.0/1000; //radians per sec per sec
+	this.accRight = -2.0; //radians per sec per sec
 	this.accLeft = this.accRight;
 
 
 	this.circleMover = circleMover;
 }
 
-ControlsCircleMover.prototype.boostForward = function(dt, gt) { //in seconds, in ms
+ControlsCircleMover.prototype.boostForward = function(dt, gt) { //in seconds, in seconds
+	//debugger;
 	this.circleMover.boostVelocity(dt*this.accFwd, gt);
 }
 

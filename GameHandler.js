@@ -46,7 +46,7 @@ GameHandler.prototype.getFullStateDifObj = function() {
 	return difObj;
 }
 GameHandler.prototype.getGameTime = function() {
-	return new Date().getTime() - this.st;
+	return new Date().getTime()/1000 - this.st;
 }
 /*
 GameHandler.prototype.physicsLoop = function(st) {
@@ -58,13 +58,15 @@ GameHandler.prototype.updateLoop = function(st) {
 }
 */
 GameHandler.prototype.init = function() {
-	this.st = new Date().getTime();
+	//throw new Error("test");
+	this.st = new Date().getTime()/1000;
 }
 GameHandler.prototype.setStartTime = function(t) {
+	throw new Error("deprecated");
 	this.st = t;
 }
 GameHandler.prototype.setCurrentGameTime = function(t) {
-	var ct = new Date().getTime();
+	var ct = new Date().getTime()/1000;
 	this.st = ct - t;
 }
 GameHandler.prototype.resetGame = function() {
