@@ -29,7 +29,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 				new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a")
 				);
 			this["client"].controlsManager.addControl(
-				new ThreexControlsAction(, "f")
+				new ThreexControlsAction(this.onShoot.bind(this), "f")
 				);
 
 		} else {
