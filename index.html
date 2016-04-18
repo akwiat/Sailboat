@@ -31,16 +31,24 @@
     <script src="ClientSocket.js"></script>
     <script src="GeneralClient.js"></script>
     <script src="CraftyGraphics.js"></script>
+    <!-- These gaps help keep track of which files are reusable or not  -->
+
+    <script src="Controls.js"></script>
+    <script src="threex_keyboardstate.js"></script>
+    <script src="ThreexControlsManager.js"></script>
+    <script src="HudManager.js"></script>
+    <script src="CooldownManager.js"></script>
+    <!-- These gaps help keep track of which files are reusable or not  -->
+
     <script src="Sailboat.js"></script>
     <script src="SailboatGraphics.js"></script>
     <script src="SailboatClient.js"></script>
     <script src="SailboatClientGamestructure.js"></script>
     <script src="SailboatClientGamestate.js"></script>
     <script src="SailboatClientCollisions.js"></script>
-    <script src="HudManager.js"></script>
-    <script src="Controls.js"></script>
-    <script src="threex_keyboardstate.js"></script>
-    <script src="ThreexControlsManager.js"></script>
+
+    
+
 
     <script>
       var theClient = new GeneralClient(SailboatGraphics.loadEverything, Sailboat.getInitObj() );

@@ -40,6 +40,8 @@ Sailboat.Client.prototype.onShoot = function(gt) {
 	//debugger;
 	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
 }
+
+
 /*
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	
