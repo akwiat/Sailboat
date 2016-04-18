@@ -388,7 +388,7 @@ SailboatGraphics.loadEverything = function(callback) {
 				tile:65
 				,tileh:66
 				,map: {
-					explosion:[0,]
+					explosion:[0,0]
 				}
 			}
 		}
