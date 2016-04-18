@@ -16,27 +16,28 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 		var str = msg.slice(1);
 		if (c == "p") {
 
-			var state = this["gameHandler"].gs;
+			var state = this["gameStructure"]["gameHandler"].gs;
 			var frag = Frag.makeFromStr(str);
 			console.log(frag);
-			this["gameHandler"].setCurrentGameTime(frag.updateTime);
+			this["gameStructure"]["gameHandler"].setCurrentGameTime(frag.updateTime);
 			state.applyFrag(frag);
-			this["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
+			this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
 			
 			
-			var myShipPos = this["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
-			this["client"].controlsManager.addControl( 
+			var myShipPos = this["gameStructure"]["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
+			this["gameStructure"]["client"].controlsManager.addControl( 
 				new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a")
 				);
-			this["client"].controlsManager.addControl(
-				new ThreexControlsAction(, "f")
+			this["gameStructure"]["client"].controlsManager.addControl(
+				new ThreexControlsAction(this.onShoot.bind(this), "f")
 				);
+			//debugger;
 
 		} else {
 			throw new Error("custom msg bad id");
 		}
 	}
-	gameStructureCallbacks.register(clientCustomMsg, GameStructureCodes.CLIENTGOTCUSTOMMSG);
+	gameStructureCallbacks.register(clientCustomMsg.bind(this), GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
 	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
 	this.graphics = new SailboatGraphics(this.graphicsSettings);

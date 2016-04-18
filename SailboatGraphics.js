@@ -174,7 +174,7 @@ function SailboatGraphics(graphicsSettings) {
 		required: "PropPosition, explosion"
 		,init:function() {
 			this.w = BulletRadius*2.0*GraphicsRatio;
-			this.h = w;
+			this.h = this.w;
 			this.origin("center");
 		}
 	});

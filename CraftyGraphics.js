@@ -93,7 +93,7 @@ function CraftyGraphics(graphicsSettings) {
 					radRotation *= -1;
 					attrObj.rotation = radRotation*180/Math.PI;
 				}
-				//console.log(JSON.stringify(posObj));
+				console.log(JSON.stringify(posObj));
 				this.attr(attrObj);
 
 				}

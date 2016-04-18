@@ -84,7 +84,7 @@ Sailboat.getInitObj = function() {
 	var SABullet = function(sd) {
 		var ret = new GameStateEntity("bullet");
 		ret.addComponent( new GameStateEntity("position",
-			new Prop.PropVector2d(sd) ).setClientProperty() );
+			new Prop.PropVector2d(sd) ) );
 		return ret;
 	}
 	
