@@ -141,6 +141,8 @@ function SailboatGraphics(graphicsSettings) {
 	Crafty.c("SAShip", {
 		required: "PropCircleMover, ufo"
 		,init: function() {
+			this.w = ShipRadius*2.0*GraphicsRatio;
+			this.h = this.w;
 			/*
 			this.w = ShipWidth*GraphicsRatio;
 			this.h = this.w*ShipAspect;
