@@ -3,7 +3,7 @@ function GeneralClient(loadGraphicsFn, initObj) {
   this.initObj = initObj;
   
   if (this.loadGraphicsFn)
-    this.loadGraphcisFn(this.onLoad.bind(this));
+    this.loadGraphicsFn(this.onLoad.bind(this));
   //this.loadGraphics();
   //if (GeneralGraphics.loadEverything)
 	  //GeneralGraphics.loadEverything(this.onLoad.bind(this));

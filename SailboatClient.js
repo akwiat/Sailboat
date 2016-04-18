@@ -1,16 +1,4 @@
 
-/*
-SailboatRunClient = function() {
-	
-	//this.client = new Sailboat.Client(this.gameStructure);
-	
-	//Sailboat.ClientGameStateCallbacks.call(this.gameStructure, this.graphics);
-	SailboatGraphics.loadEverything(this.onLoad.bind(this));
-}
-SailboatRunClient.prototype.onLoad = function() {
-	this.gameStructure = new InitializeClientStructure(Sailboat.getInitObj());
-}
-*/
 Sailboat.Client = function() {
 	
 	//GeneralClient.call(this, SailboatGraphics.loadEverything, Sailboat.getInitObj());
@@ -23,7 +11,8 @@ Sailboat.Client = function() {
 
 Sailboat.Client.prototype.onFrame = function(eventData) {
 	//console.log(eventData.dt);
-	this.controlsManager.inputUpdates(eventData.dt/1000, this["gameHandler"].getGameTime())
+	var gt = this["gameHandler"].getGameTime();
+	this.controlsManager.inputUpdates(eventData.dt/1000, gt);
 	this["gameHandler"].update();
 	this.checkCollisions();
 }
@@ -64,15 +53,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			this["client"].controlsManager.addControl( 
 				new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a")
 				);
-			//this["gameHandler"].updateLoop = setInterval
-			//debugger;
-			//var p = state.entity.children[0].children[0];
-	
-		//var f = p.getRemovalFrag();
-		//console.log(f);
-		//state.applyFrag(f);
-		//debugger;
-			//debugger;
+
 		} else {
 			throw new Error("custom msg bad id");
 		}
@@ -94,27 +75,16 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var onFrame = function() {
 		debugger;
 		this["gameHandler"].update();
-		//graphicsObj.
+		
 	}
 	
 	var shipAdded = function(shipObj) {
-		//console.log("shipAdded");
-		//console.log(shipObj);
-		//return undefined;
+
 		var gObj = graphicsObj.getNewShipObj(shipObj);
 		shipObj.setGraphicsObj(gObj);
-		//gObj.alexGameStateObj = shipObj;
-		//shipObj.setGraphicsObj(gObj);
+
 	}
-	/*
-	var bulletAdded = function(bulletObj) {
-		var gObj = graphicsObj.getNewBulletObj(bulletObj);
-		bulletObj.setGraphicsObj(gObj);
-	}
-	var bulletRemoved = function(bulletObj) {
-		graphicsObj.removeShipObj(bulletObj.graphicsObj);
-	}
-	*/
+
 	var shipRemoved = function(shipObj) {
 		//console.log("shipRemoved");
 		graphicsObj.removeShipObj(shipObj.graphicsObj);
