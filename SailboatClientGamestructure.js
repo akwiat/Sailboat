@@ -41,6 +41,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
 	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
+	this.hudManager = new HudManager();
 	
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
