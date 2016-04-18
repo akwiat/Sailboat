@@ -23,6 +23,7 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	this["gameHandler"].officialChange(removeFrag);
 	//debugger;
 }
+/*
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	
 	
@@ -68,6 +69,8 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
 	this.registerGameStateCallbacks();
 }
+*/
+/*
 Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var gs = this["gameHandler"].gs;
 	var callbacks = gs.callbacks;
@@ -98,7 +101,8 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 
 
 }
-
+*/
+/*
 Sailboat.Client.prototype.checkCollisions = function() {
 	var myP = this["gameHandler"].myPlayer;
 	if (myP) {
@@ -111,3 +115,4 @@ Sailboat.Client.prototype.checkCollisions = function() {
 	}
 	
 }
+*/
