@@ -1,4 +1,4 @@
-function CraftyGrahics() {
+function CraftyGrahics(graphicsSettings) {
   this.callbacks = new Callbacks();
   var graphicsCallbacks = this.callbacks; //see it in the closure
   
@@ -116,6 +116,17 @@ function CraftyGrahics() {
 	if (Crafty.mobile) {
 		Crafty.device.deviceMotion(mobileMotion);
 	}
+	
+	
+	Crafty.bind("EnterFrame", function(eventData) {
+
+		graphicsCallbacks.trigger(eventData, "OnFrame");
+	
+		Crafty.trigger("UpdateFromGameState");
+
+	} );
+	
+	
 	
 	
 }
