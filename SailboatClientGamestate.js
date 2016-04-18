@@ -20,10 +20,16 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 		graphicsObj.removeShipObj(shipObj.graphicsObj);
 
 	}
+	var bulletAdded = function(bulletObj) {
+		//debugger;
+		console.log("bulletAdded");
+		var gObj = graphicsObj.getNewBulletObj(bulletObj);
+		bulletObj.setGraphicsObj(gObj);
+	}
 	callbacks.register(shipAdded, "new", "ship");
 	callbacks.register(shipRemoved, "removed", "ship");
-	//callbacks.register(bulletAdded, "new", "bullet");
-	//callbacks.register(bulletRemoved, "removed", "bullet");
+	callbacks.register(bulletAdded, "new", "bullet");
+	callbacks.register(shipRemoved, "removed", "bullet");
 
 
 

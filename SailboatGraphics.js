@@ -15,6 +15,7 @@ function SailboatGraphics(graphicsSettings) {
 	var BulletAspect = 1;
 	*/
 	var ShipRadius = graphicsSettings.ShipRadius;
+	var BulletRadius = graphicsSettings.BulletRadius;
 	var GraphicsRatio = this.ratio;
 /*
 	this.size = Math.min(window.innerWidth, window.innerHeight);
@@ -168,6 +169,14 @@ function SailboatGraphics(graphicsSettings) {
 			}
 		}
 		*/
+	});
+	Crafty.c("SABullet", {
+		required: "PropPosition, explosion"
+		,init:function() {
+			this.w = BulletRadius*2.0*GraphicsRatio;
+			this.h = w;
+			this.origin("center");
+		}
 	});
 	/*
 	Crafty.c("HAShip", {
@@ -362,7 +371,7 @@ SailboatGraphics.prototype.removeShipObj = function(craftyEntity) {
 	craftyEntity.destroy();
 }
 SailboatGraphics.prototype.getNewBulletObj = function(gameStateEntity) {
-	var obj = Crafty.e('HABullet').gameStateEntity(gameStateEntity);
+	var obj = Crafty.e('SABullet').gameStateEntity(gameStateEntity);
 	return obj;
 }
 SailboatGraphics.loadEverything = function(callback) {
@@ -373,6 +382,13 @@ SailboatGraphics.loadEverything = function(callback) {
 				,tileh:50
 				,map: {
 					ufo:[0,0]
+				}
+			}
+			,"explosion.png": {
+				tile:65
+				,tileh:66
+				,map: {
+					explosion:[0,]
 				}
 			}
 		}

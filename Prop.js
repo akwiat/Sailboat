@@ -36,15 +36,15 @@ Prop.applyData = function(obj) {
 	return applied;
 }
  Prop.PropVector2d = function(sd) {
-	this.x = 0.0
-	this.y = 0.0
+	this.x = 0.0;
+	this.y = 0.0;
 
-	this.velX = 0.0
-	this.velY = 0.0
+	this.velX = 0.0;
+	this.velY = 0.0;
 
 	this.updateTime = undefined;
-
-	Prop.applyData.call(this, sd);
+	this.applySpecificData(sd);
+	//Prop.applyData.call(this, sd);
 }
 Prop.PropVector2d.prototype.setValues = function(x,y) {
 	this.x = x; this.y = y;
@@ -62,6 +62,7 @@ Prop.PropVector2d.prototype.stripData = function() {
 	this.velY = undefined;
 }
 Prop.PropVector2d.prototype.applySpecificData = function(obj) {
+	if (obj == undefined) return;
 	//return Prop.applyData.apply(this, arguments);
 	//debugger;
 	/*
@@ -135,13 +136,14 @@ Prop.PropVector2d.prototype.stripData = function() {
 	this.velX = undefined;
 	this.velY = undefined;
 }
+/*
 Prop.PropVector2d.prototype.applySpecificData = function(obj) {
 	//return Prop.applyData.apply(this, arguments);
 	//debugger;
 	/*
 	if (obj.ut == undefined)
 		debugger;
-	*/
+	* /
 	if (obj.x != undefined)
 		this.x = obj.x;
 	if (obj.y != undefined)
@@ -154,6 +156,7 @@ Prop.PropVector2d.prototype.applySpecificData = function(obj) {
 		this.updateTime = obj.ut;
 	return this;
 }
+*/
 Prop.PropVector2d.prototype.getSpecificData = function() {
 	var fixed = 1;
 	var myround = function(num) {

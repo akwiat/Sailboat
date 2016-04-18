@@ -23,6 +23,21 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	this["gameHandler"].officialChange(removeFrag);
 	//debugger;
 }
+Sailboat.Client.prototype.onShoot = function(gt) {
+	var mult = 1.5;
+	//var offset = 500;
+	var myP = this["gameHandler"].myPlayer;
+	var pos = myP.getChildByIdentifier("position").wrappedObj;
+
+	var vx = 1.0*pos.velX;
+	var vy = 1.0*pos.velY;
+	var x = pos.x + vx*mult;
+	var y = pos.y + vy*mult;
+	//var ut = this["gameHandler"].getGameTime();
+	var sd = {x:x, y:y, velX:vx, velY:vy, updateTime:gt};
+	//debugger;
+	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
+}
 /*
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	

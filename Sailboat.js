@@ -41,6 +41,7 @@ function Sailboat() {}
 Sailboat.settings = {
 	InternalGameSize:1000
 	,ShipRadius:25
+	,BulletRadius:20
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {
@@ -79,14 +80,14 @@ Sailboat.getInitObj = function() {
 		return ret;
 	}
 
-	/*
-	var HABullet = function(sd) {
+	
+	var SABullet = function(sd) {
 		var ret = new GameStateEntity("bullet");
 		ret.addComponent( new GameStateEntity("position",
 			new Prop.PropVector2d(sd) ).setClientProperty() );
 		return ret;
 	}
-	*/
+	
 	/*
 	var HAPlayer = function() {
 		var ret = new GameStateEntity("player");
@@ -110,11 +111,11 @@ Sailboat.getInitObj = function() {
 		var playerArray = new GameStateEntity("playerArray");
 		playerArray.addComponentArray(SAPlayer, 0);
 		ret.entity.addComponent(playerArray);
-/*
+
 		var bulletArray = new GameStateEntity("bulletArray");
-		bulletArray.addComponentArray(HABullet, 0);
+		bulletArray.addComponentArray(SABullet, 0);
 		ret.entity.addComponent(bulletArray);
-*/
+
 		return ret;
 	}
 

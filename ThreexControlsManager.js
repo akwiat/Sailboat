@@ -41,3 +41,12 @@ ThreexControlsCircleMover.prototype.performInputUpdate = function(keyChecker, dt
 	if (keyChecker(this.l))
 		this.controlsCircleMover.boostLeft(dt, gt);
 }
+
+function ThreexControlsAction(fn, key) {
+	this.fn = fn;
+	this.key = key;
+}
+ThreexControlsAction.prototype.performInputUpdate = function(keyChecker, dt, gt) {
+	if (keyChecker(this.key)) this.fn(gt);
+}
+
