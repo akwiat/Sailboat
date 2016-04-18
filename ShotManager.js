@@ -49,7 +49,7 @@ ShotManager.prototype.currentShooters = function() {
   shooters = []
   for (var i = 0; i < this.playerShields; i++) {
     if (this.playerShields[i] = true) {
-      shooters.push(i)
+      shooters.push(i);
     }
   }
   return shooters;
