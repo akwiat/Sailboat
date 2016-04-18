@@ -1,11 +1,11 @@
-function CraftyGrahics(graphicsSettings) {
+function CraftyGraphics(graphicsSettings) {
   this.callbacks = new Callbacks();
   var graphicsCallbacks = this.callbacks; //see it in the closure
   
   var InternalGameSize = graphicsSettings.InternalGameSize;
   
   this.size = Math.min(window.innerWidth, window.innerHeight);
-	this.ratio = this.size/InternalGameSize;
+  this.ratio = this.size/InternalGameSize;
 	var GraphicsRatio = this.ratio;
 	var GraphicsSize = this.size;
 	

@@ -15,6 +15,7 @@ function SailboatGraphics(graphicsSettings) {
 	var BulletAspect = 1;
 	*/
 	var ShipRadius = graphicsSettings.ShipRadius;
+	var GraphicsRatio = this.ratio;
 /*
 	this.size = Math.min(window.innerWidth, window.innerHeight);
 	this.ratio = this.size/InternalGameSize;
