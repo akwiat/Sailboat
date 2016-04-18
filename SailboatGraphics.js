@@ -1,8 +1,11 @@
 function SailboatGraphics(graphicsSettings) {
+	
+	CraftyGraphics.call(this, graphicsSettings);
+	/*
 	this.callbacks = new Callbacks();
 	var graphicsCallbacks = this.callbacks; //for closure purposes
+	*/
 	
-	var InternalGameSize = graphicsSettings.InternalGameSize;
 	/*
 	var ShipWidth = 25;
 	var ShipAspect = 2;
@@ -12,7 +15,7 @@ function SailboatGraphics(graphicsSettings) {
 	var BulletAspect = 1;
 	*/
 	var ShipRadius = graphicsSettings.ShipRadius;
-	
+/*
 	this.size = Math.min(window.innerWidth, window.innerHeight);
 	this.ratio = this.size/InternalGameSize;
 	var GraphicsRatio = this.ratio;
@@ -41,7 +44,7 @@ function SailboatGraphics(graphicsSettings) {
 					radRotation *= -1;
 					ret.rotation = radRotation*180/Math.PI;
 				}
-		*/
+		* /
 		var radRotation = angle;
 		radRotation -= Math.PI/2;
 		radRotation *= -1;
@@ -52,6 +55,7 @@ function SailboatGraphics(graphicsSettings) {
 
 		return ret;
 	}
+	*/
 	//var lastInput = {};
 	/*
 	var onMouseMove = function(e) {
@@ -81,6 +85,7 @@ function SailboatGraphics(graphicsSettings) {
 	}
 	*/
 	//var stageElem
+	/*
 	Crafty.init(this.size, this.size, document.getElementById('game'));
 	Crafty.background('#DFDFDF');
 	//Crafty.addEvent(this, Crafty.stage.elem, "mousemove", onMouseMove);
@@ -137,6 +142,7 @@ function SailboatGraphics(graphicsSettings) {
 			}
 		}
 	});
+	* /
 	*/
 	Crafty.c("SAShip", {
 		required: "PropCircleMover, ufo"
@@ -162,6 +168,7 @@ function SailboatGraphics(graphicsSettings) {
 		}
 		*/
 	});
+	/*
 	Crafty.c("HAShip", {
 		required: "PropPosition, Collision, WiredHitBox",
 		init: function() {
@@ -172,7 +179,7 @@ function SailboatGraphics(graphicsSettings) {
 			/*
 			this.x = -100;
 			this.y = -100;
-			*/
+			* /
 			this.origin("center");
 			this.color('blue');
 			this.checkHits("HAShipFront");
@@ -184,7 +191,7 @@ function SailboatGraphics(graphicsSettings) {
 					var test2 = this.gameStateEntity.getIndex();
 					if (test1 != test2)
 						console.log("bad collision");
-					*/
+					* /
 					//debugger;
 				var thisPlayerIndex = this.gameStateEntity.getPlayerIndex();
 				if (thisPlayerIndex
@@ -197,7 +204,7 @@ function SailboatGraphics(graphicsSettings) {
 				/*
 					if (this.x > 0)
 						console.log("collision");
-					*/
+					* /
 
 				}
 					//debugger;
@@ -206,6 +213,7 @@ function SailboatGraphics(graphicsSettings) {
 					this.resetHitChecks("HAShipFront");
 				
 			});
+			
 			/*
 			this.bind("KeyDown", function(e) {
 				if (e.key == Crafty.keys.SPACE) {
@@ -214,11 +222,13 @@ function SailboatGraphics(graphicsSettings) {
 					SailboatRunClient.onBulletShoot.call(gameStructure, this.gameStateEntity);
 				}
 			});
-			*/
+			* /
 			//console.log(this);
 			//debugger;
 		}
 	});
+	*/
+	/*
 	Crafty.c("HAShipFront", {
 		required: "2D, Canvas, Color, Collision, WiredHitBox",
 		init: function() {
@@ -256,12 +266,14 @@ function SailboatGraphics(graphicsSettings) {
 			});
 		}
 	});
+	*/
+	/*
 	Crafty.bind("EnterFrame", function(eventData) {
 		/*
 		var inputData = getInputData();
 		if (inputData)
 			SailboatRunClient.onInput.call(this, inputData);
-		*/
+		* /
 		//SailboatRunClient.onInput.call(this, lastInput);
 		
 		
@@ -307,27 +319,17 @@ function SailboatGraphics(graphicsSettings) {
 			}
 		}
 		}
-	*/
+	* /
 	} );
 //	}.bind(gameStructure));
+*/
 
-	var mobileMotion = function(data) {
-		var cap = 30;
-		var xVal = data.tiltLR*-1;
-		var yVal = data.tiltFB*-1 + 90;
-		if (xVal > cap) xVal = cap;
-		if (xVal < -cap) xVal = -cap;
-		if (yVal > cap) yVal = cap;
-		if (yVal < -cap) yVal = -cap;
 
-		lastInput = {x:xVal/(2*cap), y:yVal/(2*cap)};
-
-	}
-	if (Crafty.mobile) {
-		Crafty.device.deviceMotion(mobileMotion);
-	}
       //Crafty.e('2D, DOM, Color').attr({x: 0, y: 0, w: 100, h: 200}).color('#F00');
 }
+SailboatGraphics.prototype = Object.create(CraftyGraphics.prototype);
+SailboatGraphics.prototype.constructor = SailboatGraphics;
+
 SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
 	var obj = Crafty.e('SAShip').gameStateEntity(gameStateEntity);
 	var p = gameStateEntity.getPlayerIndex();
