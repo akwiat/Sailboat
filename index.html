@@ -1,49 +1,50 @@
 <html>
   <head>
   	<Title>Sailboat -- Alex Kwiatkowski</Title>
+  	<link rel="stylesheet" type="text/css" href="Sailboat.css" />
   </head>
   <body>
     <div id="game"></div>
-    <div id="cooldownTime"></div>
-    <div id="respawnTime"></div>
+    <div id="hud">
+    	cooldown: <span id="cooldownTime"></span>
+    	<br/>
+    	respawn: <span id="respawnTime"></span>	
+    </div>
     
     <script>var ___alexnorequire = true; </script>
-		<script src="crafty.js"></script>
-		<script src="SAT.js"></script>
 
-		<script src="Prop.js"></script>
-		<script src="Callbacks.js"></script>
-		<script src="Tree.js"></script>
-		<script src="Frag.js"></script>
-		<script src="DiffObj.js"></script>
-		<script src="GameStateEntity.js"></script>
-		<script src="GameState.js"></script>
-		<script src="GameStructureCodes.js"></script>
-		<script src="GameStructure.js"></script>
-		<script src="ClientSocket.js"></script>
-		<script src="GameHandler.js"></script>
-		<script src="HandlerBridge.js"></script>
-		<script src="ServerBridge.js"></script>
-		<script src="ClientSocket.js"></script>
-		<script src="GeneralClient.js"></script>
-
-		<script src="CraftyGraphics.js"></script>
-		
-		
-		<script src="Sailboat.js"></script>
-		<script src="SailboatGraphics.js"></script>
-		<script src="SailboatClient.js"></script>
-		<script src="SailboatClientGamestructure.js"></script>
-		<script src="SailboatClientGamestate.js"></script>
-		<script src="SailboatClientCollisions.js"></script>
-
-		<script src="Controls.js"></script>
-		<script src="threex_keyboardstate.js"></script>
-		<script src="ThreexControlsManager.js"></script>
-		
+    <script src="crafty.js"></script>
+    <script src="SAT.js"></script>
+    <script src="Prop.js"></script>
+    <script src="Callbacks.js"></script>
+    <script src="Tree.js"></script>
+    <script src="Frag.js"></script>
+    <script src="DiffObj.js"></script>
+    <script src="GameStateEntity.js"></script>
+    <script src="GameState.js"></script>
+    <script src="GameStructureCodes.js"></script>
+    <script src="GameStructure.js"></script>
+    <script src="ClientSocket.js"></script>
+    <script src="GameHandler.js"></script>
+    <script src="HandlerBridge.js"></script>
+    <script src="ServerBridge.js"></script>
+    <script src="ClientSocket.js"></script>
+    <script src="GeneralClient.js"></script>
+    <script src="CraftyGraphics.js"></script>
+    <script src="Sailboat.js"></script>
+    <script src="SailboatGraphics.js"></script>
+    <script src="SailboatClient.js"></script>
+    <script src="SailboatClientGamestructure.js"></script>
+    <script src="SailboatClientGamestate.js"></script>
+    <script src="SailboatClientCollisions.js"></script>
+    <script src="HudManager.js"></script>
+    <script src="Controls.js"></script>
+    <script src="threex_keyboardstate.js"></script>
+    <script src="ThreexControlsManager.js"></script>
 
     <script>
       var theClient = new GeneralClient(SailboatGraphics.loadEverything, Sailboat.getInitObj() );
+      var hudManager = new HudManager("cooldownTime", "respawnTime");
     </script>
   </body>
 </html>
