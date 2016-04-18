@@ -25,11 +25,17 @@
 		<script src="HandlerBridge.js"></script>
 		<script src="ServerBridge.js"></script>
 		<script src="ClientSocket.js"></script>
+		<script src="GeneralClient.js"></script>
 
+		<script src="CraftyGraphics.js"></script>
+		
 		
 		<script src="Sailboat.js"></script>
 		<script src="SailboatGraphics.js"></script>
 		<script src="SailboatClient.js"></script>
+		<script src="SailboatClientGamestructure.js"></script>
+		<script src="SailboatClientGamestate.js"></script>
+		<script src="SailboatClientCollisions.js"></script>
 
 		<script src="Controls.js"></script>
 		<script src="threex_keyboardstate.js"></script>
@@ -37,7 +43,7 @@
 		
 
     <script>
-      var SClient = new SailboatRunClient();
+      var theClient = new GeneralClient(SailboatGraphics.loadEverything, Sailboat.getInitObj() );
     </script>
   </body>
 </html>
