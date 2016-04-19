@@ -196,8 +196,10 @@ Sailboat.Server = function(gameStructure) {
 			return ret;
 			}
 
-		var arrayName = teamAllocator( this["gameHandler"] );
-		var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
+		var array = teamAllocator( this["gameHandler"] );
+		var arrayName = array.getIdentifier();
+		var nEnt = array.addObjToArrayNextAvailable();
+		//var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
 		var index = nEnt.getIndex();
 
 		var id = this.clientIdManager.registerId(arrayName, index);
