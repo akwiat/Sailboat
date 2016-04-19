@@ -7,16 +7,33 @@ if (!this.___alexnorequire) {
 	var util = require("util");
 }
 function ClientIdManager() {
-	//this.curPlayers
+	// this.maxId = Number.MAX_VALUE - 1;
+	this.maxId = 10000;
+	this.idMapping = {}
+	this.lastId = -1;
 }
 ClientIdManager.prototype.getIndexFromId = function(id) {
-
+	return this.idMapping[id].index;
 }
 ClientIdManager.prototype.getArrayNameFromId = function(id) {
-
+	return this.idMapping[id].arrayName;
 }
 ClientIdManager.prototype.registerId = function(arrayName, index) {
-
+	var id = null;
+	while (id === null) {	
+		if (this.lastId == this.maxId) {
+			this.lastId = -1;
+		}
+		if (!(this.lastId + 1 in this.idMapping)) {
+			id = this.lastId + 1;
+			this.lastId = id;
+		}
+	}
+	this.idMapping[id] = {arrayName: arrayName, index: index};
+	return id;
+}
+ClientIdManager.prototype.unregisterId = function(id) {
+	delete this.idMapping[id];
 }
 
 function Shield() {

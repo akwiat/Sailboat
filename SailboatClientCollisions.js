@@ -1,6 +1,5 @@
 Sailboat.Client.prototype.checkCollisions = function() {
 	var myP = this["gameHandler"].myPlayer;
-	console.log(myP);
 	if (myP) {
 		var myShip = myP.findDirectChildWithIdentifier("ship");
 		var shipCircle = myShip.getShipCircle();
@@ -10,11 +9,11 @@ Sailboat.Client.prototype.checkCollisions = function() {
 			this.onDeadShip(myShip);
 			var bullet = bulletArray[i];
 			console.log(bullet);
-			// var bulletCircle = bullet.getBulletCircle();
-			// var hit = testCircleCircle(shipCircle, bulletCircle);
-			// if (hit) {
-			// 	this.onDeadShip(this.gameHandler.entity);
-			// }
+			var bulletCircle = bullet.getBulletCircle();
+			var hit = testCircleCircle(shipCircle, bulletCircle);
+			if (hit) {
+				this.onDeadShip(this.gameHandler.entity);
+			}
 		}
 		
 		var resp = new SAT.Response();
