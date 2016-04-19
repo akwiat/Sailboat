@@ -157,7 +157,7 @@ function SailboatGraphics(graphicsSettings) {
 			*/
 			//this.origin(this.w/2, this.h/2);
 			this.origin("center");
-
+			//this.color("blue");
 			//this.x = this.w; this.y = this.h;
 			this.rotation = 0;
 			//this.color("black");

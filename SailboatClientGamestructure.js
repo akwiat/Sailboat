@@ -42,6 +42,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
 	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
+	
 	this.hudManager = new HudManager();
 	this.cooldownManager = new CooldownManager();
 	this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown

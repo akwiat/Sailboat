@@ -6,6 +6,19 @@ if (!this.___alexnorequire) {
 	var Prop = require("./Prop").Prop
 	var util = require("util");
 }
+function ClientIdManager() {
+	//this.curPlayers
+}
+ClientIdManager.prototype.getIndexFromId = function(id) {
+
+}
+ClientIdManager.prototype.getArrayNameFromId = function(id) {
+
+}
+ClientIdManager.prototype.registerId = function(arrayName, index) {
+
+}
+
 function Shield() {
 	this.shieldUp = false;
 	this.updateTime = undefined;
@@ -56,6 +69,15 @@ Sailboat.getInitObj = function() {
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
+	var getBulletCircle = function() {
+		var p = this.findChildWithIdentifier("position").getWrappedObj();
+		var x = p.x;
+		var y = p.y;
+		var r = Sailboat.settings.BulletRadius;
+
+		var ret = new SAT.circle(new SAT.Vector(x,y), r);
+		return ret;
+	}
 	var SAShip = function() {
 		var boostManager = function(propPos, propAngle) {
 			var maxV = 200.0;
@@ -86,6 +108,8 @@ Sailboat.getInitObj = function() {
 		var ret = new GameStateEntity("bullet");
 		ret.addComponent( new GameStateEntity("position",
 			new Prop.PropVector2d(sd) ) );
+
+		ret.constructor.prototype.getBulletCircle = getBulletCircle;
 		return ret;
 	}
 	
@@ -107,15 +131,32 @@ Sailboat.getInitObj = function() {
 		ret.addComponent( new SAShip() );
 		return ret;
 	}
+	/*
+	var HumanTeam = function() {
+		var ret = new GameStateEntity("humanTeam");
+		ret.addComponentArray(SAPlayer, 0);
+		return ret;
+	}
+	*/
 	var gameStateType = function() {
 		var ret = new GameState();
+		var rootEntity = ret.entity;
+
+		var hTeam = new GameStateEntity("humanTeam");
+		hTeam.addComponentArray(SAPlayer, 0);
+		rootEntity.addComponent(hTeam);
+
+		var ateam = new GameStateEntity("alienTeam");
+		ateam.addComponentArray(SAPlayer, 0);
+		rootEntity.addComponent(ateam);
+		/*
 		var playerArray = new GameStateEntity("playerArray");
 		playerArray.addComponentArray(SAPlayer, 0);
 		ret.entity.addComponent(playerArray);
-
+		*/
 		var bulletArray = new GameStateEntity("bulletArray");
 		bulletArray.addComponentArray(SABullet, 0);
-		ret.entity.addComponent(bulletArray);
+		rootEntity.addComponent(bulletArray);
 
 		return ret;
 	}
@@ -127,28 +168,60 @@ Sailboat.getInitObj = function() {
 	//return {gameHandler: new GameHandler(gameStateType), client: new Sailboat.Client()};
 }
 Sailboat.Server = function(gameStructure) {
+	this.clientIdManager = new ClientIdManager();
+	var idManager = this.clientIdManager; //for closure
+
 	var callbacks = gameStructure.callbacks;
 	var serverNewConn = function() {
 
-		//var nEnt = this["gameHandler"].gs.entity.children[0].addObjToArrayNextAvailable();
-		var nEnt = this["gameHandler"].getObjByName("playerArray").addObjToArrayNextAvailable();
+		
+		//var nEnt = this["gameHandler"].getObjByName("humanTeam").addObjToArrayNextAvailable();
 		//util.log(JSON.stringify(nEnt));
-		var id = nEnt.getIndex();
+		//var id = nEnt.getIndex();
+		var teamAllocator = function(gameHandler) {
+			var hArray = gameHandler.getObjByName("humanTeam");
+			var aArray = gameHandler.getObjByName("alienTeam");
+
+			var hNum = hArray.countChildren();
+			var aNum = aArray.countChildren();
+
+			var ret;
+			if (hNum == aNum)
+				ret = hArray;
+			else if (hNum > aNum)
+				ret = aArray;
+			else if (aNum > hNum)
+				ret = hArray;
+
+			return ret;
+			}
+
+		var arrayName = teamAllocator( this["gameHandler"] );
+		var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
+		var index = nEnt.getIndex();
+
+		var id = this.clientIdManager.registerId(arrayName, index);
 		util.log("onNewConnection: "+id);
 
 		return id;
 	}
 	callbacks.register(serverNewConn, GameStructureCodes.SERVERNEWCONN);
 	var serverInitPlayer = function(gsid) {
+
 		//init conditions, send everything
 		util.log("serverInitPlayer, gsid: "+gsid);
 		var state = this["gameHandler"].gs;
-		//var pEnt = state.entity.children[0].children[gsid];
-		var pEnt = this["gameHandler"].getObjByName("playerArray").children[gsid];
+		
+		//var myArray = teamAllocator(this["gameHandler"]);
+		var myArray = idManager.getArrayNameFromId(gsid);
+		var myIndex = idManager.getIndexFromId(gsid);
+
+		var pEnt = myArray.children[myIndex];
+		//var pEnt = this["gameHandler"].getObjByName("humanTeam").children[gsid];
 		var gt = this["gameHandler"].getGameTime();
 		for (var i=0; i < 1; i++) {
 
-		var iVals = getInitValues(gsid, gt);
+		var iVals = getInitValues(myArray.getIdentifier(), myIndex, gt);
 		//iVals.ut = gt;
 		
 
@@ -171,7 +244,15 @@ Sailboat.Server = function(gameStructure) {
 		this["serverHandlerLink"].sendToClient(gsid, msg);
 	}
 	callbacks.register(serverInitPlayer, GameStructureCodes.SERVERINITPLAYER);
-	var getInitValues = function(gsid, ut) {
+	var getInitValues = function(arrayName, id, ut) {
+		var gsid = 0;
+		var team;
+		if (arrayName == "humanArray") team = 0;
+		else if (arrayName == "alienArray") team = 2;
+		else throw new Error("initValues");
+
+		gsid = team + id;
+
 		var x,y;
 		var angle = Math.PI/2;
 		if (gsid == 0) {
@@ -179,12 +260,12 @@ Sailboat.Server = function(gameStructure) {
 		} else if (gsid == 1) {
 			x = 900; y = 100;
 		} else if (gsid == 2) {
-			x = 100; y = 900;
+			x = 100; y = 900; angle*=1;
 		} else if (gsid == 3) {
-			x = 900; y = 900;
+			x = 900; y = 900; angle*=1;
 		} else throw new Error("bad initValues");
 
-		return { p:{x:x,y:y,vx:40, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
+		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
 	}
 	/*
 	var getInitValues = function(gsid, shipnum) {
