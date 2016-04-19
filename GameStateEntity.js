@@ -16,6 +16,9 @@ function GameStateEntity(identifier, obj) {
 	this.clientProperty = undefined;
 	
 }
+GameStateEntity.prototype.getIdentifier = function() {
+	return this.identifier;
+}
 GameStateEntity.prototype.setClientProperty = function() {
 	this.clientProperty = true;
 	return this;
@@ -62,6 +65,13 @@ GameStateEntity.prototype.getChildByIdentifier = function(id) {
 		return undefined;
 	}
 	*/
+}
+GameStateEntity.prototype.countChildren = function() {
+	var ret = 0;
+	for (var i=0; i < this.children.length; i++) {
+		if (this.children[i] !== undefined) ret++;
+	}
+	return ret;
 }
 GameStateEntity.prototype.addComponentArray = function(Type, num) {
 	this.arrayType = Type;
@@ -316,6 +326,13 @@ GameStateEntity.prototype.propagate = function(t, shouldUpdateGraphics) {
 GameStateEntity.prototype.findChildWithIdentifier = function(identifier) {
 	for (var o of this.children) {
 		if (o.identifier === identifier)
+			return o;
+	}
+	return undefined;
+}
+GameStateEntity.prototype.findDirectChildWithIdentifier = function(identifier) {
+	for (var o of this.children) {
+		if (o !== undefined && o.identifier === identifier)
 			return o;
 	}
 	return undefined;
