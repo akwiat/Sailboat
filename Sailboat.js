@@ -92,7 +92,7 @@ Sailboat.getInitObj = function() {
 		var y = p.y;
 		var r = Sailboat.settings.BulletRadius;
 
-		var ret = new SAT.circle(new SAT.Vector(x,y), r);
+		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
 	var SAShip = function() {
@@ -185,8 +185,8 @@ Sailboat.getInitObj = function() {
 	//return {gameHandler: new GameHandler(gameStateType), client: new Sailboat.Client()};
 }
 Sailboat.Server = function(gameStructure) {
-	this.clientIdManager = new ClientIdManager();
-	var idManager = this.clientIdManager; //for closure
+	gameStructure.clientIdManager = new ClientIdManager();
+	var idManager = gameStructure.clientIdManager; //for closure
 
 	var callbacks = gameStructure.callbacks;
 	var serverNewConn = function() {
@@ -219,7 +219,7 @@ Sailboat.Server = function(gameStructure) {
 		//var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
 		var index = nEnt.getIndex();
 
-		var id = this.clientIdManager.registerId(arrayName, index);
+		var id = idManager.registerId(arrayName, index);
 		util.log("onNewConnection: "+id);
 
 		return id;
@@ -232,7 +232,8 @@ Sailboat.Server = function(gameStructure) {
 		var state = this["gameHandler"].gs;
 		
 		//var myArray = teamAllocator(this["gameHandler"]);
-		var myArray = idManager.getArrayNameFromId(gsid);
+		var myArrayName = idManager.getArrayNameFromId(gsid);
+		var myArray = state.entity.findChildWithIdentifier(myArrayName);
 		var myIndex = idManager.getIndexFromId(gsid);
 
 		var pEnt = myArray.children[myIndex];
@@ -261,13 +262,13 @@ Sailboat.Server = function(gameStructure) {
 	
 		var msg = "p" + JSON.stringify(f);
 		this["serverHandlerLink"].sendToClient(gsid, msg);
-	}
+	};
 	callbacks.register(serverInitPlayer, GameStructureCodes.SERVERINITPLAYER);
 	var getInitValues = function(arrayName, id, ut) {
 		var gsid = 0;
 		var team;
-		if (arrayName == "humanArray") team = 0;
-		else if (arrayName == "alienArray") team = 2;
+		if (arrayName == "humanTeam") team = 0;
+		else if (arrayName == "alienTeam") team = 2;
 		else throw new Error("initValues");
 
 		gsid = team + id;
