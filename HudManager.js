@@ -7,8 +7,7 @@ function HudManager() {
 }
 
 HudManager.prototype.setCooldown = function(x) {
-	//debugger;
-	this.cooldown.innerHTML = x;
+	this.cooldown.innerHTML = x.toString().substring(0,3);
 }
 
 HudManager.prototype.setRespawn = function(x) {

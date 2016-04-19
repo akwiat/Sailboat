@@ -149,6 +149,7 @@ function SailboatGraphics(graphicsSettings) {
 	Crafty.c("SAShip", {
 		required: "PropCircleMover, ufo"
 		,init: function() {
+			console.log("init");
 			this.w = ShipRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			/*
@@ -368,6 +369,7 @@ SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
 	return obj;
 }
 SailboatGraphics.prototype.removeShipObj = function(craftyEntity) {
+	console.log("removeShipObj");
 	craftyEntity.destroy();
 }
 SailboatGraphics.prototype.getNewBulletObj = function(gameStateEntity) {

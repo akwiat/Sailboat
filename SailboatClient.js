@@ -19,8 +19,8 @@ Sailboat.Client.prototype.onFrame = function(eventData) {
 	this.checkCollisions();
 }
 Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
-	var shipNum = gameStateObj.getIndex();
-	var playerNum = gameStateObj.getPlayerIndex();
+	// var shipNum = gameStateObj.getIndex();
+	// var playerNum = gameStateObj.getPlayerIndex();
 	var removeFrag = gameStateObj.getRemovalFrag();
 	this["gameHandler"].officialChange(removeFrag);
 	//debugger;
