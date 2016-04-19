@@ -15,15 +15,21 @@ function CraftyGraphics(graphicsSettings) {
 		ret.y = (GraphicsSize - graphicsCoordY)/GraphicsRatio;
 		return ret;
 	}
-	var convertToGraphicsCoord = function(gameCoordX, gameCoordY) {
+	var convertToGraphicsCoord = function(gameCoordX, gameCoordY, w, h) {
 		var ret = {};
 		ret.x = gameCoordX * GraphicsRatio;
 		ret.y = (InternalGameSize - gameCoordY) * GraphicsRatio;
+
+		adjustForStupidOrigin(ret, w, h);
 		return ret;
 	}
-
+	var adjustForStupidOrigin = function(obj, w, h) {
+		if (!w || !h)debugger;
+		obj.x -= w/2;
+		obj.y -= h/2;
+	}
 	var positionAndRotation = function(gameX, gameY, angle, w, h) {
-		var ret = convertToGraphicsCoord(gameX, gameY);
+		var ret = convertToGraphicsCoord(gameX, gameY, w, h);
 		/*
 		if ((vx*vx + vy*vy) > 0.000001) {
 					var radRotation = Math.atan2(posObj.velY, posObj.velX);
@@ -37,8 +43,9 @@ function CraftyGraphics(graphicsSettings) {
 		radRotation *= -1;
 		ret.rotation = radRotation*180/Math.PI;
 
-		ret.x -= w/2;
-		ret.y -= h/2;
+		//ret.x -= w/2;
+		//ret.y -= h/2;
+		//adjustForStupidOrigin(ret, w, h);
 
 		return ret;
 	}
@@ -85,7 +92,7 @@ function CraftyGraphics(graphicsSettings) {
 				if (this.gameStateEntity) {
 				var posChild = this.gameStateEntity.findChildWithIdentifier("position");
 				var posObj = posChild.getWrappedObj();
-				var attrObj = convertToGraphicsCoord(posObj.x, posObj.y);
+				var attrObj = convertToGraphicsCoord(posObj.x, posObj.y, this.w, this.h);
 
 				if ((posObj.velY*posObj.velY + posObj.velX*posObj.velY) > 0.000001) {
 					var radRotation = Math.atan2(posObj.velY, posObj.velX);

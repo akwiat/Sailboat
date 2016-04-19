@@ -1,11 +1,22 @@
-function GeneralCooldown(dt, onComplete, onUpdate) {
+function GeneralCooldown(dt, onComplete, ou) {
 	this.waitTime = dt;
 	this.onComplete = onComplete;
-	this.onUpdate = onUpdate;
+	this.updateFn = ou;
 
 	this.startTime = undefined;
 }
+GeneralCooldown.prototype.attempt = function(gt) {
+	if (!gt) debugger;
+	if (this.isActive()) return false;
+	else this.beginCooldown(gt);
+
+	return true;
+}
+GeneralCooldown.prototype.isActive = function() {
+	return (this.startTime);
+}
 GeneralCooldown.prototype.beginCooldown = function(st) {
+	//debugger;
 	this.startTime = st;
 }
 GeneralCooldown.prototype.resetCooldown = function() {
@@ -15,20 +26,24 @@ GeneralCooldown.prototype.checkTime = function(curT) {
 	if (this.startTime == undefined)
 		throw new Error("cooldown problem");
 
-	var dif = curT - this.startTime;
-	if ( dif > this.waitTime ) {
+	var remaining = this.startTime - curT + this.waitTime;
+	if ( remaining <= 0 ) {
 		if (this.onComplete)
 			this.onComplete();
 
 		this.resetCooldown();
 	}
 
-	if (dif < 0.0) dif = 0;
-	return dif;
+	if (remaining < 0.0) remaining = 0.0;
+	return remaining;
 }
 GeneralCooldown.prototype.onUpdate = function(curT) {
-	var dif = this.checkTime(curT);
-	if (this.onUpdate) this.onUpdate(dif);
+	//debugger;
+	if (this.isActive()) {
+		//debugger;
+	var remaining = this.checkTime(curT);
+	if (this.onUpdate) this.updateFn(remaining);
+	}
 }
 
 
@@ -41,4 +56,7 @@ CooldownManager.prototype.onUpdate = function(curT) {
 	for (var i=0; i < this.runningCooldowns.length; i++) {
 		this.runningCooldowns[i].onUpdate(curT);
 	}
+}
+CooldownManager.prototype.addCooldown = function(c) {
+	this.runningCooldowns.push(c);
 }

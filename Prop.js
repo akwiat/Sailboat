@@ -46,6 +46,7 @@ Prop.applyData = function(obj) {
 	this.applySpecificData(sd);
 	//Prop.applyData.call(this, sd);
 }
+/*
 Prop.PropVector2d.prototype.setValues = function(x,y) {
 	this.x = x; this.y = y;
 }
@@ -55,6 +56,8 @@ Prop.PropVector2d.prototype.setVelocity = function(vx,vy){
 Prop.PropVector2d.prototype.setUpdateTime = function(t) {
 	this.updateTime = t;
 }
+*/
+/*
 Prop.PropVector2d.prototype.stripData = function() {
 	this.x = undefined;
 	this.y = undefined;
@@ -63,81 +66,6 @@ Prop.PropVector2d.prototype.stripData = function() {
 }
 Prop.PropVector2d.prototype.applySpecificData = function(obj) {
 	if (obj == undefined) return;
-	//return Prop.applyData.apply(this, arguments);
-	//debugger;
-	/*
-	if (obj.ut == undefined)
-		debugger;
-	*/
-	if (obj.x != undefined)
-		this.x = obj.x;
-	if (obj.y != undefined)
-		this.y = obj.y;
-	if (obj.vx != undefined)
-		this.velX = obj.vx;
-	if (obj.vy != undefined)
-		this.velY = obj.vy;
-	if (obj.ut != undefined)
-		this.updateTime = obj.ut;
-	return this;
-}
-Prop.PropVector2d.prototype.getSpecificData = function() {
-	var fixed = 1;
-	var myround = function(num) {
-		if (num == undefined)
-			debugger;
-		return Math.round(num*1000)/1000;
-	}
-	return {x:myround(this.x), 
-			y:myround(this.y), 
-			vx:myround(this.velX), 
-			vy:myround(this.velY), 
-			ut:this.updateTime};
-	//return this;
-}
-Prop.PropVector2d.prototype.propagate = function(t) {
-	if (this.updateTime == undefined){
-		if (console.log)
-			console.log("PropVector2d::propagate bad updateTime");
-		//throw new Error("PropVector2d::propagate bad updateTime")
-	} else {
-
-	var dt = t - this.updateTime;
-	this.x += this.velX*dt
-	this.y += this.velY*dt
-	this.updateTime = t;
-	if (!(this.updateTime != undefined))
-		throw new Error("bad updateTime");
-	}
-}
-Prop.PropVector2d.makeFromObj = function(obj) {
-	throw new Error("depcrecate");
-	var r = new Prop.PropVector2d();
-	r.x = obj.x;
-	r.y = obj.y;
-	r.velX = obj.velX;
-	r.velY = obj.velY;
-}
-
-
-
-Prop.PropVector2d.prototype.setValues = function(x,y) {
-	this.x = x; this.y = y;
-}
-Prop.PropVector2d.prototype.setVelocity = function(vx,vy){
-	this.velX = vx; this.velY = vy;
-}
-Prop.PropVector2d.prototype.setUpdateTime = function(t) {
-	this.updateTime = t;
-}
-Prop.PropVector2d.prototype.stripData = function() {
-	this.x = undefined;
-	this.y = undefined;
-	this.velX = undefined;
-	this.velY = undefined;
-}
-/*
-Prop.PropVector2d.prototype.applySpecificData = function(obj) {
 	//return Prop.applyData.apply(this, arguments);
 	//debugger;
 	/*
@@ -156,7 +84,6 @@ Prop.PropVector2d.prototype.applySpecificData = function(obj) {
 		this.updateTime = obj.ut;
 	return this;
 }
-*/
 Prop.PropVector2d.prototype.getSpecificData = function() {
 	var fixed = 1;
 	var myround = function(num) {
@@ -186,6 +113,8 @@ Prop.PropVector2d.prototype.propagate = function(t) {
 		throw new Error("bad updateTime");
 	}
 }
+*/
+/*
 Prop.PropVector2d.makeFromObj = function(obj) {
 	throw new Error("depcrecate");
 	var r = new Prop.PropVector2d();
@@ -194,7 +123,89 @@ Prop.PropVector2d.makeFromObj = function(obj) {
 	r.velX = obj.velX;
 	r.velY = obj.velY;
 }
+*/
 
+
+Prop.PropVector2d.prototype.setValues = function(x,y) {
+	this.x = x; this.y = y;
+}
+Prop.PropVector2d.prototype.setVelocity = function(vx,vy){
+	this.velX = vx; this.velY = vy;
+}
+Prop.PropVector2d.prototype.setUpdateTime = function(t) {
+	this.updateTime = t;
+}
+Prop.PropVector2d.prototype.stripData = function() {
+	this.x = undefined;
+	this.y = undefined;
+	this.velX = undefined;
+	this.velY = undefined;
+}
+
+Prop.PropVector2d.prototype.applySpecificData = function(obj) {
+	//return Prop.applyData.apply(this, arguments);
+	//debugger;
+	/*
+	if (obj.ut == undefined)
+		debugger;
+	*/
+	if (obj == undefined) return;
+
+	if (obj.x != undefined)
+		this.x = obj.x;
+	if (obj.y != undefined)
+		this.y = obj.y;
+	if (obj.vx != undefined)
+		this.velX = obj.vx;
+	if (obj.vy != undefined)
+		this.velY = obj.vy;
+	if (obj.ut != undefined)
+		this.updateTime = obj.ut;
+	return this;
+}
+
+Prop.PropVector2d.prototype.getSpecificData = function() {
+	var fixed = 1;
+	var myround = function(num) {
+		if (num == undefined)
+			debugger;
+		return Math.round(num*1000)/1000;
+	}
+	return {x:myround(this.x), 
+			y:myround(this.y), 
+			vx:myround(this.velX), 
+			vy:myround(this.velY), 
+			ut:this.updateTime};
+	//return this;
+}
+Prop.PropVector2d.prototype.propagate = function(t) {
+	if (this.updateTime == undefined){
+		if (console.log)
+			console.log("PropVector2d::propagate bad updateTime");
+		//throw new Error("PropVector2d::propagate bad updateTime")
+	} else {
+
+	var dt = t - this.updateTime;
+	this.x += this.velX*dt
+	this.y += this.velY*dt
+	this.updateTime = t;
+	if (!(this.updateTime != undefined))
+		throw new Error("bad updateTime");
+	}
+}
+Prop.PropVector2d.prototype.getVelocityNorm = function() {
+	return Math.sqrt((this.velX*this.velX + this.velY*this.velY));
+}
+/*
+Prop.PropVector2d.makeFromObj = function(obj) {
+	throw new Error("depcrecate");
+	var r = new Prop.PropVector2d();
+	r.x = obj.x;
+	r.y = obj.y;
+	r.velX = obj.velX;
+	r.velY = obj.velY;
+}
+*/
 
 
 //-----
@@ -265,6 +276,20 @@ Prop.PropCircleMover = function() {
 
 
 	//this.angleVelocityCutoff = 0.0000001;
+}
+Prop.PropCircleMover.prototype.getVelocityUnit = function() {
+	var ret = {};
+	var norm = this.position.getVelocityNorm();
+	var x = this.position.velX;
+	var y = this.position.velY;
+
+	var a = this.angle.scalarValue;
+	var c = Math.cos(a);
+	var s = Math.sin(a);
+
+	ret.x = c*x - s*y; ret.x /= norm;
+	ret.y = s*x + c*y; ret.y /= norm;
+	return ret;
 }
 Prop.PropCircleMover.prototype.setBoostManager = function(bm) {
 	this.boostManager = bm;

@@ -3,6 +3,7 @@ Sailboat.Client = function() {
 	
 	//GeneralClient.call(this, SailboatGraphics.loadEverything, Sailboat.getInitObj());
 	this.graphicsSettings = Sailboat.settings;
+	this.gameSettings = Sailboat.settings;
 	this.worldBox = new SAT.Box(new SAT.Vector(0,0), this.graphicsSettings.InternalGameSize, this.graphicsSettings.InternalGameSize).toPolygon();
 	
 }
@@ -12,6 +13,7 @@ Sailboat.Client = function() {
 Sailboat.Client.prototype.onFrame = function(eventData) {
 	//console.log(eventData.dt);
 	var gt = this["gameHandler"].getGameTime();
+	this.cooldownManager.onUpdate(gt);
 	this.controlsManager.inputUpdates(eventData.dt/1000, gt);
 	this["gameHandler"].update();
 	this.checkCollisions();
@@ -24,21 +26,31 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	//debugger;
 }
 Sailboat.Client.prototype.onShoot = function(gt) {
+
+	var res = this.shotCooldown.attempt(gt);
+	if (res) {
+
+
 	//debugger;
-	var mult = 1.5;
+	var vMult = 1.5;
+	var pMult = 100;
 	//var offset = 500;
 	var myP = this["gameHandler"].myPlayer;
-	var pos = myP.getChildByIdentifier("position").wrappedObj.position;
+	var pos = myP.getChildByIdentifier("position").wrappedObj;
 
-	var vx = 2.0*pos.velX;
-	var vy = 2.0*pos.velY;
-	var x = pos.x + vx*mult;
-	var y = pos.y + vy*mult;
+	var vUnit = pos.getVelocityUnit();
+	var vNorm = pos.position.getVelocityNorm();
+	//debugger;
+	var vx = vMult*vUnit.x*vNorm;
+	var vy = vMult*vUnit.y*vNorm;
+	var x = pos.position.x + vUnit.x*pMult;
+	var y = pos.position.y + vUnit.y*pMult;
 	//debugger;
 	//var ut = this["gameHandler"].getGameTime();
 	var sd = {x:x, y:y, vx:vx, vy:vy, ut:gt};
 	//debugger;
 	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
+	}
 }
 
 

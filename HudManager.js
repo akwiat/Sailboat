@@ -7,6 +7,7 @@ function HudManager() {
 }
 
 HudManager.prototype.setCooldown = function(x) {
+	//debugger;
 	this.cooldown.innerHTML = x;
 }
 

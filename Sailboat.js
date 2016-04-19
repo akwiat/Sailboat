@@ -42,6 +42,7 @@ Sailboat.settings = {
 	InternalGameSize:1000
 	,ShipRadius:25
 	,BulletRadius:20
+	,BulletCooldown:2
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {

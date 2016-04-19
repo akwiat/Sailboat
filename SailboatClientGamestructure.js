@@ -43,8 +43,14 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
 	this.hudManager = new HudManager();
-	
+	this.cooldownManager = new CooldownManager();
+	this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+		,undefined, this.hudManager.setCooldown.bind(this.hudManager) );
+	this.cooldownManager.addCooldown(this.shotCooldown);
+
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
 	this.registerGameStateCallbacks();
 }
+
+//Sailboat.Client.prototype.set
