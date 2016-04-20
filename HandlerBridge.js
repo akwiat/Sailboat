@@ -43,9 +43,10 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 		//util.log("sendFunction: "+id);
 		var theReplacer = function(key, value) {
 			var obj = this[key];
-			if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(id))
+			if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
 				return undefined
-			else if (obj && obj.shouldRemove && parseInt(obj.getIndex()) == parseInt(id))
+			else if (obj && obj.shouldRemove)
+			// && parseInt(obj.getIndex()) == parseInt(id))
 				{util.log("----replacer condition"); return undefined;}
 			else
 				return value;
@@ -96,6 +97,7 @@ HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
 	var difObj = this.gameHandler.sendstate;
 	var msg = JSON.stringify(difObj);
+	console.log(msg);
 	this.sendUpdate(msg);
 	difObj.clear();
 }
