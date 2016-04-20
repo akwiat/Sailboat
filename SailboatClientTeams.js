@@ -20,6 +20,7 @@ Sailboat.Client.prototype.setupTeamFunctions = function(arrayName) {
 
 Sailboat.Client.prototype.setupHumanFunctions = function() {
    var humanRespawn = function(gt) {
+   	if (gt == undefined) gt = this["gameHandler"].getGameTime();
      var respawnBox = this.gameSettings.HumanRespawnBox;
      var loc = getRandInBox(respawnBox);
      //debugger;

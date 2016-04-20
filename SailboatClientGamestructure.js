@@ -37,10 +37,17 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
 
 			this["gameStructure"]["client"].controlsManager.addControl(this.shipControl);
-			
+
 			this["gameStructure"]["client"].controlsManager.addControl(
 				new ThreexControlsAction(this.onShoot.bind(this), "f")
 				);
+			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
+			this.respawnCooldown = new GeneralCooldown(this.gameSettings.RespawnCooldown
+				,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
+
+			this.cooldownManager.addCooldown(this.respawnCooldown);
+			this.cooldownManager.addCooldown(this.shotCooldown);
 			//debugger;
 
 		} else {
@@ -56,9 +63,6 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.hudManager = new HudManager();
 	this.cooldownManager = new CooldownManager();
 
-	this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
-		,undefined, this.hudManager.setCooldown.bind(this.hudManager));
-	this.cooldownManager.addCooldown(this.shotCooldown);
 
 	//this.respawnCooldown = new 
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");

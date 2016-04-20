@@ -282,8 +282,16 @@ Prop.PropCircleMover = function(sd) {
 Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 	var ret = {};
 	var norm = this.position.getVelocityNorm();
-	var x = this.position.velX;
-	var y = this.position.velY;
+
+	var normZeroCutoff = 0.00000001;
+	var x, y;
+	if (norm > normZeroCutoff) {
+		x = this.position.velX;
+	} else {
+		x = 1.0;
+		norm = 1.0;
+	}
+	y = 0;
 
 	var a = this.angle.scalarValue;
 	var c = Math.cos(a);
@@ -291,6 +299,8 @@ Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 
 	ret.x = c*x - s*y; ret.x /= norm;
 	ret.y = s*x + c*y; ret.y /= norm;
+	
+
 	return ret;
 }
 Prop.PropCircleMover.prototype.setBoostManager = function(bm) {

@@ -21,10 +21,14 @@ Sailboat.Client.prototype.onFrame = function(eventData) {
 Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	// var shipNum = gameStateObj.getIndex();
 	// var playerNum = gameStateObj.getPlayerIndex();
+	var gt = this["gameHandler"].getGameTime();
+	var ret = this.respawnCooldown.attempt(gt);
+	if (ret) {
 	var removeFrag = gameStateObj.getRemovalFrag();
 	this["gameHandler"].officialChange(removeFrag);
+	} else debugger;
 
-	this.respawnShip(this["gameHandler"].getGameTime());
+	//this.respawnShip(this["gameHandler"].getGameTime());
 	//debugger;
 }
 Sailboat.Client.prototype.onShoot = function(gt) {

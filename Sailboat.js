@@ -73,7 +73,9 @@ Sailboat.settings = {
 	,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
+	,RespawnCooldown:4
 	,HumanRespawnBox:{pos:{x:100,y:100}, w:800, h:100}
+
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {
