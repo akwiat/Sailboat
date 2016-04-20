@@ -31,6 +31,7 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
      var myShip = myP.getChildByIdentifier("shipArray").children[0];
 	 var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
      this.shipControl.setCircleMoverObj(myShipPos);
+     this.shotCooldown.resetCooldown();
 
 /*
      var myShip = myP.getChildByIdentifier("shipArray").children[0];

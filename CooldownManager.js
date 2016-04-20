@@ -20,6 +20,7 @@ GeneralCooldown.prototype.beginCooldown = function(st) {
 	this.startTime = st;
 }
 GeneralCooldown.prototype.resetCooldown = function() {
+	if (this.updateFn) this.updateFn(0);
 	this.startTime = undefined;
 }
 GeneralCooldown.prototype.checkTime = function(curT) {
