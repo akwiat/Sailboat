@@ -69,10 +69,11 @@ Shield.prototype.propagate = function(t) {
 }
 function Sailboat() {}
 Sailboat.settings = {
-	InternalGameSize:1000
-	,ShipRadius:25
-	,BulletRadius:20
-	,BulletCooldown:2
+	InternalGameSize:1000,
+	ShipRadius:25,
+	ShipAttackLength: 30,
+	BulletRadius:20,
+	BulletCooldown:2
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {
@@ -81,10 +82,28 @@ Sailboat.getInitObj = function() {
 		var x = p.x;
 		var y = p.y;
 		var r = Sailboat.settings.ShipRadius;
-		//var a = cm.angle.scalarValue;
-		
-		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
-		return ret;
+
+		var circle = new SAT.Circle(new SAT.Vector(x,y), r);
+		return circle;
+	}
+	var getShipAttackRect = function() {
+		var cm = this.findChildWithIdentifier("position").getWrappedObj();
+		var p = cm.position;
+		var x = p.x;
+		var y = p.y; 
+		var l = Sailboat.settings.ShipAttackLength;
+		var a = cm.angle.scalarValue % (2 * Math.PI);
+		var rect = new SAT.Polygon(new SAT.Vector(x,y), [
+			new SAT.Vector(3, 0),
+			new SAT.Vector(3, l),
+			new SAT.Vector(-3, l),
+			new SAT.Vector(-3, 0)
+		]);
+		// rect.setAngle(angle) or rect.rotate(angle)
+		rect.rotate(a - Math.PI / 2.0);
+		// console.log(a);
+		// console.log(rect.points)
+		return rect;
 	}
 	var getBulletCircle = function() {
 		var p = this.findChildWithIdentifier("position").getWrappedObj();
@@ -92,8 +111,8 @@ Sailboat.getInitObj = function() {
 		var y = p.y;
 		var r = Sailboat.settings.BulletRadius;
 
-		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
-		return ret;
+		var circle = new SAT.Circle(new SAT.Vector(x,y), r);
+		return circle;
 	}
 	var SAShip = function() {
 		var boostManager = function(propPos, propAngle) {
@@ -117,6 +136,7 @@ Sailboat.getInitObj = function() {
 			
 		//ret.shipRadius = 25;
 		ret.constructor.prototype.getShipCircle = getShipCircle; 
+		ret.constructor.prototype.getShipAttackRect = getShipAttackRect;
 		return ret;
 	}
 
@@ -203,19 +223,18 @@ Sailboat.Server = function(gameStructure) {
 			var aNum = aArray.countChildren();
 
 			var ret;
-			if (hNum == aNum)
+			if (hNum <= aNum) {
 				ret = hArray;
-			else if (hNum > aNum)
+			} else {
 				ret = aArray;
-			else if (aNum > hNum)
-				ret = hArray;
-
-			return ret;
 			}
+			return ret;
+		};
 
-		var array = teamAllocator( this["gameHandler"] );
+		var array = teamAllocator( this["gameHandler"]);
 		var arrayName = array.getIdentifier();
 		var nEnt = array.addObjToArrayNextAvailable();
+		console.log(nEnt);
 		//var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
 		var index = nEnt.getIndex();
 
@@ -324,8 +343,12 @@ Sailboat.Server = function(gameStructure) {
 		util.log("child::clientDisconnected: "+clientId);
 		//var p = this["gameHandler"].gs.getObject(Player.gameStateCode, clientId);
 		//var p = this["gameHandler"].gs.entity.children[0].children[clientId];
-		var p = this["gameHandler"].getObjByName("playerArray").children[clientId];
-		var f = p.getRemovalFrag();
+		var arrayName = gameStructure.clientIdManager.getArrayNameFromId(clientId);
+		var index = gameStructure.clientIdManager.getIndexFromId(clientId);
+		var player = this["gameHandler"].getObjByName(arrayName).children[clientId];
+		console.log(player);
+		// var p = this["gameHandler"].getObjByName("playerArray").children[clientId];
+		var f = player.getRemovalFrag();
 		//var f2 = p.getFrag();
 		//util.log(JSON.stringify(f2));
 		util.log(JSON.stringify(f));
