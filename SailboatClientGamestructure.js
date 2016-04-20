@@ -24,7 +24,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 
 
 			//this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
-			this["gameStructure"]["gameHandler"].myPlayer = state.entity.getObjFromPath(frag.treeLocation);
+			this["gameStructure"]["gameHandler"].myPlayer = state.entity.getObjFromPath(frag.specificData);
 			
 			var myShipPos = this["gameStructure"]["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
 			this["gameStructure"]["client"].controlsManager.addControl( 

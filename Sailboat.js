@@ -257,7 +257,8 @@ Sailboat.Server = function(gameStructure) {
 		
 		var f = state.entity.getFrag();
 		f.updateTime = gt;
-		f.treeLocation = pEnt.getPath();
+		f.specificData = pEnt.getPath();
+		//f.treeLocation = pEnt.getPath();
 		//f.specificData = gsid;
 
 	
@@ -325,7 +326,12 @@ Sailboat.Server = function(gameStructure) {
 		util.log("child::clientDisconnected: "+clientId);
 		//var p = this["gameHandler"].gs.getObject(Player.gameStateCode, clientId);
 		//var p = this["gameHandler"].gs.entity.children[0].children[clientId];
-		var p = this["gameHandler"].getObjByName("playerArray").children[clientId];
+		//var p = this["gameHandler"].getObjByName("playerArray").children[clientId];
+
+		var arrayName = idManager.getArrayNameFromId(clientId);
+		var index = idManager.getIndexFromId(clientId);
+
+		var p = this["gameHandler"].getObjByName(arrayName).children[index];
 		var f = p.getRemovalFrag();
 		//var f2 = p.getFrag();
 		//util.log(JSON.stringify(f2));
