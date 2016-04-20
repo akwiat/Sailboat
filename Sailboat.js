@@ -257,7 +257,8 @@ Sailboat.Server = function(gameStructure) {
 		
 		var f = state.entity.getFrag();
 		f.updateTime = gt;
-		f.specificData = gsid;
+		f.treeLocation = pEnt.getPath();
+		//f.specificData = gsid;
 
 	
 		var msg = "p" + JSON.stringify(f);

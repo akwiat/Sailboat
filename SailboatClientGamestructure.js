@@ -5,7 +5,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	var updateLoop = function() {
 		if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
-		console.log(JSON.stringify(frag));
+		//console.log(JSON.stringify(frag));
 		this["gameHandler"].sendstate.add(frag);
 		this["handlerBridge"].sendUpdateToServer();
 		}
@@ -21,8 +21,10 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			console.log(frag);
 			this["gameStructure"]["gameHandler"].setCurrentGameTime(frag.updateTime);
 			state.applyFrag(frag);
-			this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
-			
+
+
+			//this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
+			this["gameStructure"]["gameHandler"].myPlayer = state.entity.getObjFromPath(frag.treeLocation);
 			
 			var myShipPos = this["gameStructure"]["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
 			this["gameStructure"]["client"].controlsManager.addControl( 
