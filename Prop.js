@@ -268,11 +268,13 @@ Prop.PropScalar.prototype.getSpecificData = function() {
 	return {s:this.scalarValue, v:this.velocity, ut:this.updateTime};
 }
 //-----
-Prop.PropCircleMover = function() {
+Prop.PropCircleMover = function(sd) {
 	this.position = new Prop.PropVector2d(); //only going to use velocity.x
 	this.angle = new Prop.PropScalar();
 	this.updateTime = undefined;
 	this.circle = undefined;
+
+	this.applySpecificData(sd);
 
 
 	//this.angleVelocityCutoff = 0.0000001;
@@ -328,6 +330,8 @@ Prop.PropCircleMover.prototype.getSpecificData = function() {
 	}
 }
 Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
+	if (obj == undefined)
+		return;
 	if (obj.p)
 		this.position.applySpecificData(obj.p);
 	if (obj.a)

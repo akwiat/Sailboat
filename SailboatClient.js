@@ -23,6 +23,8 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	// var playerNum = gameStateObj.getPlayerIndex();
 	var removeFrag = gameStateObj.getRemovalFrag();
 	this["gameHandler"].officialChange(removeFrag);
+
+	this.respawnShip(this["gameHandler"].getGameTime());
 	//debugger;
 }
 Sailboat.Client.prototype.onShoot = function(gt) {

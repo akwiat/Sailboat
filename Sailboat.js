@@ -73,6 +73,7 @@ Sailboat.settings = {
 	,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
+	,HumanRespawnBox:{pos:{x:100,y:100}, w:800, h:100}
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {
@@ -95,7 +96,7 @@ Sailboat.getInitObj = function() {
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
-	var SAShip = function() {
+	var SAShip = function(posData) {
 		var boostManager = function(propPos, propAngle) {
 			var maxV = 200.0;
 			var maxA = 5.0;
@@ -109,7 +110,7 @@ Sailboat.getInitObj = function() {
 		}
 		var ret = new GameStateEntity("ship");
 		ret.addComponent( new GameStateEntity("position",
-		new Prop.PropCircleMover().setBoostManager(boostManager) ).setClientProperty());
+		new Prop.PropCircleMover(posData).setBoostManager(boostManager) ).setClientProperty());
 
 		ret.addComponent( new GameStateEntity("shield",
 			new Shield() ).setClientProperty()
@@ -145,7 +146,23 @@ Sailboat.getInitObj = function() {
 	*/
 	var SAPlayer = function() {
 		var ret = new GameStateEntity("player");
-		ret.addComponent( new SAShip() );
+
+		var shipArray = new GameStateEntity("shipArray");
+		shipArray.addComponentArray( SAShip, 1 );
+		ret.addComponent(shipArray);
+
+		/*
+		var respawnShip = function(sd) {
+			
+			var nShip = new SAShip();
+			nShip.findChildWithIdentifier("position").wrappedObj.applySpecificData(sd);
+			this.addComponent( nShip );
+			
+
+			//debugger;
+		}
+		ret.constructor.prototype.respawnShip = respawnShip;
+		*/
 		return ret;
 	}
 	/*
