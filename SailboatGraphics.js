@@ -152,6 +152,7 @@ function SailboatGraphics(graphicsSettings) {
 		required: "PropCircleMover, ufo"
 		,init: function() {
 			console.log("init");
+			//debugger;
 			this.w = HumanShipRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			/*

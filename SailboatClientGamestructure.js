@@ -38,13 +38,8 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			this["gameStructure"]["client"].controlsManager.addControl(
 				new ThreexControlsAction(this.onShoot.bind(this), "f")
 				);
-			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
-				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
-			this.respawnCooldown = new GeneralCooldown(this.gameSettings.RespawnCooldown
-				,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
 
-			this.cooldownManager.addCooldown(this.respawnCooldown);
-			this.cooldownManager.addCooldown(this.shotCooldown);
+
 			//debugger;
 
 		} else {

@@ -51,7 +51,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 			var clientLoc = JSON.parse(clientLocationStr);
 			shortLoc = TreeNode.trimToLength(obj.clientProperty, clientLoc);
 			console.log(JSON.stringify(shortLoc));
-			console.log(clientLocationStr);
+			console.log(JSON.stringify(clientLoc));
 			}
 
 			//if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
@@ -64,7 +64,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 				return value;
 		}
 		var msg = JSON.stringify(difObj, theReplacer);
-		//util.log(msg);
+		util.log(msg);
 		sendable.send(msg);
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
