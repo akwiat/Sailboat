@@ -77,6 +77,7 @@ Sailboat.settings = {
 }
 Sailboat.getInitObj = function() {
 	var getShipCircle = function() {
+		// debugger;
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
 		var x = p.x;
@@ -87,6 +88,7 @@ Sailboat.getInitObj = function() {
 		return circle;
 	}
 	var getShipAttackRect = function() {
+		// debugger;
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
 		var x = p.x;

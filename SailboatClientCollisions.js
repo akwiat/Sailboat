@@ -20,16 +20,20 @@ Sailboat.Client.prototype.checkCollisions = function() {
 
 		// check myShip collision with any attacking aliens
 		var alienArray = this["gameHandler"].getObjByName("alienTeam").children;
-		for (var i = 0; i < alienArray; i++) {
-			var alien = alienArray[i];
-			var attackRect = alien.getShipAttackRect();
+		for (var i = 0; i < alienArray.length; i++) {
+			if (alienArray[i] === myP) continue;
+			// if alien is attacking...
+			var alienShip = alienArray[i].findDirectChildWithIdentifier("ship");
+			var attackRect = alienShip.getShipAttackRect();
 			var hit = SAT.testCirclePolygon(shipCircle, attackRect);
+			console.log(hit);
 			if (hit) {
 				this.onDeadShip(myShip);
 				return;
 			}
 		}
 
+		// check myShip collision with edge
 		var resp = new SAT.Response();
 		SAT.testPolygonCircle(this.worldBox, shipCircle, resp);
 		if (!resp.bInA) {	//collided with edge 

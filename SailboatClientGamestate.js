@@ -23,7 +23,7 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var bulletAdded = function(bulletObj) {
 		//debugger;
 		console.log("bulletAdded");
-	var gObj = graphicsObj.getNewBulletObj(bulletObj);
+		var gObj = graphicsObj.getNewBulletObj(bulletObj);
 		bulletObj.setGraphicsObj(gObj);
 	}
 	callbacks.register(shipAdded, "new", "ship");
