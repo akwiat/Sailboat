@@ -1,0 +1,30 @@
+{
+  "name": "spaceboat",
+  "version": "0.9.0",
+  "description": "spaceboat description",
+  "main": "RunGameServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akwiat/Sailboat.git"
+  },
+  "keywords": [
+    "space",
+    "boat"
+  ],
+  "author": "Alex Kwiatkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akwiat/Sailboat/issues"
+  },
+  "homepage": "https://github.com/akwiat/Sailboat",
+  "dependencies": {
+    "express": "^4.13.4",
+    "ws": "^1.1.0"
+  },
+  "scripts": {
+    "start": "node RunGameServer.js"
+  }
+}
