@@ -20,6 +20,7 @@ Sailboat.Client.prototype.setupTeamFunctions = function(arrayName) {
 
 Sailboat.Client.prototype.setupHumanFunctions = function() {
    var humanRespawn = function(gt) {
+   	//debugger;
    	if (gt == undefined) gt = this["gameHandler"].getGameTime();
      var respawnBox = this.gameSettings.HumanRespawnBox;
      var loc = getRandInBox(respawnBox);
@@ -75,6 +76,16 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 	}
 	}
 	this.constructor.prototype.onShoot = humanShoot;
+
+
+
+			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
+			this.respawnCooldown = new GeneralCooldown(this.gameSettings.HumanRespawnCooldown
+				,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
+
+			this.cooldownManager.addCooldown(this.respawnCooldown);
+			this.cooldownManager.addCooldown(this.shotCooldown);
 }
    
 Sailboat.Client.prototype.setupAlienFunctions = function() {
@@ -105,4 +116,14 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
    		}
    }
    this.constructor.prototype.onShoot = alienShoot;
+
+
+			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
+			this.respawnCooldown = new GeneralCooldown(this.gameSettings.AlienRespawnCooldown
+				,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
+
+			this.cooldownManager.addCooldown(this.respawnCooldown);
+			this.cooldownManager.addCooldown(this.shotCooldown);
+
 }

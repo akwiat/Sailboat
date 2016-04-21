@@ -87,7 +87,10 @@ Sailboat.settings = {
 	//,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
-	,RespawnCooldown:4
+	,AlienShieldDuration:3
+	,AlienShieldCooldown:5
+	,HumanRespawnCooldown:4
+	,AlienRespawnCooldown:3
 	,HumanRespawnBox:{pos:{x:100,y:100}, w:800, h:100}
 	,AlienRespawnBox:{pos:{x:100,y:800}, w:800, h:100}
 	,HumanMaxV:200.0
@@ -140,6 +143,7 @@ Sailboat.getInitObj = function() {
 			);
 */		
 		//ret.shipRadius = 25;
+		ret.setClientProperty();
 		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
 		return ret;
 	}
@@ -163,6 +167,7 @@ Sailboat.getInitObj = function() {
 		shieldEntity.setClientProperty();
 		ret.addComponent(shieldEntity);
 
+		ret.setClientProperty();
 		ret.constructor.prototype.setShield = function(sd) {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			shield.applySpecificData(sd);
@@ -297,7 +302,7 @@ Sailboat.Server = function(gameStructure) {
 
 			var ret;
 			if (hNum == aNum)
-				ret = aArray;
+				ret = hArray;
 			else if (hNum > aNum)
 				ret = aArray;
 			else if (aNum > hNum)
