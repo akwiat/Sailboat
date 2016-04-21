@@ -335,7 +335,7 @@ Sailboat.Server = function(gameStructure) {
 			var ret;
 
 			if (hNum == aNum)
-				ret = hArray;
+				ret = aArray;
 			else if (hNum > aNum)
 				ret = aArray;
 			return ret;

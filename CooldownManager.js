@@ -9,6 +9,7 @@ GeneralCooldown.prototype.attempt = function(gt) {
 	if (!gt) debugger;
 	if (this.isActive()) return false;
 	else this.beginCooldown(gt);
+	console.log("begining Cooldown")
 
 	return true;
 }
@@ -30,7 +31,7 @@ GeneralCooldown.prototype.checkTime = function(curT) {
 	var remaining = this.startTime - curT + this.waitTime;
 	if ( remaining <= 0 ) {
 		if (this.onComplete)
-			this.onComplete();
+			this.onComplete(curT);
 
 		this.resetCooldown();
 	}
