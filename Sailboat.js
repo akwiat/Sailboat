@@ -83,6 +83,7 @@ Sailboat.settings = {
 	InternalGameSize:1000
 	,HumanShipRadius:25
 	,AlienShipRadius:20
+	,AlienShieldRadius:10
 	//,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
@@ -156,9 +157,16 @@ Sailboat.getInitObj = function() {
 		var posEntity = new GameStateEntity("position", 
 			new Prop.PropCircleMover(posData).setBoostManager(alienBoostManager) );
 		posEntity.setClientProperty();
-
 		ret.addComponent(posEntity);
 
+		var shieldEntity = new GameStateEntity("shield", new Shield() );
+		shieldEntity.setClientProperty();
+		ret.addComponent(shieldEntity);
+
+		ret.constructor.prototype.setShield = function(sd) {
+			var shield = this.findDirectChildWithIdentifier("shield");
+			shield.applySpecificData(sd);
+		}
 		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
@@ -169,6 +177,21 @@ Sailboat.getInitObj = function() {
 		var shipArray = new GameStateEntity("shipArray");
 		shipArray.addComponentArray( AlienShip, 1 );
 		ret.addComponent(shipArray);
+
+		ret.constructor.prototype.getShip = function() {
+			var shipArray = this.findDirectChildWithIdentifier("shipArray");
+			var ship = shipArray.children[0];
+			if (ship == undefined) throw new Error("ship problem");
+			return ship;
+		}
+		ret.constructor.prototype.activateShield = function(gt) {
+			var ship = this.getShip();
+			ship.setShield({s:1, ut:gt});
+		}
+		ret.constructor.prototype.deactivateShield = function(gt) {
+			var ship = this.getShip();
+			ship.setShield({s:0, ut:gt});
+		}
 		return ret;
 	}
 	var SABullet = function(sd) {

@@ -46,8 +46,37 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 
    var humanShipName = function() {return "HumanShip"};
    this.constructor.prototype.getShipTypeName = humanShipName;
-   
+
+   var humanShoot = function(gt) {
+
+	var res = this.shotCooldown.attempt(gt);
+	if (res) {
+
+
+	//debugger;
+	var vMult = 1.5;
+	var pMult = 100;
+	//var offset = 500;
+	var myP = this["gameHandler"].myPlayer;
+	var pos = myP.getChildByIdentifier("position").wrappedObj;
+
+	var vUnit = pos.getVelocityUnit();
+	var vNorm = pos.position.getVelocityNorm();
+	//debugger;
+	var vx = vMult*vUnit.x*vNorm;
+	var vy = vMult*vUnit.y*vNorm;
+	var x = pos.position.x + vUnit.x*pMult;
+	var y = pos.position.y + vUnit.y*pMult;
+	//debugger;
+	//var ut = this["gameHandler"].getGameTime();
+	var sd = {x:x, y:y, vx:vx, vy:vy, ut:gt};
+	//debugger;
+	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
+	}
+	}
+	this.constructor.prototype.onShoot = humanShoot;
 }
+   
 Sailboat.Client.prototype.setupAlienFunctions = function() {
 	var alienRespawn = function(gt) {
 		if (gt == undefined) gt = this["gameHandler"].getGameTime();
@@ -67,5 +96,13 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
 	this.constructor.prototype.respawnShip = alienRespawn;
    var alienShipName = function() {return "Alien"};
    this.constructor.prototype.getShipTypeName = alienShipName;
-   
+
+   var alienShoot = function(gt) {
+   		var res = this.shotCooldown.attempt(gt);
+   		if (res) {
+   			var myP = this["gameHandler"].myPlayer;
+   			myP.activateShield(gt);
+   		}
+   }
+   this.constructor.prototype.onShoot = alienShoot;
 }

@@ -31,6 +31,7 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	//this.respawnShip(this["gameHandler"].getGameTime());
 	//debugger;
 }
+/*
 Sailboat.Client.prototype.onShoot = function(gt) {
 
 	var res = this.shotCooldown.attempt(gt);
@@ -58,7 +59,7 @@ Sailboat.Client.prototype.onShoot = function(gt) {
 	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
 	}
 }
-
+*/
 
 /*
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {

@@ -16,6 +16,7 @@ function SailboatGraphics(graphicsSettings) {
 	*/
 	var HumanShipRadius = graphicsSettings.HumanShipRadius;
 	var AlienShipRadius = graphicsSettings.AlienShipRadius;
+	var AlienShieldRadius = graphicsSettings.AlienShieldRadius;
 	var BulletRadius = graphicsSettings.BulletRadius;
 	var GraphicsRatio = this.ratio;
 /*
@@ -181,6 +182,27 @@ function SailboatGraphics(graphicsSettings) {
 			this.origin("center");
 			this.color("red");
 			this.rotation = 0;
+			
+		}
+	});
+	Crafty.c("AlienShield", {
+		required: "GameStateEntity"
+		,init: function() {
+			this.origin("center");
+			this.w = AlienShieldRadius*2.0*GraphicsRatio;
+			this.h = this.w;
+			
+			this.x = 0; this.y = 0;
+			this.color("red");
+		}
+		,events: {
+			"UpdateFromGameState": function() {
+				if (this.gameStateEntity) {
+					var shieldUp = this.gameStateEntity.wrappedObj.shieldUp;
+					if (shieldUp) this.visible = true;
+					else this.visible = false;
+				}
+			}
 		}
 	});
 	Crafty.c("SABullet", {
@@ -362,6 +384,12 @@ SailboatGraphics.prototype.getNewHumanShip = function(gameStateEntity) {
 }
 SailboatGraphics.prototype.getNewAlienShip = function(gameStateEntity) {
 	var obj = Crafty.e("AlienShip").gameStateEntity(gameStateEntity);
+
+	var gameStateShield = gameStateEntity.findDirectChildWithIdentifier("shield");
+	if (gameStateShield == undefined) throw new Error("shield problem");
+	var shieldObj = Crafty.e("AlienShield").gameStateEntity(gameStateShield);
+	//shieldObj.visible = false;
+	obj.attach(shieldObj);
 	return obj;
 }
 SailboatGraphics.prototype.removeShipObj = function(craftyEntity) {
