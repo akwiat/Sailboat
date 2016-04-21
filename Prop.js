@@ -44,6 +44,8 @@ Prop.applyData = function(obj) {
 
 	this.updateTime = undefined;
 	this.applySpecificData(sd);
+
+	this.currentValues = {x: this.x, y: this.y};
 	//Prop.applyData.call(this, sd);
 }
 /*
@@ -178,7 +180,7 @@ Prop.PropVector2d.prototype.getSpecificData = function() {
 			ut:this.updateTime};
 	//return this;
 }
-Prop.PropVector2d.prototype.propagate = function(t) {
+Prop.PropVector2d.prototype.propagate = function(t, presentValues) {
 	if (this.updateTime == undefined){
 		if (console.log)
 			console.log("PropVector2d::propagate bad updateTime");
@@ -186,9 +188,15 @@ Prop.PropVector2d.prototype.propagate = function(t) {
 	} else {
 
 	var dt = t - this.updateTime;
-	this.x += this.velX*dt
-	this.y += this.velY*dt
-	this.updateTime = t;
+	this.currentValues.x = this.x + this.velX*dt;
+	this.currentValues.y = this.y + this.velY*dt;
+
+	if (presentValues) {
+		this.x = this.currentValues.x;
+		this.y = this.currentValues.y;
+		this.updateTime = t;
+	}
+	//this.updateTime = t;
 	if (!(this.updateTime != undefined))
 		throw new Error("bad updateTime");
 	}
@@ -247,6 +255,9 @@ Prop.PropScalar = function() {
 	this.scalarValue = 0.0;
 	this.velocity = 0.0;
 	this.updateTime = undefined;
+
+	this.currentValues = {scalarValue:this.scalarValue, velocity:this.velocity};
+
 }
 Prop.PropScalar.prototype.applySpecificData = function(obj) {
 	if (obj.s)
@@ -258,11 +269,19 @@ Prop.PropScalar.prototype.applySpecificData = function(obj) {
 
 	return this;
 }
-Prop.PropScalar.prototype.propagate = function(t) {
+Prop.PropScalar.prototype.propagate = function(t, presentValues) {
 	if (this.updateTime == undefined)
 		throw new Error("PropScalar::propagate bad updateTime");
-	this.scalarValue += this.velocity * (t-this.updateTime);
-	this.updateTime = t;
+
+	var dt = (t - this.updateTime);
+	this.currentValues.scalarValue = this.scalarValue + dt*this.velocity;
+
+	if (presentValues) {
+		this.scalarValue = this.currentValues.scalarValue;
+		this.updateTime = t;
+	}
+	//this.scalarValue += this.velocity * (t-this.updateTime);
+	//this.updateTime = t;
 }
 Prop.PropScalar.prototype.getSpecificData = function() {
 	return {s:this.scalarValue, v:this.velocity, ut:this.updateTime};
@@ -276,12 +295,16 @@ Prop.PropCircleMover = function(sd) {
 
 	this.applySpecificData(sd);
 
+	this.currentValues = {x:this.position.x, y:this.position.y
+		, angle:this.angle.scalarValue};
+
 
 	//this.angleVelocityCutoff = 0.0000001;
 }
 Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 	var ret = {};
-	var norm = this.position.getVelocityNorm();
+	//var norm = this.position.getVelocityNorm();
+	var norm = this.currentValues.speed;
 
 	var normZeroCutoff = 0.00000001;
 	var x, y;
@@ -293,7 +316,7 @@ Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 	}
 	y = 0;
 
-	var a = this.angle.scalarValue;
+	var a = this.currentValues.angle;
 	var c = Math.cos(a);
 	var s = Math.sin(a);
 
@@ -315,18 +338,18 @@ Prop.PropCircleMover.prototype.setUpdateTime = function(gt) {
 	this.updateTime = gt;
 }
 Prop.PropCircleMover.prototype.boostVelocity = function(boost, gt) {
-	this.propagate(gt);
+	this.propagate(gt, true);
 	this.position.velX += boost;
-	this.position.updateTime = gt;
-	this.updateTime = gt;
+	//this.position.updateTime = gt;
+	//this.updateTime = gt;
 	this.boostManager(this.position, this.angle);
 	this.makeCircle();
 }
 Prop.PropCircleMover.prototype.boostAngle = function(boost, gt) {
-	this.propagate(gt);
+	this.propagate(gt, true);
 	this.angle.velocity += boost;
-	this.angle.updateTime = gt;
-	this.updateTime = gt;
+	//this.angle.updateTime = gt;
+	//this.updateTime = gt;
 	this.boostManager(this.position, this.angle);
 	this.makeCircle();
 }
@@ -348,6 +371,8 @@ Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
 		this.angle.applySpecificData(obj.a);
 	if (obj.ut)
 		this.updateTime = obj.ut;
+
+	this.circle = undefined;
 	/*
 	//debugger;
 
@@ -366,6 +391,7 @@ Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
 	return this;
 }
 Prop.PropCircleMover.prototype.stripData = function() {
+	throw new Error("deprecated");
 	this.position = undefined;
 	this.angle = undefined;
 	this.updateTime = undefined;
@@ -377,20 +403,25 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 	}
 	var circle = {};
 	//debugger;
-	if (Math.abs(this.angle.velocity) > Prop.PropCircleMover.angleVelocityCutoff) {
-	var completionTime = 1.0/this.angle.velocity;//in units where 2Pi = 1
+	var angleVelocity = this.angle.velocity;
+	var angle = this.angle.currentValues.scalarValue;
+
+	if (Math.abs(angleVelocity) > Prop.PropCircleMover.angleVelocityCutoff) {
+
+	var completionTime = 1.0/angleVelocity;//in units where 2Pi = 1
 	var circumference = completionTime * this.position.velX;
 	circle.radius = circumference; //2PI = 1, sign of radius is for rhanded or lhanded circles (pos is lhanded)
+	if (console) console.log("radius: "+circle.radius);
 	//debugger;
 	if (circle.radius > 0) 
-		circle.currentCircleAngle = this.angle.scalarValue - Math.PI/2; 
+		circle.currentCircleAngle = angle - Math.PI/2; 
 	else 
-		circle.currentCircleAngle = this.angle.scalarValue + Math.PI/2;
+		circle.currentCircleAngle = angle + Math.PI/2;
 
 	circle.startTime = this.updateTime;
 	circle.origin = {};
-	circle.origin.x = this.position.x - Math.abs(circle.radius)*Math.cos(circle.currentCircleAngle);
-	circle.origin.y = this.position.y - Math.abs(circle.radius)*Math.sin(circle.currentCircleAngle);
+	circle.origin.x = this.currentValues.x - Math.abs(circle.radius)*Math.cos(circle.currentCircleAngle);
+	circle.origin.y = this.currentValues.y - Math.abs(circle.radius)*Math.sin(circle.currentCircleAngle);
 	if (isNaN(circle.origin.y) || isNaN(circle.origin.x))
 
 		throw new Error("PropCircleMover::makeCircle NaN");
@@ -406,13 +437,14 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 
 
 }
-Prop.PropCircleMover.prototype.propagate = function(t) {
+Prop.PropCircleMover.prototype.propagate = function(t, presentValues) {
 
 	//var dt = t - this.updateTime;
 	//if (this.mrp == undefined)
-	this.angle.propagate(t);
+	this.angle.propagate(t, presentValues);
 	//var speed = this.position.velX;
-	var curAngle = this.angle.scalarValue; //remember the object angle convention
+	var curAngle = this.angle.currentValues.scalarValue; //remember the object angle convention
+	this.currentValues.angle = curAngle;
 	if (Math.abs(this.angle.velocity) > Prop.PropCircleMover.angleVelocityCutoff) {
 
 	
@@ -421,27 +453,40 @@ Prop.PropCircleMover.prototype.propagate = function(t) {
 	}
 	var circle = this.circle;
 	var circleAngle;
-	if (circle.radius > 0) circleAngle = this.angle.scalarValue - Math.PI/2;
-	else circleAngle = this.angle.scalarValue + Math.PI/2
-	this.position.x = this.circle.origin.x + Math.abs(circle.radius)*Math.cos(circleAngle); //add PI/2 to convert to angle around the circle
-	this.position.y = this.circle.origin.y + Math.abs(circle.radius)*Math.sin(circleAngle);
-	if (this.position.x < 0) debugger;
+	if (circle.radius > 0) circleAngle = curAngle - Math.PI/2;
+	else circleAngle = curAngle + Math.PI/2
+	this.currentValues.x = this.circle.origin.x + Math.abs(circle.radius)*Math.cos(circleAngle); //add PI/2 to convert to angle around the circle
+	this.currentValues.y = this.circle.origin.y + Math.abs(circle.radius)*Math.sin(circleAngle);
+	if (this.currentValues.x < 0) debugger;
 	} else {
+		//this.position.propagate(t);
+		//this.currentValues.x = this.position.currentValues.x;
+		//this.currentValues.y = this.position.currentValues.y;
 		//debugger;
+		
 		this.circle = undefined;
-		if (this.mrp == undefined) this.mrp = this.position.updateTime;
-		var dt = t - this.mrp;
+		//if (this.mrp == undefined) this.mrp = this.position.updateTime;
+		var dt = t - this.position.updateTime;
 		var speed = this.position.velX;
-		this.position.x += speed*dt*Math.cos(curAngle);
-		this.position.y += speed*dt*Math.sin(curAngle); 
+		this.currentValues.x = this.position.x + speed*dt*Math.cos(curAngle);
+		this.currentValues.y = this.position.y + speed*dt*Math.sin(curAngle); 
+		//this.position.updateTime = t;
+		//this.updateTime = t;
+		
+	}
+	if (isNaN(this.currentValues.y) || isNaN(this.currentValues.x)) 
+		throw new Error("PropCircleMover::propagate NaN");
+
+	if (presentValues) {
+		this.position.x = this.currentValues.x;
+		this.position.y = this.currentValues.y;
 		this.position.updateTime = t;
 		this.updateTime = t;
+		//this.makeCircle();
 	}
-	if (isNaN(this.position.y) || isNaN(this.position.x)) 
-		throw new Error("PropCircleMover::propagate NaN");
 	//this.updateTime = t;
 	//this.position.updateTime = t;
-	this.mrp = t;
+	//this.mrp = t;
 }
 
 

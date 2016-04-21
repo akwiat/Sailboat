@@ -74,8 +74,8 @@ function CraftyGraphics(graphicsSettings) {
 
 					//debugger;
 					//console.log(posObj.position.x +", "+posObj.position.y+", "+posObj.angle.scalarValue);
-					var attrObj = positionAndRotation(posObj.position.x, posObj.position.y,
-					posObj.angle.scalarValue, this.w, this.h );
+					var attrObj = positionAndRotation(posObj.currentValues.x, posObj.currentValues.y,
+					posObj.currentValues.angle, this.w, this.h );
 					//console.log(JSON.stringify(attrObj));
 					this.attr(attrObj);
 				}
@@ -92,7 +92,9 @@ function CraftyGraphics(graphicsSettings) {
 				if (this.gameStateEntity) {
 				var posChild = this.gameStateEntity.findChildWithIdentifier("position");
 				var posObj = posChild.getWrappedObj();
-				var attrObj = convertToGraphicsCoord(posObj.x, posObj.y, this.w, this.h);
+				var x = posObj.currentValues.x;
+				var y = posObj.currentValues.y;
+				var attrObj = convertToGraphicsCoord(x, y, this.w, this.h);
 
 				if ((posObj.velY*posObj.velY + posObj.velX*posObj.velY) > 0.000001) {
 					var radRotation = Math.atan2(posObj.velY, posObj.velX);

@@ -173,6 +173,13 @@ Sailboat.getInitObj = function() {
 		var shipArray = new GameStateEntity("shipArray");
 		shipArray.addComponentArray( HumanShip, 1 );
 		ret.addComponent(shipArray);
+
+		ret.constructor.prototype.getShip = function() {
+			var shipArray = this.findDirectChildWithIdentifier("shipArray");
+			var ship = shipArray.children[0];
+			if (ship == undefined) throw new Error("ship problem");
+			return ship;
+		}
 		return ret;
 	}
 	var AlienShip = function(posData) {

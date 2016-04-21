@@ -48,7 +48,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	}
 	gameStructureCallbacks.register(clientCustomMsg.bind(this), GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
-	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 2000);
+	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 10000);
 	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
 	

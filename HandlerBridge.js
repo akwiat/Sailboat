@@ -104,6 +104,7 @@ HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
 }
 HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 	//throw new Error("should inspect")
+	console.log("client sending: "+msg);
 	this.clientSocket.send(msg);
 }
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
