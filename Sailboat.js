@@ -88,6 +88,7 @@ Sailboat.settings = {
 	,BulletCooldown:2
 	,RespawnCooldown:4
 	,HumanRespawnBox:{pos:{x:100,y:100}, w:800, h:100}
+	,AlienRespawnBox:{pos:{x:100,y:800}, w:800, h:100}
 	,HumanMaxV:200.0
 	,AlienMaxV:300.0
 	,AlienMaxA:7.5
@@ -271,7 +272,7 @@ Sailboat.Server = function(gameStructure) {
 
 			var ret;
 			if (hNum == aNum)
-				ret = hArray;
+				ret = aArray;
 			else if (hNum > aNum)
 				ret = aArray;
 			else if (aNum > hNum)
@@ -347,9 +348,9 @@ Sailboat.Server = function(gameStructure) {
 		} else if (gsid == 1) {
 			x = 900; y = 100;
 		} else if (gsid == 2) {
-			x = 100; y = 900; angle*=1;
+			x = 100; y = 900; angle*=-1;
 		} else if (gsid == 3) {
-			x = 900; y = 900; angle*=1;
+			x = 900; y = 900; angle*=-1;
 		} else throw new Error("bad initValues");
 
 		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
