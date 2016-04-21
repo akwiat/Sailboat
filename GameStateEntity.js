@@ -163,7 +163,8 @@ GameStateEntity.prototype.getFrag = function(frag) {
 	}
 	retFrag.identifier = this.identifier;
 	if (this.clientProperty) {
-		retFrag.clientProperty = this.getPlayerIndex();
+		//retFrag.clientProperty = this.getPlayerIndex();
+		retFrag.clientProperty = this.getPath();
 	}
 	return retFrag;
 	/*

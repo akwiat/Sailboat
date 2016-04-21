@@ -268,11 +268,13 @@ Prop.PropScalar.prototype.getSpecificData = function() {
 	return {s:this.scalarValue, v:this.velocity, ut:this.updateTime};
 }
 //-----
-Prop.PropCircleMover = function() {
+Prop.PropCircleMover = function(sd) {
 	this.position = new Prop.PropVector2d(); //only going to use velocity.x
 	this.angle = new Prop.PropScalar();
 	this.updateTime = undefined;
 	this.circle = undefined;
+
+	this.applySpecificData(sd);
 
 
 	//this.angleVelocityCutoff = 0.0000001;
@@ -280,8 +282,16 @@ Prop.PropCircleMover = function() {
 Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 	var ret = {};
 	var norm = this.position.getVelocityNorm();
-	var x = this.position.velX;
-	var y = this.position.velY;
+
+	var normZeroCutoff = 0.00000001;
+	var x, y;
+	if (norm > normZeroCutoff) {
+		x = this.position.velX;
+	} else {
+		x = 1.0;
+		norm = 1.0;
+	}
+	y = 0;
 
 	var a = this.angle.scalarValue;
 	var c = Math.cos(a);
@@ -289,6 +299,8 @@ Prop.PropCircleMover.prototype.getVelocityUnit = function() {
 
 	ret.x = c*x - s*y; ret.x /= norm;
 	ret.y = s*x + c*y; ret.y /= norm;
+	
+
 	return ret;
 }
 Prop.PropCircleMover.prototype.setBoostManager = function(bm) {
@@ -328,6 +340,8 @@ Prop.PropCircleMover.prototype.getSpecificData = function() {
 	}
 }
 Prop.PropCircleMover.prototype.applySpecificData = function(obj) {
+	if (obj == undefined)
+		return;
 	if (obj.p)
 		this.position.applySpecificData(obj.p);
 	if (obj.a)

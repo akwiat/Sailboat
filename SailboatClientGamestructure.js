@@ -22,14 +22,29 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			state.applyFrag(frag);
 			//this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
 			this["gameStructure"]["gameHandler"].myPlayer = state.entity.getObjFromPath(frag.specificData);
-			
-			var myShipPos = this["gameStructure"]["gameHandler"].myPlayer.findChildWithIdentifier("ship").findChildWithIdentifier("position").getWrappedObj();
-			this["gameStructure"]["client"].controlsManager.addControl( 
-				new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a")
-				);
+			var myPlayer = this["gameStructure"]["gameHandler"].myPlayer;
+			var arrayName = myPlayer.parent.getIdentifier();
+			//debugger;
+			this["gameStructure"]["client"].setupTeamFunctions(arrayName);
+
+			//var myShip = myPlayer.findChildWithIdentifier("ship")
+			var myShip = myPlayer.getChildByIdentifier("shipArray").children[0];
+			var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
+
+			this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
+
+			this["gameStructure"]["client"].controlsManager.addControl(this.shipControl);
+
 			this["gameStructure"]["client"].controlsManager.addControl(
 				new ThreexControlsAction(this.onShoot.bind(this), "f")
 				);
+			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
+			this.respawnCooldown = new GeneralCooldown(this.gameSettings.RespawnCooldown
+				,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
+
+			this.cooldownManager.addCooldown(this.respawnCooldown);
+			this.cooldownManager.addCooldown(this.shotCooldown);
 			//debugger;
 
 		} else {
@@ -44,10 +59,9 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	
 	this.hudManager = new HudManager();
 	this.cooldownManager = new CooldownManager();
-	this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
-		,undefined, this.hudManager.setCooldown.bind(this.hudManager));
-	this.cooldownManager.addCooldown(this.shotCooldown);
 
+
+	//this.respawnCooldown = new 
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
 	this.registerGameStateCallbacks();

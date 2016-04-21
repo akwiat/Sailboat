@@ -14,7 +14,9 @@ function SailboatGraphics(graphicsSettings) {
 	var BulletWidth = 20;
 	var BulletAspect = 1;
 	*/
-	var ShipRadius = graphicsSettings.ShipRadius;
+	var HumanShipRadius = graphicsSettings.HumanShipRadius;
+	var AlienShipRadius = graphicsSettings.AlienShipRadius;
+	var AlienShieldRadius = graphicsSettings.AlienShieldRadius;
 	var BulletRadius = graphicsSettings.BulletRadius;
 	var GraphicsRatio = this.ratio;
 /*
@@ -146,11 +148,11 @@ function SailboatGraphics(graphicsSettings) {
 	});
 	* /
 	*/
-	Crafty.c("SAShip", {
+	Crafty.c("HumanShip", {
 		required: "PropCircleMover, ufo"
 		,init: function() {
 			console.log("init");
-			this.w = ShipRadius*2.0*GraphicsRatio;
+			this.w = HumanShipRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			/*
 			this.w = ShipWidth*GraphicsRatio;
@@ -170,6 +172,38 @@ function SailboatGraphics(graphicsSettings) {
 			}
 		}
 		*/
+	});
+	Crafty.c("AlienShip", {
+		required: "PropCircleMover, ufo"
+		,init: function() {
+			//console.log("init");
+			this.w = AlienShipRadius*2.0*GraphicsRatio;
+			this.h = this.w;
+			this.origin("center");
+			this.color("red");
+			this.rotation = 0;
+			
+		}
+	});
+	Crafty.c("AlienShield", {
+		required: "GameStateEntity"
+		,init: function() {
+			this.origin("center");
+			this.w = AlienShieldRadius*2.0*GraphicsRatio;
+			this.h = this.w;
+			
+			this.x = 0; this.y = 0;
+			this.color("red");
+		}
+		,events: {
+			"UpdateFromGameState": function() {
+				if (this.gameStateEntity) {
+					var shieldUp = this.gameStateEntity.wrappedObj.shieldUp;
+					if (shieldUp) this.visible = true;
+					else this.visible = false;
+				}
+			}
+		}
 	});
 	Crafty.c("SABullet", {
 		required: "PropPosition, explosion"
@@ -341,31 +375,21 @@ function SailboatGraphics(graphicsSettings) {
 SailboatGraphics.prototype = Object.create(CraftyGraphics.prototype);
 SailboatGraphics.prototype.constructor = SailboatGraphics;
 
-SailboatGraphics.prototype.getNewShipObj = function(gameStateEntity) {
-	var obj = Crafty.e('SAShip').gameStateEntity(gameStateEntity);
-	var p = gameStateEntity.getPlayerIndex();
+SailboatGraphics.prototype.getNewHumanShip = function(gameStateEntity) {
+	var obj = Crafty.e("HumanShip").gameStateEntity(gameStateEntity);
+	//var p = gameStateEntity.getPlayerIndex();
 
-	var collisionStr = "collisionPlayer";
-	/*
-	if (p == 0) {
-		obj.color("blue");
-	}
-	else if (p == 1) {
-		obj.color("red"); 
-	}
-	else
-		throw new Error("bad colors");
-	*/
+	//var collisionStr = "collisionPlayer";
+	return obj;
+}
+SailboatGraphics.prototype.getNewAlienShip = function(gameStateEntity) {
+	var obj = Crafty.e("AlienShip").gameStateEntity(gameStateEntity);
 
-/*
-	var shipFront = Crafty.e('HAShipFront').attr({x:0, y:0})
-	.color("black");
-	shipFront.gameStateEntity = gameStateEntity;
-	obj.attach(shipFront);
-	//obj.attr({x:-100});
-
-*/
-
+	var gameStateShield = gameStateEntity.findDirectChildWithIdentifier("shield");
+	if (gameStateShield == undefined) throw new Error("shield problem");
+	var shieldObj = Crafty.e("AlienShield").gameStateEntity(gameStateShield);
+	//shieldObj.visible = false;
+	obj.attach(shieldObj);
 	return obj;
 }
 SailboatGraphics.prototype.removeShipObj = function(craftyEntity) {

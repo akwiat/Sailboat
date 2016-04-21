@@ -1,7 +1,7 @@
 Sailboat.Client.prototype.checkCollisions = function() {
 	var myP = this["gameHandler"].myPlayer;
 	if (!myP) return;
-
+	var myShip = myP.findDirectChildWithIdentifier("shipArray").children[0];
 	var myShip = myP.findDirectChildWithIdentifier("ship");
 	if(myShip) { // myShip is not dead
 		var shipCircle = myShip.getShipCircle();

@@ -7,7 +7,9 @@ function ControlsCircleMover(circleMover) {
 
 	this.circleMover = circleMover;
 }
-
+ControlsCircleMover.prototype.setCircleMover = function(cm) {
+	this.circleMover = cm;
+}
 ControlsCircleMover.prototype.boostForward = function(dt, gt) { //in seconds, in seconds
 	//debugger;
 	this.circleMover.boostVelocity(dt*this.accFwd, gt);
