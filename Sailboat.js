@@ -218,6 +218,10 @@ Sailboat.getInitObj = function() {
 			var ship = this.getShip();
 			ship.setShield({s:0, ut:gt});
 		}
+		ret.constructor.prototype.checkShield = function() {
+			var ship = this.getShip();
+			return shield.shieldUp;
+		}
 		return ret;
 	}
 	var SABullet = function(sd) {

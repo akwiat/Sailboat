@@ -92,7 +92,7 @@ function HandlerBridgeClientSide() {
 	//are implicit from the structure
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
-	console.log("client got msg: "+msg);
+	// console.log("client got msg: "+msg);
 	var c = msg.charAt(0);
 	if (c == "{") { //is JSON
 		var o = JSON.parse(msg);
@@ -109,7 +109,7 @@ HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
 	var difObj = this.gameHandler.sendstate;
 	var msg = JSON.stringify(difObj);
-	//console.log(msg);
+	console.log(msg);
 	this.sendUpdate(msg);
 	difObj.clear();
 }
