@@ -49,7 +49,7 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
    this.constructor.prototype.getShipTypeName = humanShipName;
 
    var humanShoot = function(gt) {
-
+    console.log("humanShoot");
 	var res = this.shotCooldown.attempt(gt);
 	if (res) {
 
@@ -102,6 +102,7 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
      var myShip = myP.getChildByIdentifier("shipArray").children[0];
 	 var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
      this.shipControl.setCircleMoverObj(myShipPos);
+     this.shotTimer.resetCooldown();
      this.shotCooldown.resetCooldown();
 	}
 	this.constructor.prototype.respawnShip = alienRespawn;
@@ -109,15 +110,26 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
    this.constructor.prototype.getShipTypeName = alienShipName;
 
    var alienShoot = function(gt) {
-   		var res = this.shotCooldown.attempt(gt);
+      console.log("alienshoot");
+   		var res = this.shotTimer.attempt(gt);
    		if (res) {
    			var myP = this["gameHandler"].myPlayer;
    			myP.activateShield(gt);
    		}
    }
    this.constructor.prototype.onShoot = alienShoot;
+   this.constructor.prototype.shieldDownAndCooldown = function () {
+      var ret = this.shotCooldown.attempt(gt);
+      if (ret) {
+        var myP = this["gameHandler"].myPlayer;
+        myP.deactivateShield(gt);
+      } else {
+        debugger;
+      }
+   }
 
-
+      this.shotTimer = new GeneralCooldown(this.gameSettings.BulletCooldown
+        ,this.shieldDownAndCooldown, this.hudManager.setCooldown.bind(this.hudManager));
 			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
 				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
 			this.respawnCooldown = new GeneralCooldown(this.gameSettings.AlienRespawnCooldown
