@@ -1,5 +1,6 @@
 if (!this.___alexnorequire) {
 	var GameStructureCodes = require("./GameStructure").GameStructureCodes;
+	var TreeNode = require("./Tree").TreeNode;
 	var util = require("util");
 //var AlexInheritConstructor = require("./AlexInherit").AlexInheritConstructor;
 //var AlexInheritDetails = require("./AlexInherit").AlexInheritDetails;
@@ -39,15 +40,26 @@ HandlerBridgeServerSide.prototype.sendUpdate = function(sendable, difObj) {
 HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var difObj = this["gameHandler"].pullSendstate();
 	//util.log("\n\n\nsendUpdateToAllClients: "+JSON.stringify(difObj));
-	var sendFunction = function(sendable, id) {
+	var sendFunction = function(sendable, clientLocationStr) {
 		//util.log("sendFunction: "+id);
 		var theReplacer = function(key, value) {
 			var obj = this[key];
-			if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
-				return undefined
+
+			var shortLoc;
+			if(obj && obj.clientProperty) {
+			//console.log(JSON.stringify(obj.clientProperty));
+			var clientLoc = JSON.parse(clientLocationStr);
+			shortLoc = TreeNode.trimToLength(obj.clientProperty, clientLoc);
+			console.log(JSON.stringify(shortLoc));
+			console.log(clientLocationStr);
+			}
+
+			//if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
+			if (obj && obj.clientProperty !== undefined && TreeNode.compareLocations(clientLoc, shortLoc))
+				{util.log("----clientProperty"); return undefined; }
 			else if (obj && obj.shouldRemove)
 			// && parseInt(obj.getIndex()) == parseInt(id))
-				{util.log("----replacer condition"); return undefined;}
+				{util.log("----shouldRemove"); return undefined;}
 			else
 				return value;
 		}
@@ -80,7 +92,7 @@ function HandlerBridgeClientSide() {
 	//are implicit from the structure
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
-	//console.log("client got msg: "+msg);
+	console.log("client got msg: "+msg);
 	var c = msg.charAt(0);
 	if (c == "{") { //is JSON
 		var o = JSON.parse(msg);
@@ -97,7 +109,7 @@ HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
 	var difObj = this.gameHandler.sendstate;
 	var msg = JSON.stringify(difObj);
-	console.log(msg);
+	//console.log(msg);
 	this.sendUpdate(msg);
 	difObj.clear();
 }
