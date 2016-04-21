@@ -84,6 +84,7 @@ Sailboat.settings = {
 	,HumanShipRadius:25
 	,AlienShipRadius:20
 	,AlienShieldRadius:10
+	,AlienAttackRadius:20
 	//,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
@@ -109,14 +110,20 @@ Sailboat.getInitObj = function() {
 		
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
-
+	}
+	var getHumanShipCircle = function() {
+		return getShipCircle.call(this, settings.HumanShipRadius);
+	}
+	var getAlienShipCircle = function() {
+		return getShipCircle.call(this, settings.AlienShipRadius);
+	}
 	var getShipAttackRect = function() {
 		// debugger;
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
 		var x = p.x;
 		var y = p.y; 
-		var l = Sailboat.settings.ShipAttackLength;
+		var l = settings.AlienAttackRadius;
 		var a = cm.angle.scalarValue % (2 * Math.PI);
 		var rect = new SAT.Polygon(new SAT.Vector(x,y), [
 			new SAT.Vector(3, 0),
@@ -130,12 +137,7 @@ Sailboat.getInitObj = function() {
 		// console.log(rect.points)
 		return rect;
 	}
-	var getHumanShipCircle = function() {
-		return getShipCircle.call(this, settings.HumanShipRadius);
-	}
-	var getAlienShipCircle = function() {
-		return getShipCircle.call(this, settings.AlienShipRadius);
-	}
+
 	var getBulletCircle = function() {
 		var p = this.findChildWithIdentifier("position").getWrappedObj();
 		var x = p.x;
@@ -320,7 +322,6 @@ Sailboat.Server = function(gameStructure) {
 				ret = aArray;
 			else if (hNum > aNum)
 				ret = aArray;
-			}
 			return ret;
 		};
 

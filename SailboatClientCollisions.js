@@ -1,4 +1,5 @@
 Sailboat.Client.prototype.checkCollisions = function() {
+	console.log("checkCollisions");
 	var myP = this["gameHandler"].myPlayer;
 	if (!myP) return;
 	var myShip = myP.findDirectChildWithIdentifier("shipArray").children[0];
@@ -20,6 +21,7 @@ Sailboat.Client.prototype.checkCollisions = function() {
 
 		// check myShip collision with any attacking aliens
 		var alienArray = this["gameHandler"].getObjByName("alienTeam").children;
+		console.log(alienArray);
 		for (var i = 0; i < alienArray.length; i++) {
 			if (alienArray[i] === myP) continue;
 			// if alien is attacking...
