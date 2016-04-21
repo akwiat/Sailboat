@@ -404,7 +404,8 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 	var circle = {};
 	//debugger;
 	var angleVelocity = this.angle.velocity;
-	var angle = this.angle.currentValues.scalarValue;
+	var angle = this.angle.scalarValue;
+	//var angle = this.angle.currentValues.scalarValue;
 
 	if (Math.abs(angleVelocity) > Prop.PropCircleMover.angleVelocityCutoff) {
 
@@ -420,8 +421,8 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 
 	circle.startTime = this.updateTime;
 	circle.origin = {};
-	circle.origin.x = this.currentValues.x - Math.abs(circle.radius)*Math.cos(circle.currentCircleAngle);
-	circle.origin.y = this.currentValues.y - Math.abs(circle.radius)*Math.sin(circle.currentCircleAngle);
+	circle.origin.x = this.position.x - Math.abs(circle.radius)*Math.cos(circle.currentCircleAngle);
+	circle.origin.y = this.position.y - Math.abs(circle.radius)*Math.sin(circle.currentCircleAngle);
 	if (isNaN(circle.origin.y) || isNaN(circle.origin.x))
 
 		throw new Error("PropCircleMover::makeCircle NaN");
