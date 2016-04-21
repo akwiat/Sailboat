@@ -104,9 +104,9 @@ Sailboat.getInitObj = function() {
 	var settings = Sailboat.settings;
 	var getShipCircle = function(radius) {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
-		var p = cm.position;
-		var x = p.x;
-		var y = p.y;
+		//var p = cm.position;
+		var x = cm.currentValues.x;
+		var y = cm.currentValues.y;
 
 		var r = radius;
 		//var r = Sailboat.settings.ShipRadius;
@@ -123,8 +123,8 @@ Sailboat.getInitObj = function() {
 	}
 	var getBulletCircle = function() {
 		var p = this.findChildWithIdentifier("position").getWrappedObj();
-		var x = p.x;
-		var y = p.y;
+		var x = p.currentValues.x;
+		var y = p.currentValues.y;
 		var r = Sailboat.settings.BulletRadius;
 
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
