@@ -412,7 +412,7 @@ Prop.PropCircleMover.prototype.makeCircle = function() {
 	var completionTime = 1.0/angleVelocity;//in units where 2Pi = 1
 	var circumference = completionTime * this.position.velX;
 	circle.radius = circumference; //2PI = 1, sign of radius is for rhanded or lhanded circles (pos is lhanded)
-	if (console) console.log("radius: "+circle.radius);
+	//if (console) console.log("radius: "+circle.radius);
 	//debugger;
 	if (circle.radius > 0) 
 		circle.currentCircleAngle = angle - Math.PI/2; 

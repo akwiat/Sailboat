@@ -83,10 +83,13 @@ Sailboat.settings = {
 	InternalGameSize:1000
 	,HumanShipRadius:25
 	,AlienShipRadius:20
-	,AlienShieldRadius:10
+	,AlienShieldThicknessRadiusUnits:0.25
 	//,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
+	,AlienShieldWidthRadiusUnits:0.4
+	,AlienShieldLengthRadiusUnits:3.0
+	,AlienShieldStartYRadiusUnits:1.0
 	,AlienShieldDuration:3
 	,AlienShieldCooldown:5
 	,HumanRespawnCooldown:4
@@ -309,7 +312,7 @@ Sailboat.Server = function(gameStructure) {
 
 			var ret;
 			if (hNum == aNum)
-				ret = hArray;
+				ret = aArray;
 			else if (hNum > aNum)
 				ret = aArray;
 			else if (aNum > hNum)
