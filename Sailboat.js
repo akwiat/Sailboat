@@ -67,27 +67,54 @@ Shield.prototype.applySpecificData = function(obj) {
 Shield.prototype.propagate = function(t) {
 
 }
+var GeneralBoostManager = function(maxV, maxA, propPos, propAngle) {
+			//var maxV = 200.0;
+			//var maxA = 5.0;
+			if (propPos.velX > maxV) propPos.velX = maxV;
+			if (propPos.velX < -1.0*maxV) propPos.velX = -1.0*maxV;
+			if (propPos.velY > maxV) propPos.velY = maxV;
+			if (propPos.velY < -1.0*maxV) propPos.velY = -1.0*maxV;
+
+			if (propAngle.velocity > maxA) propAngle.velocity = maxA;
+			if (propAngle.velocity < -1.0*maxA) propAngle.velocity = -1.0*maxA;
+}
 function Sailboat() {}
 Sailboat.settings = {
 	InternalGameSize:1000
-	,ShipRadius:25
+	,HumanShipRadius:25
+	,AlienShipRadius:20
+	//,ShipRadius:25
 	,BulletRadius:20
 	,BulletCooldown:2
 	,RespawnCooldown:4
 	,HumanRespawnBox:{pos:{x:100,y:100}, w:800, h:100}
+	,HumanMaxV:200.0
+	,AlienMaxV:300.0
+	,AlienMaxA:7.5
+	,HumanMaxA:5.0
 
 }
+
 Sailboat.getInitObj = function() {
-	var getShipCircle = function() {
+	var settings = Sailboat.settings;
+	var getShipCircle = function(radius) {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
 		var x = p.x;
 		var y = p.y;
-		var r = Sailboat.settings.ShipRadius;
+
+		var r = radius;
+		//var r = Sailboat.settings.ShipRadius;
 		//var a = cm.angle.scalarValue;
 		
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
+	}
+	var getHumanShipCircle = function() {
+		return getShipCircle.call(this, settings.HumanShipRadius);
+	}
+	var getAlienShipCircle = function() {
+		return getShipCircle.call(this, settings.AlienShipRadius);
 	}
 	var getBulletCircle = function() {
 		var p = this.findChildWithIdentifier("position").getWrappedObj();
@@ -98,32 +125,51 @@ Sailboat.getInitObj = function() {
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
-	var SAShip = function(posData) {
-		var boostManager = function(propPos, propAngle) {
-			var maxV = 200.0;
-			var maxA = 5.0;
-			if (propPos.velX > maxV) propPos.velX = maxV;
-			if (propPos.velX < -1.0*maxV) propPos.velX = -1.0*maxV;
-			if (propPos.velY > maxV) propPos.velY = maxV;
-			if (propPos.velY < -1.0*maxV) propPos.velY = -1.0*maxV;
+	var humanBoostManager = GeneralBoostManager.bind(undefined, settings.HumanMaxV, settings.HumanMaxA);
+	var alienBoostManager = GeneralBoostManager.bind(undefined, settings.AlienMaxV, settings.AlienMaxA);
+	var HumanShip = function(posData) {
 
-			if (propAngle.velocity > maxA) propAngle.velocity = maxA;
-			if (propAngle.velocity < -1.0*maxA) propAngle.velocity = -1.0*maxA;
-		}
-		var ret = new GameStateEntity("ship");
+		var ret = new GameStateEntity("humanShip");
 		ret.addComponent( new GameStateEntity("position",
-		new Prop.PropCircleMover(posData).setBoostManager(boostManager) ).setClientProperty());
-
+		new Prop.PropCircleMover(posData).setBoostManager(humanBoostManager) ).setClientProperty());
+/*
 		ret.addComponent( new GameStateEntity("shield",
 			new Shield() ).setClientProperty()
 			);
-			
+*/		
 		//ret.shipRadius = 25;
-		ret.constructor.prototype.getShipCircle = getShipCircle; 
+		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
 		return ret;
 	}
+	var HumanPlayer = function() {
+		var ret = new GameStateEntity("player");
 
-	
+		var shipArray = new GameStateEntity("shipArray");
+		shipArray.addComponentArray( HumanShip, 1 );
+		ret.addComponent(shipArray);
+		return ret;
+	}
+	var AlienShip = function(posData) {
+		var ret = new GameStateEntity("alienShip");
+
+		var posEntity = new GameStateEntity("position", 
+			new Prop.PropCircleMover(posData).setBoostManager(alienBoostManager) );
+		posEntity.setClientProperty();
+
+		ret.addComponent(posEntity);
+
+		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
+		return ret;
+		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
+	}
+	var AlienPlayer = function() {
+		var ret = new GameStateEntity("player");
+
+		var shipArray = new GameStateEntity("shipArray");
+		shipArray.addComponentArray( AlienShip, 1 );
+		ret.addComponent(shipArray);
+		return ret;
+	}
 	var SABullet = function(sd) {
 		var ret = new GameStateEntity("bullet");
 		ret.addComponent( new GameStateEntity("position",
@@ -146,6 +192,7 @@ Sailboat.getInitObj = function() {
 		return ret;
 	}
 	*/
+	/*
 	var SAPlayer = function() {
 		var ret = new GameStateEntity("player");
 
@@ -164,9 +211,10 @@ Sailboat.getInitObj = function() {
 			//debugger;
 		}
 		ret.constructor.prototype.respawnShip = respawnShip;
-		*/
+		* /
 		return ret;
 	}
+	*/
 	/*
 	var HumanTeam = function() {
 		var ret = new GameStateEntity("humanTeam");
@@ -179,11 +227,11 @@ Sailboat.getInitObj = function() {
 		var rootEntity = ret.entity;
 
 		var hTeam = new GameStateEntity("humanTeam");
-		hTeam.addComponentArray(SAPlayer, 0);
+		hTeam.addComponentArray(HumanPlayer, 0);
 		rootEntity.addComponent(hTeam);
 
 		var ateam = new GameStateEntity("alienTeam");
-		ateam.addComponentArray(SAPlayer, 0);
+		ateam.addComponentArray(AlienPlayer, 0);
 		rootEntity.addComponent(ateam);
 		/*
 		var playerArray = new GameStateEntity("playerArray");
@@ -256,18 +304,18 @@ Sailboat.Server = function(gameStructure) {
 		var myIndex = idManager.getIndexFromId(gsid);
 
 		var pEnt = myArray.children[myIndex];
-		//var pEnt = this["gameHandler"].getObjByName("humanTeam").children[gsid];
+		
 		var gt = this["gameHandler"].getGameTime();
 		for (var i=0; i < 1; i++) {
 
 		var iVals = getInitValues(myArray.getIdentifier(), myIndex, gt);
-		//iVals.ut = gt;
+		
 		
 
-		//var ship = pEnt.getChildByIdentifier("shipArray").children[i];
-		var ship = pEnt.getChildByIdentifier("ship");
+		
+		var ship = pEnt.getChildByIdentifier("shipArray").children[0];
 		ship.getChildByIdentifier("position").applySpecificData(iVals);
-		ship.getChildByIdentifier("shield").applySpecificData({ut:gt});
+		//ship.getChildByIdentifier("shield").applySpecificData({ut:gt});
 
 		}
 		var others = pEnt.getSpecificFrag();
@@ -277,8 +325,6 @@ Sailboat.Server = function(gameStructure) {
 		var f = state.entity.getFrag();
 		f.updateTime = gt;
 		f.specificData = pEnt.getPath();
-		//f.treeLocation = pEnt.getPath();
-		//f.specificData = gsid;
 
 	
 		var msg = "p" + JSON.stringify(f);

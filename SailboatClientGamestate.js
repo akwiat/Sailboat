@@ -8,11 +8,15 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 		
 	}
 	
-	var shipAdded = function(shipObj) {
+	var humanShipAdded = function(shipObj) {
 
-		var gObj = graphicsObj.getNewShipObj(shipObj);
+		var gObj = graphicsObj.getNewHumanShip(shipObj);
 		shipObj.setGraphicsObj(gObj);
 
+	}
+	var alienShipAdded = function(shipObj) {
+		var gObj = graphicsObj.getNewAlienShip(shipObj);
+		shipObj.setGraphicsObj(gObj);
 	}
 
 	var shipRemoved = function(shipObj) {
@@ -26,10 +30,14 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	var gObj = graphicsObj.getNewBulletObj(bulletObj);
 		bulletObj.setGraphicsObj(gObj);
 	}
-	callbacks.register(shipAdded, "new", "ship");
-	callbacks.register(shipRemoved, "removed", "ship");
+	callbacks.register(humanShipAdded, "new", "humanShip");
+	callbacks.register(alienShipAdded, "new", "alienShip");
+	callbacks.register(shipRemoved, "removed", "humanShip");
+	callbacks.register(shipRemoved, "removed", "alienShip");
+
 	callbacks.register(bulletAdded, "new", "bullet");
 	callbacks.register(shipRemoved, "removed", "bullet");
+	//callbacks.register()
 
 
 

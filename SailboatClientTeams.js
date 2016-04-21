@@ -43,5 +43,13 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 */
    };
    this.constructor.prototype.respawnShip = humanRespawn;
+
+   var humanShipName = function() {return "HumanShip"};
+   this.constructor.prototype.getShipTypeName = humanShipName;
+   
+}
+Sailboat.Client.prototype.setupAlienFunctions = function() {
+   var alienShipName = function() {return "Alien"};
+   this.constructor.prototype.getShipTypeName = alienShipName;
    
 }
