@@ -99,6 +99,8 @@ DoubleCooldown.prototype.onUpdate = function(gt) {
 }
 DoubleCooldown.prototype.resetCooldown = function() {
 	this.cooldownStarted = false;
+	if (this.firstCooldown) this.firstCooldown.resetCooldown();
+	if (this.secondCooldown) this.secondCooldown.resetCooldown();
 	this.inFirstCooldown = false;
 	this.inSecondCooldown = false;
 	//this.

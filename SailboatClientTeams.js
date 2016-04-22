@@ -110,6 +110,8 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
    this.constructor.prototype.getShipTypeName = alienShipName;
 
    var alienShoot = function(gt) {
+   		var ship = this["gameHandler"].myPlayer.getShip();
+   		if (!ship) return;
       var res = this.shotCooldown.attempt(gt);
       if (res) {
         var myP = this["gameHandler"].myPlayer;

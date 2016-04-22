@@ -22,6 +22,7 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	// var shipNum = gameStateObj.getIndex();
 	// var playerNum = gameStateObj.getPlayerIndex();
 	var gt = this["gameHandler"].getGameTime();
+	this.shotCooldown.resetCooldown();
 	var ret = this.respawnCooldown.attempt(gt);
 	if (ret) {
 	var removeFrag = gameStateObj.getRemovalFrag();
