@@ -26,7 +26,7 @@ GeneralCooldown.prototype.resetCooldown = function() {
 	this.startTime = undefined;
 }
 GeneralCooldown.prototype.checkTime = function(curT) {
-	console.log("checkTime");
+	//console.log("checkTime");
 	if (this.startTime == undefined)
 		throw new Error("cooldown problem");
 

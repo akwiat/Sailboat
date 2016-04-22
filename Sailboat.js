@@ -67,6 +67,10 @@ Shield.prototype.applySpecificData = function(obj) {
 Shield.prototype.propagate = function(t) {
 
 }
+Shield.prototype.checkShield = function() {
+	return this.shieldUp;
+}
+
 var GeneralBoostManager = function(maxV, maxA, propPos, propAngle) {
 			//var maxV = 200.0;
 			//var maxA = 5.0;
@@ -203,6 +207,10 @@ Sailboat.getInitObj = function() {
 		}
 		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
 		ret.constructor.prototype.getShipAttackRect = getShipAttackRect;
+		ret.constructor.prototype.checkShield = function() {
+			var shield = this.findDirectChildWithIdentifier("shield");
+			return shield.checkShield();
+		}
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
 	}
@@ -232,7 +240,8 @@ Sailboat.getInitObj = function() {
 		}
 		ret.constructor.prototype.checkShield = function() {
 			var ship = this.getShip();
-			return shield.shieldUp;
+			if (ship)
+			return ship.checkShield();
 		}
 		return ret;
 	}

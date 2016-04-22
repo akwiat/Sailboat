@@ -238,7 +238,7 @@ function SailboatGraphics(graphicsSettings) {
 						}
 					}
 
-					if (shieldUp) console.log("shieldUp");
+					//if (shieldUp) console.log("shieldUp");
 				}
 			}
 		}

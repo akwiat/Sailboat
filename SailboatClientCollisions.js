@@ -20,7 +20,11 @@ Sailboat.Client.prototype.checkCollisions = function() {
 		// check myShip collision with any attacking aliens
 		var alienArray = this["gameHandler"].getObjByName("alienTeam").children;
 		for (var i = 0; i < alienArray.length; i++) {
+
 			if (alienArray[i] === myP) continue;
+			var shield = alienArray[i].checkShield();
+			if (!shield) continue;
+			console.log("checking shields");
 			// if alien is attacking...
 			var alienShip = alienArray[i].findDirectChildWithIdentifier("shipArray").children[0];
 			var attackRect = alienShip.getShipAttackRect();
