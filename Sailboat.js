@@ -129,11 +129,10 @@ Sailboat.getInitObj = function() {
 	var getShipAttackRect = function() {
 		// debugger;
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
-		var p = cm.position;
-		var x = p.x; //cm.currentValues.x
-		var y = p.y; 
+		var x = cm.currentValues.x; //cm.currentValues.x
+		var y = cm.currentValues.y; 
 		var l = settings.AlienAttackRadius;
-		var a = cm.angle.scalarValue % (2 * Math.PI);
+		var a = cm.currentValues.angle.scalarValue % (2 * Math.PI);
 		var rect = new SAT.Polygon(new SAT.Vector(x,y), [
 			new SAT.Vector(3, 0),
 			new SAT.Vector(3, l),
