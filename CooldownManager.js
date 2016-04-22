@@ -62,6 +62,7 @@ function DoubleCooldown(dt1, onComplete1, hud1, dt2, onComplete2, hud2) {
 		onComplete1(gt);
 		this.inFirstCooldown = false;
 		var canSecondCooldown = this.secondCooldown.attempt(gt);
+		//if (canSecondCooldown)
 		if (!canSecondCooldown) debugger;
 		this.inSecondCooldown = true;
 	}
@@ -76,9 +77,16 @@ function DoubleCooldown(dt1, onComplete1, hud1, dt2, onComplete2, hud2) {
 }
 
 DoubleCooldown.prototype.attempt = function(gt) {
+	if (this.inSecondCooldown) return false;
+
 	var canFirstCooldown = this.firstCooldown.attempt(gt);
+	//if (this.inSecondCooldown)
+	if (canFirstCooldown) {
 	this.cooldownStarted = true;
 	this.inFirstCooldown = true;
+	}
+
+	return canFirstCooldown;
 }
 
 DoubleCooldown.prototype.onUpdate = function(gt) {
@@ -88,6 +96,12 @@ DoubleCooldown.prototype.onUpdate = function(gt) {
 	} else {
 		this.secondCooldown.onUpdate(gt);
 	}
+}
+DoubleCooldown.prototype.resetCooldown = function() {
+	this.cooldownStarted = false;
+	this.inFirstCooldown = false;
+	this.inSecondCooldown = false;
+	//this.
 }
 
 function CooldownManager() {

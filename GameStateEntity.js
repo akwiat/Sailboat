@@ -310,7 +310,7 @@ GameStateEntity.prototype.sendTrigger = function(obj, msg, callbacks) {
 	//var modId = id.replace(/\d/,"");
 	callbacks.trigger(obj, msg, obj.identifier);
 }
-GameStateEntity.prototype.propagate = function(t, shouldUpdateGraphics) {
+GameStateEntity.prototype.propagate = function(t, callbacks) {
 		if (this.wrappedObj) {
 			this.wrappedObj.propagate(t);
 		}

@@ -42,8 +42,8 @@ GameState.prototype.applyDifObj = function(difobj) {
 	}
 }
 
-GameState.prototype.update = function(curtime, shouldUpdateGraphics) {
-	this.entity.propagate(curtime, shouldUpdateGraphics);
+GameState.prototype.update = function(curtime) {
+	this.entity.propagate(curtime);
 }
 GameState.prototype.clear = function() {
 	this.entity.clear();

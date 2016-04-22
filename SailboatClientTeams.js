@@ -102,8 +102,8 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
      var myShip = myP.getChildByIdentifier("shipArray").children[0];
 	 var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
      this.shipControl.setCircleMoverObj(myShipPos);
-     this.shotTimer.resetCooldown();
-     this.shotTimer.resetCooldown();
+     this.shotCooldown.resetCooldown();
+     //this.shotTimer.resetCooldown();
 	}
 	this.constructor.prototype.respawnShip = alienRespawn;
    var alienShipName = function() {return "Alien"};

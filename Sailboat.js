@@ -220,6 +220,7 @@ Sailboat.getInitObj = function() {
 			return ship;
 		}
 		ret.constructor.prototype.activateShield = function(gt) {
+			if (console.log) console.log("activateShield");
 			var ship = this.getShip();
 			ship.setShield({s:1, ut:gt});
 		}

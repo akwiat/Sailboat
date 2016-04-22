@@ -75,8 +75,8 @@ GameHandler.prototype.resetGame = function() {
 	//this.st = new Date().getTime();
 	this.init();
 }
-GameHandler.prototype.update = function(shouldUpdateGraphics) {
-	this.gs.update(this.getGameTime(), shouldUpdateGraphics);
+GameHandler.prototype.update = function() {
+	this.gs.update(this.getGameTime());
 }
 GameHandler.prototype.applyFrag = function(frag) {
 	this.gs.applyFrag(frag);
