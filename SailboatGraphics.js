@@ -181,7 +181,7 @@ function SailboatGraphics(graphicsSettings) {
 			this.w = AlienShipRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			this.origin("center");
-			this.color("red");
+			//this.color("blue");
 			this.rotation = 0;
 			
 		}
@@ -189,19 +189,56 @@ function SailboatGraphics(graphicsSettings) {
 	Crafty.c("AlienShield", {
 		required: "GameStateEntity"
 		,init: function() {
+			//var shieldBox = Crafty.e("Box");
+			//console.log("initalienShield");
+			var shieldCircle = Crafty.e("2D, Canvas, Color, shield");
+			//shieldCircle.color("green");
+			//shieldCircle.alpha = 0.3;
+			var shieldR = (1+graphicsSettings.AlienShieldThicknessRadiusUnits)*AlienShipRadius;
+			shieldCircle.w = shieldR*2.0*GraphicsRatio;
+			shieldCircle.h = shieldCircle.w;
+			//shieldCircle.origin("center");
+			shieldCircle.x = -1*(shieldR - AlienShipRadius) * GraphicsRatio;
+			shieldCircle.y = shieldCircle.x;
+			this.attach(shieldCircle);
+
+			var shieldBox = Crafty.e("Box");
+			shieldBox.origin("center");
+			var shieldBoxW = graphicsSettings.AlienShieldWidthRadiusUnits*AlienShipRadius;
+			var shieldBoxH = graphicsSettings.AlienShieldLengthRadiusUnits*AlienShipRadius;
+			shieldBox.w = shieldBoxW*GraphicsRatio;
+			shieldBox.h = shieldBoxH*GraphicsRatio;
+			shieldBox.x = (AlienShipRadius - shieldBoxW/2)*GraphicsRatio;
+			shieldBox.y = (AlienShipRadius - shieldBoxH/2)*GraphicsRatio;
+
+			shieldBox.y -= graphicsSettings.AlienShieldStartYRadiusUnits*AlienShipRadius*GraphicsRatio;//move center to top of ship
+			shieldBox.y -= shieldBox.h/2; //move box origin to bottom middle
+			shieldBox.color("red");
+			this.attach(shieldBox);
+			/*
 			this.origin("center");
 			this.w = AlienShieldRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			
 			this.x = 0; this.y = 0;
 			this.color("red");
+			*/
 		}
 		,events: {
 			"UpdateFromGameState": function() {
 				if (this.gameStateEntity) {
 					var shieldUp = this.gameStateEntity.wrappedObj.shieldUp;
-					if (shieldUp) this.visible = true;
-					else this.visible = false;
+					if (shieldUp){
+						for (var i=0; i<this._children.length; i++) {
+							this._children[i].visible = true;
+						}
+					} else {
+						for (var i=0; i<this._children.length; i++) {
+							this._children[i].visible = false;
+						}
+					}
+
+					if (shieldUp) console.log("shieldUp");
 				}
 			}
 		}
@@ -416,6 +453,13 @@ SailboatGraphics.loadEverything = function(callback) {
 				,tileh:66
 				,map: {
 					explosion:[0,0]
+				}
+			}
+			,"shield.png": {
+				tile:65
+				,tileh:65
+				,map: {
+					shield:[0,0]
 				}
 			}
 		}

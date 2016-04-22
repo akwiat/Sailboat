@@ -53,6 +53,9 @@ function CraftyGraphics(graphicsSettings) {
 	
 		Crafty.init(this.size, this.size, document.getElementById('game'));
 	Crafty.background('#DFDFDF');
+	Crafty.c("Box", {
+		required: "2D, Canvas, Color"
+	});
 	//Crafty.addEvent(this, Crafty.stage.elem, "mousemove", onMouseMove);
 	Crafty.c("GameStateEntity", {
 		required: "2D, Canvas, Color",
