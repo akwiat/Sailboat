@@ -1,5 +1,7 @@
 function Callbacks() {
 	this.objs = {};
+
+	this.delayedCalls = [];
 	//this.oneShots = {};
 }
 Callbacks.prototype.register = function(fn, msg, typecode) {
@@ -14,6 +16,20 @@ Callbacks.prototype.register = function(fn, msg, typecode) {
 		nested[typecode] = [];
 
 	nested[typecode].push(fn);
+}
+Callbacks.prototype.triggerDelayed = function(obj, msg, typecode, nThis) {
+	var pushObj = {};
+	pushObj.obj = obj;
+	pushObj.msg = msg;
+	pushObj.typecode = typecode;
+	pushObj.nThis = nThis;
+	this.delayedCalls.push(pushObj);
+}
+Callbacks.prototype.callDelayedFns = function() {
+	for (var i=0; i < this.delayedCalls.length; i++) {
+		var obj = this.delayedCalls[i];
+		this.trigger(obj.fn, obj.msg, typecode, nThis);
+	}
 }
 Callbacks.prototype.trigger = function(obj, msg, typecode, nThis) {
 	/*

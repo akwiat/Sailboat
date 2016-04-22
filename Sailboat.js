@@ -215,16 +215,19 @@ Sailboat.getInitObj = function() {
 		ret.constructor.prototype.getShip = function() {
 			var shipArray = this.findDirectChildWithIdentifier("shipArray");
 			var ship = shipArray.children[0];
-			if (ship == undefined) throw new Error("ship problem");
+			//if (ship == undefined) throw new Error("ship problem");
 			return ship;
 		}
 		ret.constructor.prototype.activateShield = function(gt) {
+			if (console.log) console.log("activateShield");
 			var ship = this.getShip();
-			ship.setShield({s:1, ut:gt});
+			if (ship != undefined)
+				ship.setShield({s:1, ut:gt});
 		}
 		ret.constructor.prototype.deactivateShield = function(gt) {
 			var ship = this.getShip();
-			ship.setShield({s:0, ut:gt});
+			if (ship != undefined)
+				ship.setShield({s:0, ut:gt});
 		}
 		ret.constructor.prototype.checkShield = function() {
 			var ship = this.getShip();
@@ -336,9 +339,11 @@ Sailboat.Server = function(gameStructure) {
 			var ret;
 
 			if (hNum == aNum)
-				ret = aArray;
+				ret = hArray;
 			else if (hNum > aNum)
 				ret = aArray;
+			else if (aNum > hNum)
+				ret = hArray;
 			return ret;
 		};
 
