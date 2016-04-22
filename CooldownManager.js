@@ -1,4 +1,5 @@
 function GeneralCooldown(dt, onComplete, ou) {
+	this.type = "GeneralCooldown"
 	this.waitTime = dt;
 	this.onComplete = onComplete;
 	this.updateFn = ou;
@@ -25,6 +26,7 @@ GeneralCooldown.prototype.resetCooldown = function() {
 	this.startTime = undefined;
 }
 GeneralCooldown.prototype.checkTime = function(curT) {
+	console.log("checkTime");
 	if (this.startTime == undefined)
 		throw new Error("cooldown problem");
 
@@ -32,7 +34,7 @@ GeneralCooldown.prototype.checkTime = function(curT) {
 	if ( remaining <= 0 ) {
 		if (this.onComplete)
 			this.onComplete(curT);
-
+		console.log("completed")
 		this.resetCooldown();
 	}
 
@@ -41,15 +43,52 @@ GeneralCooldown.prototype.checkTime = function(curT) {
 }
 GeneralCooldown.prototype.onUpdate = function(curT) {
 	//debugger;
+	// console.log("onUpdate");
 	if (this.isActive()) {
 		//debugger;
 	var remaining = this.checkTime(curT);
-	if (this.onUpdate) this.updateFn(remaining);
+	if (this.updateFn) this.updateFn(remaining);
 	}
 }
 
+function DoubleCooldown(dt1, onComplete1, hud1, dt2, onComplete2, hud2) {
+	console.log("doubleCooldown constructor");
+	this.type = "DoubleCooldown";
+	this.cooldownStarted = false;
+	this.inFirstCooldown = false;
+	this.inSecondCooldown = false;
+	var transition = function(gt) {
+		console.log("transition");
+		onComplete1(gt);
+		this.inFirstCooldown = false;
+		var canSecondCooldown = this.secondCooldown.attempt(gt);
+		if (!canSecondCooldown) debugger;
+		this.inSecondCooldown = true;
+	}
+	var onFinalComplete = function() {
+		console.log("onFinalComplete")
+		if (onComplete2) onComplete2();
+		this.inSecondCooldown = false;
+		this.cooldownStarted = false;
+	}
+	this.firstCooldown = new GeneralCooldown(dt1, transition.bind(this), hud1);
+	this.secondCooldown = new GeneralCooldown(dt2, onFinalComplete.bind(this), hud2);
+}
 
+DoubleCooldown.prototype.attempt = function(gt) {
+	var canFirstCooldown = this.firstCooldown.attempt(gt);
+	this.cooldownStarted = true;
+	this.inFirstCooldown = true;
+}
 
+DoubleCooldown.prototype.onUpdate = function(gt) {
+	if (!this.cooldownStarted) return;
+	if (this.inFirstCooldown) {
+		this.firstCooldown.onUpdate(gt);
+	} else {
+		this.secondCooldown.onUpdate(gt);
+	}
+}
 
 function CooldownManager() {
 	this.runningCooldowns = [];

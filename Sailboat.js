@@ -124,7 +124,7 @@ Sailboat.getInitObj = function() {
 		// debugger;
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var p = cm.position;
-		var x = p.x;
+		var x = p.x; //cm.currentValues.x
 		var y = p.y; 
 		var l = settings.AlienAttackRadius;
 		var a = cm.angle.scalarValue % (2 * Math.PI);

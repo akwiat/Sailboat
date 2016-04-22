@@ -110,7 +110,7 @@ HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
 	var difObj = this.gameHandler.sendstate;
 	var msg = JSON.stringify(difObj);
-	console.log(msg);
+	// console.log(msg);
 	this.sendUpdate(msg);
 	difObj.clear();
 }

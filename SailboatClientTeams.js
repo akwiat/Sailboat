@@ -110,36 +110,43 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
    this.constructor.prototype.getShipTypeName = alienShipName;
 
    var alienShoot = function(gt) {
-      console.log("alienshoot");
-      var canShoot = this.shotTimer.attempt(gt);
-   		var canCooldown = this.shotCooldown.attempt(gt);
-   		if (canShoot && canCooldown) {
-        this.shotCooldown.resetCooldown();
-   			var myP = this["gameHandler"].myPlayer;
-   			myP.activateShield(gt);
-   		}
-   }
-   this.constructor.prototype.onShoot = alienShoot;
-   this.constructor.prototype.shieldDownAndCooldown = function(gt) {
-      console.log("shieldDownAndCooldown")
-      var ret = this.shotCooldown.attempt(gt);
-      if (ret) {
-        console.log("deactivating shield")
+      var res = this.shotCooldown.attempt(gt);
+      if (res) {
         var myP = this["gameHandler"].myPlayer;
-        myP.deactivateShield(gt);
-      } else {
-        debugger;
+        myP.activateShield(gt);
       }
    }
+   this.constructor.prototype.onShoot = alienShoot;
+   // this.constructor.prototype.shieldDownAndCooldown = function(gt) {
+   //    console.log("shieldDownAndCooldown")
+   //    var ret = this.shotCooldown.attempt(gt);
+   //    if (ret) {
+   //      console.log("deactivating shield")
+   //      var myP = this["gameHandler"].myPlayer;
+   //      myP.deactivateShield(gt);
+   //    } else {
+   //      debugger;
+   //    }
+   // }
 
-      this.shotTimer = new GeneralCooldown(this.gameSettings.BulletCooldown
-        ,this.shieldDownAndCooldown.bind(this), this.hudManager.setCooldown.bind(this.hudManager));
-      this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
-        ,undefined, this.hudManager.setCooldown.bind(this.hudManager));
+   console.log('sdf');
+   this.shotCooldown = new DoubleCooldown(
+    this.gameSettings.BulletCooldown,
+    this["gameHandler"].myPlayer.deactivateShield.bind(this["gameHandler"].myPlayer),
+    this.hudManager.setCooldown.bind(this.hudManager),
+    this.gameSettings.BulletCooldown, 
+    undefined,
+    this.hudManager.setCooldown.bind(this.hudManager)
+    )
+
+      // this.shotTimer = new GeneralCooldown(this.gameSettings.BulletCooldown
+      //   ,this.shieldDownAndCooldown.bind(this), undefined);
+      // this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
+      //   ,undefined, this.hudManager.setCooldown.bind(this.hudManager));
       this.respawnCooldown = new GeneralCooldown(this.gameSettings.AlienRespawnCooldown
         ,this.respawnShip.bind(this), this.hudManager.setRespawn.bind(this.hudManager));
 
-      this.cooldownManager.addCooldown(this.shotTimer);
+      // this.cooldownManager.addCooldown(this.shotTimer);
       this.cooldownManager.addCooldown(this.shotCooldown);
 			this.cooldownManager.addCooldown(this.respawnCooldown);
 
