@@ -131,16 +131,28 @@ Sailboat.getInitObj = function() {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var x = cm.currentValues.x; //cm.currentValues.x
 		var y = cm.currentValues.y; 
-		var l = settings.AlienAttackRadius;
-		var a = cm.currentValues.angle.scalarValue % (2 * Math.PI);
+		//var l = settings.AlienAttackRadius;
+		var a = cm.currentValues.angle % (2 * Math.PI);
+
+		var ASR = settings.AlienShipRadius;
+		var width = settings.AlienShieldWidthRadiusUnits*ASR;
+		var height = settings.AlienShieldLengthRadiusUnits*ASR;
+
+		var yoffset = settings.AlienShieldStartYRadiusUnits*ASR;
+		console.log(ASR, width, height, yoffset, a);
+
 		var rect = new SAT.Polygon(new SAT.Vector(x,y), [
-			new SAT.Vector(3, 0),
-			new SAT.Vector(3, l),
-			new SAT.Vector(-3, l),
-			new SAT.Vector(-3, 0)
+			new SAT.Vector(0, -width/2),
+			new SAT.Vector(height, -width/2),
+			new SAT.Vector(height, width/2),
+			new SAT.Vector(0, width/2)
 		]);
+		rect.setOffset(new SAT.Vector(0,yoffset) );
 		// rect.setAngle(angle) or rect.rotate(angle)
-		rect.rotate(a - Math.PI / 2.0);
+		rect.setAngle(a);
+
+		console.log(x,y);
+		console.log(rect.calcPoints);
 		// console.log(a);
 		// console.log(rect.points)
 		return rect;
@@ -206,9 +218,9 @@ Sailboat.getInitObj = function() {
 		}
 		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
 		ret.constructor.prototype.getShipAttackRect = getShipAttackRect;
-		ret.constructor.prototype.checkShield = function() {
+		ret.constructor.prototype.checkShipShield = function() {
 			var shield = this.findDirectChildWithIdentifier("shield");
-			return shield.checkShield();
+			return shield.wrappedObj.checkShield();
 		}
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
@@ -238,9 +250,9 @@ Sailboat.getInitObj = function() {
 				ship.setShield({s:0, ut:gt});
 		}
 		ret.constructor.prototype.checkShield = function() {
-			var ship = this.getShip();
-			if (ship)
-			return ship.checkShield();
+			var myShip = this.getShip();
+			if (myShip)
+			return myShip.checkShipShield();
 		}
 		return ret;
 	}
