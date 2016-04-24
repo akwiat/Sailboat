@@ -52,14 +52,16 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 			shortLoc = TreeNode.trimToLength(obj.clientProperty, clientLoc);
 			console.log(JSON.stringify(shortLoc));
 			console.log(JSON.stringify(clientLoc));
+			console.log(JSON.stringify(obj.clientProperty))
 			}
 
 			//if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
 			if (obj && obj.clientProperty !== undefined && TreeNode.compareLocations(clientLoc, shortLoc))
 				{util.log("----clientProperty"); return undefined; }
 			else if (obj && obj.shouldRemove)
+				{util.log("----shouldRemove"); return value}
 			// && parseInt(obj.getIndex()) == parseInt(id))
-				{util.log("----shouldRemove"); return undefined;}
+				//{util.log("----shouldRemove"); util.log(JSON.stringify(obj.clientProperty)); util.log(JSON.stringify(clientLoc)); return undefined;}
 			else
 				return value;
 		}
@@ -92,7 +94,7 @@ function HandlerBridgeClientSide() {
 	//are implicit from the structure
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
-	// console.log("client got msg: "+msg);
+	 console.log("client got msg: "+msg);
 	var c = msg.charAt(0);
 	if (c == "{") { //is JSON
 		var o = JSON.parse(msg);

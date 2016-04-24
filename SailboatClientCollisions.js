@@ -21,6 +21,8 @@ Sailboat.Client.prototype.checkCollisions = function() {
 		var alienArray = this["gameHandler"].getObjByName("alienTeam").children;
 		for (var i = 0; i < alienArray.length; i++) {
 
+			var alienPlayer = alienArray[i];
+			if (alienPlayer == undefined) continue;
 			if (alienArray[i] === myP) continue;
 			var shield = alienArray[i].checkShield();
 			if (!shield) continue;
@@ -33,6 +35,12 @@ Sailboat.Client.prototype.checkCollisions = function() {
 			if (hit) {
 				this.onDeadShip(myShip);
 				return;
+			} else {
+				var hit2 = SAT.testPolygonCircle(attackRect, alienCircle)
+				if (hit2) {
+					this.onDeadShip(myShip);
+					return;
+				}
 			}
 		}
 

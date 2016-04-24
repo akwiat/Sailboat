@@ -30,6 +30,7 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 		var gObj = graphicsObj.getNewBulletObj(bulletObj);
 		bulletObj.setGraphicsObj(gObj);
 	}
+
 	callbacks.register(humanShipAdded, "new", "humanShip");
 	callbacks.register(alienShipAdded, "new", "alienShip");
 	callbacks.register(shipRemoved, "removed", "humanShip");
@@ -37,7 +38,8 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 
 	callbacks.register(bulletAdded, "new", "bullet");
 	callbacks.register(shipRemoved, "removed", "bullet");
-	//callbacks.register()
+
+	
 
 
 

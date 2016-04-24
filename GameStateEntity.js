@@ -199,6 +199,10 @@ GameStateEntity.prototype.getRemovalFrag = function() {
 	var sd = new Frag();
 	var childFrag = new Frag();
 	childFrag.shouldRemove = true;
+	if (this.clientProperty) {
+		childFrag.clientProperty = this.getPath();
+	}
+	//childFrag.
 	sd.addChildAtIndex(childFrag, this.getIndex());
 	f.specificData = sd;
 	return f;

@@ -492,7 +492,7 @@ Sailboat.Server = function(gameStructure) {
 		//var p = this["gameHandler"].getObjByName(arrayName).children[index];
 		util.log("disconnect: "+JSON.stringify(clientId));
 		var p = this["gameHandler"].gs.entity.getObjFromPath(JSON.parse(clientId));
-		util.log("disconnect: "+JSON.stringify(clientId));
+		//util.log("disconnect: "+JSON.stringify(clientId));
 		var f = p.getRemovalFrag();
 		//var f2 = p.getFrag();
 		//util.log(JSON.stringify(f2));
