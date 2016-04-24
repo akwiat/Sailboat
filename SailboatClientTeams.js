@@ -56,7 +56,7 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 
 	//debugger;
 	var vMult = 1.5;
-	var pMult = 100;
+	var pMult = 50;
 	//var offset = 500;
 	var myP = this["gameHandler"].myPlayer;
 	var posEntity = myP.getChildByIdentifier("position");
@@ -66,6 +66,8 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 
 	var vUnit = pos.getVelocityUnit();
 	var vNorm = pos.position.getVelocityNorm();
+
+	if (vNorm < 10) vNorm = 10;
 	//debugger;
 	var vx = vMult*vUnit.x*vNorm;
 	var vy = vMult*vUnit.y*vNorm;

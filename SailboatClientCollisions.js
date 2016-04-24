@@ -36,7 +36,7 @@ Sailboat.Client.prototype.checkCollisions = function() {
 				this.onDeadShip(myShip);
 				return;
 			} else {
-				var hit2 = SAT.testPolygonCircle(attackRect, alienCircle)
+				var hit2 = SAT.testPolygonCircle(attackRect, shipCircle)
 				if (hit2) {
 					this.onDeadShip(myShip);
 					return;
