@@ -27,8 +27,9 @@ Sailboat.Client.prototype.checkCollisions = function() {
 			console.log("checking shields");
 			// if alien is attacking...
 			var alienShip = alienArray[i].findDirectChildWithIdentifier("shipArray").children[0];
+			var alienCircle = alienShip.getShipCircle();
 			var attackRect = alienShip.getShipAttackRect();
-			var hit = SAT.testCirclePolygon(shipCircle, attackRect);
+			var hit = SAT.testCircleCircle(shipCircle, alienCircle);
 			if (hit) {
 				this.onDeadShip(myShip);
 				return;
