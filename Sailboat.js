@@ -359,7 +359,7 @@ Sailboat.Server = function(gameStructure) {
 		var array = teamAllocator( this["gameHandler"]);
 		var arrayName = array.getIdentifier();
 		var nEnt = array.addObjToArrayNextAvailable();
-		console.log(nEnt);
+		//if (console.log)console.log(nEnt);
 		//var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
 		//var index = nEnt.getIndex();
 

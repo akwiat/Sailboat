@@ -458,7 +458,7 @@ Prop.PropCircleMover.prototype.propagate = function(t, presentValues) {
 	else circleAngle = curAngle + Math.PI/2
 	this.currentValues.x = this.circle.origin.x + Math.abs(circle.radius)*Math.cos(circleAngle); //add PI/2 to convert to angle around the circle
 	this.currentValues.y = this.circle.origin.y + Math.abs(circle.radius)*Math.sin(circleAngle);
-	if (this.currentValues.x < 0) debugger;
+	//if (this.currentValues.x < 0) debugger;
 	} else {
 		//this.position.propagate(t);
 		//this.currentValues.x = this.position.currentValues.x;
