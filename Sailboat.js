@@ -506,7 +506,7 @@ Sailboat.Server = function(gameStructure) {
 		var difObj = this["gameHandler"].sendstate;
 		this["handlerBridge"].sendUpdateToAllClients(difObj);
 	}
-	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 1000);
+	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 50);
 }
 
 
