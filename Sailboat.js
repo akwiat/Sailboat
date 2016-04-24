@@ -138,7 +138,7 @@ Sailboat.getInitObj = function() {
 		var width = settings.AlienShieldWidthRadiusUnits*ASR;
 		var height = settings.AlienShieldLengthRadiusUnits*ASR;
 
-		var yoffset = settings.AlienShieldStartYRadiusUnits*ASR;
+		var yoffset = settings.AlienShieldStartYRadiusUnits/2*ASR;
 		console.log(ASR, width, height, yoffset, a);
 
 		var rect = new SAT.Polygon(new SAT.Vector(x,y), [
