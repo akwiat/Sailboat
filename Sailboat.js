@@ -147,7 +147,7 @@ Sailboat.getInitObj = function() {
 			new SAT.Vector(height, width/2),
 			new SAT.Vector(0, width/2)
 		]);
-		rect.setOffset(new SAT.Vector(0,yoffset) );
+		rect.setOffset(new SAT.Vector(yoffset,0) );
 		// rect.setAngle(angle) or rect.rotate(angle)
 		rect.setAngle(a);
 
@@ -197,6 +197,11 @@ Sailboat.getInitObj = function() {
 			if (ship == undefined) throw new Error("ship problem");
 			return ship;
 		}
+/*
+		ret.constructor.prototype.getTeam = function() {
+			return this.parent.parent.identifier;
+		}
+		*/
 		return ret;
 	}
 	var AlienShip = function(posData) {
@@ -222,6 +227,7 @@ Sailboat.getInitObj = function() {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			return shield.wrappedObj.checkShield();
 		}
+		
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
 	}
@@ -254,6 +260,11 @@ Sailboat.getInitObj = function() {
 			if (myShip)
 			return myShip.checkShipShield();
 		}
+		/*
+		ret.constructor.prototype.getTeam = function() {
+			return this.parent.parent.identifier;
+		}
+		*/
 		return ret;
 	}
 	var SABullet = function(sd) {
