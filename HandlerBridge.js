@@ -94,7 +94,7 @@ function HandlerBridgeClientSide() {
 	//are implicit from the structure
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
-	 console.log("client got msg: "+msg);
+	// console.log("client got msg: "+msg);
 	var c = msg.charAt(0);
 	if (c == "{") { //is JSON
 		var o = JSON.parse(msg);
@@ -106,7 +106,7 @@ HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
 }
 HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 	//throw new Error("should inspect")
-	console.log("client sending: "+msg);
+	//console.log("client sending: "+msg);
 	this.clientSocket.send(msg);
 }
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
