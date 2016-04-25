@@ -192,6 +192,7 @@ Sailboat.getInitObj = function() {
 			//var ship = this.getShip();
 			var p = this.findDirectChildWithIdentifier("position");
 			if (p) return p.wrappedObj.currentValues;
+			else throw new Error("problem with get currentValues");
 		}
 		return ret;
 	}
@@ -213,6 +214,7 @@ Sailboat.getInitObj = function() {
 			var ship = this.getShip();
 			var p = ship.findDirectChildWithIdentifier("position");
 			if (p) return p.currentValues;
+			else throw new Error("problem with get currentValues");
 		}
 /*
 		ret.constructor.prototype.getTeam = function() {
