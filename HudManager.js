@@ -1,4 +1,4 @@
-window.onLoad() = function() {
+window.onload = function() {
 	document.getElementById("aliensButton").click(function() {
 		//Team "Aliens" selected
 		
