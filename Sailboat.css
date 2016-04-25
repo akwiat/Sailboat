@@ -4,6 +4,14 @@ h1{
 	color: #ffffff;
 }
 
+#teamSelect{
+	position: fixed;
+	width: auto;
+	height: auto;
+	background: #000000;
+	opacity: 0.8;
+}
+
 #hud {
 	font-family: "Courier New";
 	font-size: 12pt;
