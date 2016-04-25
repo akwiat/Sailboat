@@ -1,12 +1,14 @@
 window.onload = function() {
 	document.getElementById("aliensButton").click(function() {
 		//Team "Aliens" selected
+		alert("here");
 		
 		document.getElementById("teamSelect").style.display = "none";
 	});
 	
 	document.getElementById("humansButton").click(function() {
 		//Team "Humans" selected
+		alert("here");
 		
 		document.getElementById("teamSelect").style.display = "none";
 	})
