@@ -3,16 +3,15 @@ window.onload = function() {
 }
 
 function displayTeamSelect(e) {
-	alert("Display team select");
 	document.getElementById("teamSelect").style.visibility = "visible";
 	
-	document.getElementById("aliensButton").click(function() {
+	document.getElementById("aliensButton").onClick(function() {
 		alert("Aliens yaya");
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("alienTeam");	
 	});
 	
-	document.getElementById("humansButton").click(function() {
+	document.getElementById("humansButton").onClick(function() {
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("humanTeam");
 	});
