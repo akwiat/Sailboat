@@ -1,3 +1,21 @@
+window.onload = function() {
+	displayTeamSelect(function(teamName){ });
+}
+
+function displayTeamSelect(e) {
+	document.getElementById("teamSelect").style.visibility = "visible";
+	
+	document.getElementById("aliensButton").onclick = function() {
+		document.getElementById("teamSelect").style.visibility = "hidden";
+		e("alienTeam");	
+	}
+	
+	document.getElementById("humansButton").onclick = function() {
+		document.getElementById("teamSelect").style.visibility = "hidden";
+		e("humanTeam");
+	}
+}
+
 function HudManager() {
 	this.cooldown = document.getElementById("cooldownTime");
 	this.respawn = document.getElementById("respawnTime");
