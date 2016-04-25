@@ -1,3 +1,17 @@
+window.onLoad() = function() {
+	document.getElementById("").click(function() {
+		
+		document.getElementById("teamSelect").style.visibility = "hidden";
+	});
+	
+	document.getElementById("").click(function() {
+		//
+		
+		document.getElementById("teamSelect").style.visibility = "hidden";
+	})
+	
+}
+
 function HudManager() {
 	this.cooldown = document.getElementById("cooldownTime");
 	this.respawn = document.getElementById("respawnTime");
