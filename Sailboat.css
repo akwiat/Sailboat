@@ -1,6 +1,7 @@
 #hud {
 	font-family: "Courier New";
 	font-size: 12pt;
+    color: white;
 	position: absolute;
 	top: 15;
 	left: 15;
