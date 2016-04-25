@@ -1,11 +1,12 @@
 window.onLoad() = function() {
-	document.getElementById("").click(function() {
+	document.getElementById("aliensButton").click(function() {
+		//Team "Aliens" selected
 		
 		document.getElementById("teamSelect").style.visibility = "hidden";
 	});
 	
-	document.getElementById("").click(function() {
-		//
+	document.getElementById("humansButton").click(function() {
+		//Team "Humans" selected
 		
 		document.getElementById("teamSelect").style.visibility = "hidden";
 	})
