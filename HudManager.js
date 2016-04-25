@@ -5,16 +5,16 @@ window.onload = function() {
 function displayTeamSelect(e) {
 	document.getElementById("teamSelect").style.visibility = "visible";
 	
-	document.getElementById("aliensButton").onClick(function() {
+	document.getElementById("aliensButton").onclick = function() {
 		alert("Aliens yaya");
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("alienTeam");	
-	});
+	}
 	
-	document.getElementById("humansButton").onClick(function() {
+	document.getElementById("humansButton").onclick = function() {
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("humanTeam");
-	});
+	}
 }
 
 function HudManager() {
