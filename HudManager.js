@@ -3,6 +3,7 @@ window.onload = function() {
 }
 
 function displayTeamSelect(e) {
+	alert("Display team select");
 	document.getElementById("teamSelect").style.visibility = "visible";
 	
 	document.getElementById("aliensButton").click(function() {
