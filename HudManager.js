@@ -18,7 +18,7 @@ HudManager.prototype.setCooldown = function(x) {
 }
 
 HudManager.prototype.setRespawn = function(x) {
-	this.respawn.innerHTML = x;
+	this.respawn.innerHTML = x.toString().substring(0,3);
 }
 HudManager.prototype.incrementHumanScore = function() {
 	this.scoreHumans++;
