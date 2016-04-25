@@ -1,15 +1,19 @@
-function setHumansTeam() {
-	//Team "Humans" selected
-
-	document.getElementById("teamSelect").style.display = "none";
+window.onload = function() {
+	displayTeamSelect(function(teamName){ });
 }
-	
-function setAliensTeam() {
-	//Team "Aliens" selected
-		
-	document.getElementById("teamSelect").style.display = "none";
 
+function displayTeamSelect(e) {
+	document.getElementById("teamSelect").style.visibility = "visible";
 	
+	document.getElementById("aliensButton").click(function() {
+		document.getElementById("teamSelect").style.visibility = "hidden";
+		e("alienTeam");	
+	});
+	
+	document.getElementById("humansButton").click(function() {
+		document.getElementById("teamSelect").style.visibility = "hidden";
+		e("humanTeam");
+	});
 }
 
 function HudManager() {
