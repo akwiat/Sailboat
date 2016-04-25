@@ -189,12 +189,13 @@ Sailboat.getInitObj = function() {
 		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
 
 		ret.getCurrentValues = function() {
+			//var ship = this.getShip();
 			var p = this.findDirectChildWithIdentifier("position");
 			if (p) {
-				if (p.currentValues) return p.currentValues;
+				if (p.wrappedObj.currentValues) return p.wrappedObj.currentValues;
 				else throw new Error("problem with currentValues");
-			}
 		}
+
 		return ret;
 	}
 	var HumanPlayer = function() {
