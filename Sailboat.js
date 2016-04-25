@@ -194,6 +194,7 @@ Sailboat.getInitObj = function() {
 			if (p) {
 				if (p.wrappedObj.currentValues) return p.wrappedObj.currentValues;
 				else throw new Error("problem with currentValues");
+			}
 		}
 
 		return ret;
