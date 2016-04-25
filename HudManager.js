@@ -6,6 +6,7 @@ function displayTeamSelect(e) {
 	document.getElementById("teamSelect").style.visibility = "visible";
 	
 	document.getElementById("aliensButton").click(function() {
+		alert("Aliens yaya");
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("alienTeam");	
 	});
