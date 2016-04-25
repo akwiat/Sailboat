@@ -209,7 +209,7 @@ Sailboat.getInitObj = function() {
 		ret.constructor.prototype.getShip = function() {
 			var shipArray = this.findDirectChildWithIdentifier("shipArray");
 			var ship = shipArray.children[0];
-			if (ship == undefined) throw new Error("ship problem");
+			//if (ship == undefined) throw new Error("ship problem");
 			return ship;
 		}
 
