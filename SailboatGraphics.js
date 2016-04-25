@@ -149,7 +149,7 @@ function SailboatGraphics(graphicsSettings) {
 	* /
 	*/
 	Crafty.c("HumanShip", {
-		required: "PropCircleMover, ufo"
+		required: "PropCircleMover, human"
 		,init: function() {
 			console.log("init");
 			//debugger;
@@ -244,11 +244,20 @@ function SailboatGraphics(graphicsSettings) {
 		}
 	});
 	Crafty.c("SABullet", {
-		required: "PropPosition, explosion"
+		required: "PropPosition, bullet"
 		,init:function() {
 			this.w = BulletRadius*2.0*GraphicsRatio;
 			this.h = this.w;
 			this.origin("center");
+		}
+	});
+	Crafty.c("EffectExplosion", {
+		required: "2D, Canvas, Color, AlexEffect, explosion"
+		,init:function() {
+			this.w = BulletRadius*2.0*GraphicsRatio;
+			this.h = this.w;
+			this.origin("center");
+			//console.log("init explosion");
 		}
 	});
 	/*
@@ -438,6 +447,24 @@ SailboatGraphics.prototype.getNewBulletObj = function(gameStateEntity) {
 	var obj = Crafty.e('SABullet').gameStateEntity(gameStateEntity);
 	return obj;
 }
+SailboatGraphics.prototype.drawExplosion = function(gsentity) {
+	var cv = gsentity.getCurrentValues();
+	var x = cv.x;
+	var y = cv.y;
+	//var x = gsentity.wrappedObj.currentValues.x;
+	//var y = gsentity.wrappedObj.currentValues.y;
+	//debugger;
+
+	var entity = Crafty.e("EffectExplosion");
+
+	var gameC = this.convertToGraphicsCoord(cv.x, cv.y, entity.w, entity.h);
+	entity.x = gameC.x;
+	entity.y = gameC.y;
+	//entity.x = cv.x;
+	//entity.y = cv.y;
+	entity.setDuration(3.0);
+	entity.startEffect();
+}
 SailboatGraphics.loadEverything = function(callback) {
 	var assetsObj = {
 		"sprites":{
@@ -460,6 +487,20 @@ SailboatGraphics.loadEverything = function(callback) {
 				,tileh:65
 				,map: {
 					shield:[0,0]
+				}
+			}
+			,"circletest.png": {
+				tile:38
+				,tileh:38
+				,map:{
+					bullet:[0,0]
+				}
+			}
+			,"shiptest1.png": {
+				tile:71
+				,tileh:69
+				,map:{
+					human:[0,0]
 				}
 			}
 		}

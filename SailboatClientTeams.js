@@ -19,6 +19,7 @@ Sailboat.Client.prototype.setupTeamFunctions = function(arrayName) {
 }
 
 Sailboat.Client.prototype.setupHumanFunctions = function() {
+	var settings = this.gameSettings;
    var humanRespawn = function(gt) {
    	//debugger;
    	if (gt == undefined) gt = this["gameHandler"].getGameTime();
@@ -71,10 +72,11 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 	//debugger;
 	var vx = vMult*vUnit.x*vNorm;
 	var vy = vMult*vUnit.y*vNorm;
-	var x = pos.position.x + vUnit.x*pMult;
-	var y = pos.position.y + vUnit.y*pMult;
-	//debugger;
-	//var ut = this["gameHandler"].getGameTime();
+	var x = pos.currentValues.x + vUnit.x*pMult;
+	var y = pos.currentValues.y + vUnit.y*pMult;
+	//var x = pos.position.x + vUnit.x*pMult;
+	//var y = pos.position.y + vUnit.y*pMult;
+
 	var sd = {x:x, y:y, vx:vx, vy:vy, ut:gt};
 	//debugger;
 	var nb = this["gameHandler"].officialNewObj("bulletArray", sd);
@@ -82,7 +84,16 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 	}
 	this.constructor.prototype.onShoot = humanShoot;
 
+	var humanControls = function(control) {
+		var cmc = control.controlsCircleMover;
+		cmc.accFwd = settings.HumanAccFwd;
+		cmc.accBack = cmc.accFwd;
 
+		cmc.accRight = settings.HumanAccRight;
+		cmc.accLeft = cmc.accRight;
+
+	}
+	this.constructor.prototype.teamSpecificControls = humanControls;
 
 			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
 				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
@@ -94,6 +105,7 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 }
    
 Sailboat.Client.prototype.setupAlienFunctions = function() {
+	var settings = this.gameSettings;
 	var alienRespawn = function(gt) {
 		if (gt == undefined) gt = this["gameHandler"].getGameTime();
 		var respawnBox = this.gameSettings.AlienRespawnBox;
@@ -135,6 +147,17 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
    //      debugger;
    //    }
    // }
+
+   	var alienControls = function(control) {
+		var cmc = control.controlsCircleMover;
+		cmc.accFwd = settings.AlienAccFwd;
+		cmc.accBack = cmc.accFwd;
+
+		cmc.accRight = settings.AlienAccRight;
+		cmc.accLeft = cmc.accRight;
+
+	}
+	this.constructor.prototype.teamSpecificControls = alienControls;
 
    console.log('sdf');
    this.shotCooldown = new DoubleCooldown(

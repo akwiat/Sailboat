@@ -31,8 +31,10 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			var myShip = myPlayer.getChildByIdentifier("shipArray").children[0];
 			var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
 
+			//this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
 			this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
-
+			this.teamSpecificControls(this.shipControl);
+			
 			this["gameStructure"]["client"].controlsManager.addControl(this.shipControl);
 
 			this["gameStructure"]["client"].controlsManager.addControl(

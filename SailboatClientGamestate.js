@@ -30,6 +30,11 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 		else
 			throw new Error("bad team on shipRemove");
 
+		graphicsObj.drawExplosion(shipObj);
+
+	}
+	var objRemoved = function(obj) {
+		graphicsObj.removeShipObj(obj.graphicsObj);
 	}
 	var bulletAdded = function(bulletObj) {
 		//debugger;
@@ -44,7 +49,7 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 	callbacks.register(shipRemoved.bind(this), "removed", "alienShip");
 
 	callbacks.register(bulletAdded, "new", "bullet");
-	callbacks.register(shipRemoved.bind(this), "removed", "bullet");
+	callbacks.register(objRemoved, "removed", "bullet");
 
 	
 

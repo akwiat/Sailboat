@@ -104,6 +104,11 @@ Sailboat.settings = {
 	,AlienMaxV:300.0
 	,AlienMaxA:7.5
 	,HumanMaxA:5.0
+	//
+	,AlienAccFwd: 200.0
+	,AlienAccRight: -4.0
+	,HumanAccFwd: 150.0
+	,HumanAccRight: -3.0
 }
 
 Sailboat.getInitObj = function() {
@@ -182,6 +187,12 @@ Sailboat.getInitObj = function() {
 		//ret.shipRadius = 25;
 		ret.setClientProperty();
 		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
+
+		ret.getCurrentValues = function() {
+			//var ship = this.getShip();
+			var p = this.findDirectChildWithIdentifier("position");
+			if (p) return p.wrappedObj.currentValues;
+		}
 		return ret;
 	}
 	var HumanPlayer = function() {
@@ -196,6 +207,12 @@ Sailboat.getInitObj = function() {
 			var ship = shipArray.children[0];
 			if (ship == undefined) throw new Error("ship problem");
 			return ship;
+		}
+
+		ret.getCurrentValues = function() {
+			var ship = this.getShip();
+			var p = ship.findDirectChildWithIdentifier("position");
+			if (p) return p.currentValues;
 		}
 /*
 		ret.constructor.prototype.getTeam = function() {
@@ -227,7 +244,12 @@ Sailboat.getInitObj = function() {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			return shield.wrappedObj.checkShield();
 		}
-		
+
+		ret.getCurrentValues = function() {
+			//var ship = this.getShip();
+			var p = this.findDirectChildWithIdentifier("position");
+			if (p) return p.currentValues;
+		}
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
 	}
@@ -265,6 +287,7 @@ Sailboat.getInitObj = function() {
 			return this.parent.parent.identifier;
 		}
 		*/
+
 		return ret;
 	}
 	var SABullet = function(sd) {

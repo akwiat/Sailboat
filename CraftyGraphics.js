@@ -9,7 +9,7 @@ function CraftyGraphics(graphicsSettings) {
 	var GraphicsRatio = this.ratio;
 	var GraphicsSize = this.size;
 	
-		var convertToGameCoord = function(graphicsCoordX, graphicsCoordY) {
+	var convertToGameCoord = function(graphicsCoordX, graphicsCoordY) {
 		var ret = {};
 		ret.x = graphicsCoordX/GraphicsRatio;
 		ret.y = (GraphicsSize - graphicsCoordY)/GraphicsRatio;
@@ -23,6 +23,7 @@ function CraftyGraphics(graphicsSettings) {
 		adjustForStupidOrigin(ret, w, h);
 		return ret;
 	}
+	this.convertToGraphicsCoord = convertToGraphicsCoord;
 	var adjustForStupidOrigin = function(obj, w, h) {
 		if (!w || !h)debugger;
 		obj.x -= w/2;
@@ -110,6 +111,17 @@ function CraftyGraphics(graphicsSettings) {
 
 				}
 			}
+		}
+	});
+	var destroyEntity = function() {
+		this.destroy();
+	}
+	Crafty.c("AlexEffect", {
+		setDuration: function(dur) {
+			this.duration = dur;
+		}
+		,startEffect: function() {
+			this.timeoutId = setTimeout(destroyEntity.bind(this), this.duration*1000); //conv to ms
 		}
 	});
 	
