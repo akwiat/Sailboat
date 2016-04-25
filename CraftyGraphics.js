@@ -24,6 +24,14 @@ function CraftyGraphics(graphicsSettings) {
 		return ret;
 	}
 	this.convertToGraphicsCoord = convertToGraphicsCoord;
+	this.setEntityGraphicsCoords = function(entity, gx, gy) {
+		var w = entity.w;
+		var h = entity.h;
+
+		var ret = this.convertToGraphicsCoord(gx, gy, w, h);
+		entity.x = ret.x;
+		entity.y = ret.y;
+	}
 	var adjustForStupidOrigin = function(obj, w, h) {
 		if (!w || !h)debugger;
 		obj.x -= w/2;
@@ -53,7 +61,7 @@ function CraftyGraphics(graphicsSettings) {
 	
 	
 		Crafty.init(this.size, this.size, document.getElementById('game'));
-	Crafty.background('#DFDFDF');
+	Crafty.background('#081848');
 	Crafty.c("Box", {
 		required: "2D, Canvas, Color"
 	});
