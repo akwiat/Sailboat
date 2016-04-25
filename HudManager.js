@@ -6,7 +6,6 @@ function displayTeamSelect(e) {
 	document.getElementById("teamSelect").style.visibility = "visible";
 	
 	document.getElementById("aliensButton").onclick = function() {
-		alert("Aliens yaya");
 		document.getElementById("teamSelect").style.visibility = "hidden";
 		e("alienTeam");	
 	}
