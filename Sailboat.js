@@ -211,6 +211,7 @@ Sailboat.getInitObj = function() {
 		}
 
 		ret.getCurrentValues = function() {
+			throw new Error("deprecated");
 			var ship = this.getShip();
 			var p = ship.findDirectChildWithIdentifier("position");
 			if (p) return p.currentValues;
@@ -251,6 +252,7 @@ Sailboat.getInitObj = function() {
 			//var ship = this.getShip();
 			var p = this.findDirectChildWithIdentifier("position");
 			if (p) return p.currentValues;
+			else throw new Error("problem with get currentValues");
 		}
 		return ret;
 		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
