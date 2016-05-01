@@ -1,5 +1,5 @@
 if (!this.___alexnorequire) {
-	var GameStructureCodes = require("./GameStructure").GameStructureCodes;
+	var GameStructureCodes = require("./GameStructureCodes").GameStructureCodes;
 	var TreeNode = require("./Tree").TreeNode;
 	var util = require("util");
 //var AlexInheritConstructor = require("./AlexInherit").AlexInheritConstructor;
@@ -52,7 +52,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 			shortLoc = TreeNode.trimToLength(obj.clientProperty, clientLoc);
 			console.log(JSON.stringify(shortLoc));
 			console.log(JSON.stringify(clientLoc));
-			console.log(JSON.stringify(obj.clientProperty))
+			console.log("cp: "+JSON.stringify(obj.clientProperty))
 			}
 
 			//if (obj && obj.clientProperty !== undefined && parseInt(obj.clientProperty) === parseInt(obj.getIndex() ))
@@ -66,7 +66,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 				return value;
 		}
 		var msg = JSON.stringify(difObj, theReplacer);
-		util.log(msg);
+		//util.log(msg);
 		sendable.send(msg);
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
@@ -103,6 +103,9 @@ HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
 		this.gameStructure.trigger(msg, GameStructureCodes.CLIENTGOTCUSTOMMSG, undefined, this.gameStructure);
 		//this.clientHandler.onCustomMsg(msg);
 	}
+}
+HandlerBridgeClientSide.prototype.sendCustomMessage = function(msg) {
+	this.clientSocket.send(msg);
 }
 HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
 	//throw new Error("should inspect")

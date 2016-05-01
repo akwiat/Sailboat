@@ -1,3 +1,4 @@
+/*
 window.onload = function() {
 	displayTeamSelect(function(teamName){ });
 }
@@ -15,7 +16,7 @@ function displayTeamSelect(e) {
 		e("humanTeam");
 	}
 }
-
+*/
 function HudManager() {
 	this.cooldown = document.getElementById("cooldownTime");
 	this.respawn = document.getElementById("respawnTime");

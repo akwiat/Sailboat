@@ -25,9 +25,33 @@ ServerHandlerLink.prototype.getServerId = function(handlerId) {
 ServerHandlerLink.prototype.getHandlerId = function(serverId) {
 	return this.serverHandlerMap[serverId];
 }
+ServerHandlerLink.prototype.defaultHandlerId = function() {
+	var i = 0;
+	while ( true ) {
+		if (this.handlerServerMap[i] == undefined)
+			return i;
+		i++;
+	}
+}
 ServerHandlerLink.prototype.addConnection = function(serverId, handlerId) {
-	this.serverHandlerMap[serverId] = handlerId;
-	this.handlerServerMap[handlerId] = serverId;
+
+	var hid;
+	if (handlerId == undefined)
+		hid = this.defaultHandlerId();
+	else
+		hid = handlerId;
+
+	this.serverHandlerMap[serverId] = hid;
+	this.handlerServerMap[hid] = serverId;
+
+	return hid;
+}
+ServerHandlerLink.prototype.changeHandlerId = function(oldId, newId) {
+	this.handlerServerMap[newId] = this.handlerServerMap[oldId];
+	this.handlerServerMap[oldId] = undefined;
+
+	var servId = this.handlerServerMap[newId];
+	this.serverHandlerMap[servId] = newId;
 }
 ServerHandlerLink.prototype.removeConnection = function(serverId, handlerId) {
 	this.serverHandlerMap[serverId] = undefined;
@@ -40,8 +64,10 @@ ServerHandlerLink.prototype.onMessage = function(msg) {
 ServerHandlerLink.prototype.onNewConnection = function(serverId) {
 	//var hid = this.handler.onNewConnection();
 	var hid = this.gameStructure.trigger(undefined, GameStructureCodes.SERVERNEWCONN, undefined, this.gameStructure);
-	this.addConnection(serverId, hid);
-	this.gameStructure.trigger(hid, GameStructureCodes.SERVERINITPLAYER, undefined, this.gameStructure);
+	var realId = this.addConnection(serverId, hid);
+	this.gameStructure.trigger(realId, GameStructureCodes.INFORMCLIENTID);
+
+	//this.gameStructure.trigger(hid, GameStructureCodes.SERVERINITPLAYER, undefined, this.gameStructure);
 	//this.handler.connectionReady(hid);
 }
 ServerHandlerLink.prototype.clientDisconnected = function(serverId) {

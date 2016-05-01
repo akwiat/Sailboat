@@ -109,6 +109,11 @@ Sailboat.settings = {
 	,AlienAccRight: -4.0
 	,HumanAccFwd: 150.0
 	,HumanAccRight: -3.0
+
+	,HumanTeamCode:"h"
+	,AlienTeamCode:"a"
+	,HumanTeamArray:"humanTeam"
+	,AlienTeamArray:"alienTeam"
 }
 
 Sailboat.getInitObj = function() {
@@ -384,10 +389,23 @@ Sailboat.getInitObj = function() {
 	//return {gameHandler: new GameHandler(gameStateType), client: new Sailboat.Client()};
 }
 Sailboat.Server = function(gameStructure) {
+
+
 	gameStructure.clientIdManager = new ClientIdManager();
 	var idManager = gameStructure.clientIdManager; //for closure
 
+	var settings = Sailboat.settings;
+
 	var callbacks = gameStructure.callbacks;
+	var informClientId = function(hid) {
+		var msg  = "i" + hid;
+		this["serverHandlerLink"].sendToClient(hid, msg);
+	}
+	callbacks.register(informClientId.bind(gameStructure), GameStructureCodes.INFORMCLIENTID);
+	var serverNewConn = function() {
+
+	}
+	/*
 	var serverNewConn = function() {
 
 		
@@ -425,7 +443,46 @@ Sailboat.Server = function(gameStructure) {
 
 		return locStr;
 	}
-	callbacks.register(serverNewConn, GameStructureCodes.SERVERNEWCONN);
+	*/
+	callbacks.register(serverNewConn.bind(gameStructure), GameStructureCodes.SERVERNEWCONN);
+
+	var goAlienTeam = function (id) {
+		var aName = settings.AlienTeamArray;
+		var array = this["gameHandler"].getObjByName(aName);
+		//util.log("")
+		var nEnt = array.addObjToArrayNextAvailable();
+		var locStr = JSON.stringify(nEnt.getPath());
+		util.log("goAlienTeam: "+locStr);
+
+		this["serverHandlerLink"].changeHandlerId(id, locStr);
+		callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
+
+	}.bind(gameStructure);
+	var goHumanTeam = function(id) {
+		var aName = settings.HumanTeamArray;
+		var array = this["gameHandler"].getObjByName(aName);
+
+		var nEnt = array.addObjToArrayNextAvailable();
+		var locStr = JSON.stringify(nEnt.getPath());
+		util.log("goHumanTeam: "+locStr);
+
+		this["serverHandlerLink"].changeHandlerId(id, locStr);
+
+		callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
+	}.bind(gameStructure);
+	var serverCustomMsg = function(msg) {
+		var c = msg.charAt(0);
+		var str = msg.slice(1);
+
+		if (c == settings.AlienTeamCode) {
+			goAlienTeam(str);
+		} else if (c == settings.HumanTeamCode) {
+			goHumanTeam(str);
+		} else
+			throw new Error("bad custom msg");
+		//util.log("server got custom msg: "+msg);
+	}
+	callbacks.register(serverCustomMsg.bind(gameStructure), GameStructureCodes.SERVERGOTCUSTOMMSG);
 	var serverInitPlayer = function(locationStr) {
 
 		//init conditions, send everything
@@ -467,7 +524,7 @@ Sailboat.Server = function(gameStructure) {
 		var msg = "p" + JSON.stringify(f);
 		this["serverHandlerLink"].sendToClient(locationStr, msg);
 	};
-	callbacks.register(serverInitPlayer, GameStructureCodes.SERVERINITPLAYER);
+	callbacks.register(serverInitPlayer.bind(gameStructure), GameStructureCodes.SERVERINITPLAYER);
 	var getInitValues = function(arrayName, id, ut) {
 		var gsid = 0;
 		var team;
@@ -550,7 +607,7 @@ Sailboat.Server = function(gameStructure) {
 		var difObj = this["gameHandler"].sendstate;
 		this["handlerBridge"].sendUpdateToAllClients(difObj);
 	}
-	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 50);
+	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 40);
 }
 
 

@@ -13,7 +13,11 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 		//console.log("client custom msg: "+msg);
 		var c = msg.charAt(0);
 		var str = msg.slice(1);
-		if (c == "p") {
+		if (c == "i") {
+			this.setMyId(str);
+			//debugger;
+		}
+		else if (c == "p") {
 
 			var state = this["gameStructure"]["gameHandler"].gs;
 			var frag = Frag.makeFromStr(str);
@@ -50,7 +54,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	}
 	gameStructureCallbacks.register(clientCustomMsg.bind(this), GameStructureCodes.CLIENTGOTCUSTOMMSG);
 
-	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 40);
+	this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 50);
 	this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
 	
