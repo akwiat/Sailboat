@@ -65,7 +65,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	//this.respawnCooldown = new 
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
-	this.registerGameStateCallbacks();
+	this.registerGameStateCallbacks(); 
 }
 
 //Sailboat.Client.prototype.set
