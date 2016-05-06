@@ -93,7 +93,7 @@ Sailboat.Client.prototype.setupHumanFunctions = function() {
 		cmc.accLeft = cmc.accRight;
 
 	}
-	this.constructor.prototype.teamSpecificControls = humanControls;
+	this.teamSpecificControls = humanControls;
 
 			this.shotCooldown = new GeneralCooldown(this.gameSettings.BulletCooldown
 				,undefined, this.hudManager.setCooldown.bind(this.hudManager));
@@ -157,7 +157,7 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
 		cmc.accLeft = cmc.accRight;
 
 	}
-	this.constructor.prototype.teamSpecificControls = alienControls;
+	this.teamSpecificControls = alienControls;
 
    console.log('sdf');
    this.shotCooldown = new DoubleCooldown(
