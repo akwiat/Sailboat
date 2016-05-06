@@ -42,7 +42,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 			this["gameStructure"]["client"].controlsManager.addControl(this.shipControl);
 
 			this["gameStructure"]["client"].controlsManager.addControl(
-				new ThreexControlsAction(this.onShoot.bind(this), "p")
+				new ThreexControlsAction(this.onShoot.bind(this), " ")
 				);
 
 

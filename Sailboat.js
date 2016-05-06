@@ -251,7 +251,7 @@ Sailboat.getInitObj = function() {
 		}
 		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
 		ret.constructor.prototype.getShipAttackRect = getShipAttackRect;
-		ret.constructor.prototype.checkShipShield = function() {
+		ret.checkShipShield = function() {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			return shield.wrappedObj.checkShield();
 		}

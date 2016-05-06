@@ -3,6 +3,11 @@ Sailboat.Client.prototype.checkCollisions = function() {
 	if (!myP) return;
 	var myShip = myP.findDirectChildWithIdentifier("shipArray").children[0];
 	if(myShip) { // myShip is not dead
+		if (myShip.checkShipShield) {
+			var s = myShip.checkShipShield();
+			if (s) return;
+		}
+
 		var shipCircle = myShip.getShipCircle();
 
 		// check myShip collision with any bullets
