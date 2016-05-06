@@ -106,7 +106,7 @@ Sailboat.settings = {
 	,HumanMaxA:5.0
 	//
 	,AlienAccFwd: 200.0
-	,AlienAccRight: -4.0
+	,AlienAccRight: -12.0
 	,HumanAccFwd: 150.0
 	,HumanAccRight: -3.0
 
