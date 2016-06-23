@@ -1,6 +1,35 @@
 if (!this.___alexnorequire) {
 var MakeTreeNode = require("./Tree").MakeTreeNode;
+}
+function FragDestination() {
+	this.destinationKind = undefined;
+	this.destinationDataCode = undefined;
+
+	this.destinationData = undefined;
 }	
+FragDestination.SEND = "SD"
+FragDestination.SKIP = "SK"
+
+FragDestination.ALL = "AL";
+FragDestination.ME = "ME";
+FragDestination.MYTEAM = "MT";
+FragDestination.CUSTOM = "CM";
+
+FragDestination.prototype.toJSON = function() {
+	return {
+		dk:this.destinationKind
+		,dc:this.destinationDataCode
+		,dd:this.destinationData
+	};
+}
+FragDestination.makeFromObj = function(obj) {
+	var ret = new FragDestination();
+	ret.destinationKind = obj.dk;
+	ret.destinationDataCode = obj.dc;
+	ret.destinationData = obj.dd;
+	return ret;
+}
+
 function Frag(specificData, identifier, updateTime) {
 	//this.typeCode = typeCode;
 	//this.objIndex = objIndex;
