@@ -147,9 +147,14 @@ GameStateEntity.prototype.getSpecificFrag = function() {
 }
 */
 GameStateEntity.prototype.getSpecificFrag = function() {
+	if (this.isRoot())
+		throw new Error("shouldn't be root");
 	var retFrag = new Frag();
-	retFrag.treeLocation = this.getPath();
+	retFrag.treeLocation = this.parent.getPath();
 	retFrag.isSpecificFrag = true;
+	//var childFrag = new Frag();
+	//childFrag.addChildAtIndex(this.getFrag(), this.getIndex());
+	retFrag.addChildAtIndex(this.getFrag(), this.getIndex());
 	return retFrag;
 }
 /*
@@ -204,6 +209,22 @@ GameStateEntity.prototype.getRemovalFrag = function() {
 		throw new Error("shouldn't be root");
 	var f = new Frag();
 	f.treeLocation = this.parent.getPath();
+
+	var childFrag = new Frag();
+	childFrag.shouldRemove = true;
+	if (this.clientProperty) {
+		childFrag.clientProperty = this.getPath();
+	}
+
+	f.addChildAtIndex(childFrag, this.getIndex());
+	return f;
+}
+/*
+GameStateEntity.prototype.getRemovalFrag = function() {
+	if (this.isRoot())
+		throw new Error("shouldn't be root");
+	var f = new Frag();
+	f.treeLocation = this.parent.getPath();
 	var sd = new Frag();
 	var childFrag = new Frag();
 	childFrag.shouldRemove = true;
@@ -215,6 +236,7 @@ GameStateEntity.prototype.getRemovalFrag = function() {
 	f.specificData = sd;
 	return f;
 }
+*/
 /*
 GameStateEntity.prototype.processNew = function(frag, callbacks) {
 	var nObj = new this.arrayType();
@@ -260,7 +282,7 @@ GameStateEntity.prototype.applyFrag = function(frag, callbacks) {
 		this.wrappedObj.applySpecificData(frag.specificData);
 		//callbacks.trigger(this.)
 	}
-	if (frag.treeLocation && frag.treeLocation.length != undefined) {//if identifier is an array
+	if (frag.isSpecificFrag && frag.treeLocation && frag.treeLocation.length != undefined) {//if identifier is an array
 		//if (!this.isRoot()) throw new Error("should be root");
 		if (frag.treeLocation.length == 0)
 			throw new Error("identifier length is 0");
@@ -268,11 +290,11 @@ GameStateEntity.prototype.applyFrag = function(frag, callbacks) {
 		//var chIndex = tl.pop();
 		obj = this.getObjFromPath(frag.treeLocation);
 		if (!obj) throw new Error("bad obj");
-		//frag.treeLocation = undefined;
-		//debugger;
-		obj.applyFrag(frag.specificData, callbacks);
-		//obj.applyFragLogic(chIndex, frag, callbacks);
-		//frag.identifier = frag.identifier[0]; //set to the local index
+
+		//obj.applyFrag(frag.specificData, callbacks);
+		frag.isSpecificFrag = false;
+		obj.applyFrag(frag, callbacks);
+
 	} else {
 		//this.applyFragLogic(this,frag)
 		
