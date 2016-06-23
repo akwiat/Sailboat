@@ -42,6 +42,8 @@ function Frag(specificData, identifier, updateTime) {
 
 	this.treeLocation = undefined;
 	this.clientProperty = undefined;
+
+	this.isSpecificFrag = undefined;
 	MakeTreeNode(this);
 }
 
@@ -64,9 +66,12 @@ Frag.makeFromObj = function(obj) {
   }
   ret.treeLocation = obj.tl;
   ret.clientProperty = obj.cp;
+  /*
   if (obj.tl != undefined) {
   	ret.specificData = Frag.makeFromObj(obj.sd);
   }
+  */
+  if (obj.sf) ret.isSpecificFrag = true;
   return ret;
 }
 Frag.makeFromStr = function(str) {
@@ -95,7 +100,8 @@ Frag.prototype.toJSON = function() {
 			ne:this.isNew,
 			ch:this.children,
 			tl:this.treeLocation,
-			cp:this.clientProperty
+			cp:this.clientProperty,
+			sf:this.isSpecificFrag
 			/*,ms:this.message*/}
 }
 

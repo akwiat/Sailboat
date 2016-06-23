@@ -134,6 +134,7 @@ GameStateEntity.prototype.applySpecificData = function(sd) {
 		throw new Error("applySpecificData: bad wrappedObj");
 	this.wrappedObj.applySpecificData(sd);
 }
+/*
 GameStateEntity.prototype.getSpecificFrag = function() {
 	if (this.isRoot())
 		throw new Error("shouldn't be root");
@@ -142,6 +143,13 @@ GameStateEntity.prototype.getSpecificFrag = function() {
 	var childFrag = new Frag();
 	childFrag.addChildAtIndex(this.getFrag(), this.getIndex());
 	retFrag.specificData = childFrag;
+	return retFrag;
+}
+*/
+GameStateEntity.prototype.getSpecificFrag = function() {
+	var retFrag = new Frag();
+	retFrag.treeLocation = this.getPath();
+	retFrag.isSpecificFrag = true;
 	return retFrag;
 }
 /*
