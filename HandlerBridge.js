@@ -46,6 +46,48 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 			var obj = this[key];
 
 			var shortLoc;
+			if (obj && obj.destinationData) {
+				var shouldSend = obj.destinationData.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
+				if (!shouldSend)
+					return undefined;
+			}
+			/*
+			if(obj && obj.clientProperty) {
+			//console.log(JSON.stringify(obj.clientProperty));
+			var clientLoc = JSON.parse(clientLocationStr);
+			shortLoc = TreeNode.trimToLength(obj.clientProperty, clientLoc);
+			console.log(JSON.stringify(shortLoc));
+			console.log(JSON.stringify(clientLoc));
+			console.log("cp: "+JSON.stringify(obj.clientProperty))
+			}
+			*/
+			/*
+			if (obj && obj.clientProperty !== undefined && TreeNode.compareLocations(clientLoc, shortLoc))
+				{util.log("----clientProperty"); return undefined; }
+			else */if (obj && obj.shouldRemove)
+				{util.log("----shouldRemove"); return value}
+			// && parseInt(obj.getIndex()) == parseInt(id))
+				//{util.log("----shouldRemove"); util.log(JSON.stringify(obj.clientProperty)); util.log(JSON.stringify(clientLoc)); return undefined;}
+			//else
+				return value;
+		}
+		var msg = JSON.stringify(difObj, theReplacer);
+		//util.log(msg);
+		sendable.send(msg);
+	}
+	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
+	difObj.clear();
+}
+/*
+HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
+	var difObj = this["gameHandler"].pullSendstate();
+	//util.log("\n\n\nsendUpdateToAllClients: "+JSON.stringify(difObj));
+	var sendFunction = function(sendable, clientLocationStr) {
+		//util.log("sendFunction: "+id);
+		var theReplacer = function(key, value) {
+			var obj = this[key];
+
+			var shortLoc;
 			if(obj && obj.clientProperty) {
 			//console.log(JSON.stringify(obj.clientProperty));
 			var clientLoc = JSON.parse(clientLocationStr);
@@ -72,6 +114,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
 	difObj.clear();
 }
+*/
 HandlerBridgeServerSide.prototype.sendCustomMessage = function(sendable, msg) {
 	sendable.send(msg);
 }
