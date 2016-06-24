@@ -84,7 +84,7 @@ Frag.makeFromObj = function(obj) {
   	}
   }
   ret.treeLocation = obj.tl;
-  ret.clientProperty = obj.cp;
+  //ret.clientProperty = obj.cp;
   /*
   if (obj.tl != undefined) {
   	ret.specificData = Frag.makeFromObj(obj.sd);
@@ -119,7 +119,7 @@ Frag.prototype.toJSON = function() {
 			ne:this.isNew,
 			ch:this.children,
 			tl:this.treeLocation,
-			cp:this.clientProperty,
+			//cp:this.clientProperty,
 			sf:this.isSpecificFrag
 			/*,ms:this.message*/}
 }
