@@ -94,6 +94,8 @@ GameHandler.prototype.pullSendstate = function() {
 	return ret;
 	//this.send
 }
-
+GameHandler.prototype.getTeamNameFromLocation = function(loc) {
+	return this.gs.getTeamNameFromLocation(loc);
+}
 if (!this.___alexnorequire) 
 exports.GameHandler = GameHandler;
