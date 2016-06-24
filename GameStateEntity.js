@@ -372,6 +372,17 @@ GameStateEntity.prototype.findDirectChildWithIdentifier = function(identifier) {
 	}
 	return undefined;
 }
+GameStateEntity.prototype.getTeamName = function() {
+	var myindex = 0;
+	var cur = this;
+	var teamIdentifier = "Teams";
+	while(!cur.isRoot() && cur.identifier != teamIdentifier) {
+		myindex = cur.getIndex();
+		cur = cur.parent;
+	}
+	if (cur.isRoot()) throw new Error("teamIdentifier not found");
+	return cur.childAt(myindex).identifier;
+}
 GameStateEntity.prototype.getWrappedObj = function() {
 	return this.wrappedObj;
 }
