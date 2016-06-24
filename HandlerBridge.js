@@ -39,6 +39,7 @@ HandlerBridgeServerSide.prototype.sendUpdate = function(sendable, difObj) {
 }
 HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var difObj = this["gameHandler"].pullSendstate();
+	var gameHandler = this["gameHandler"];
 	//util.log("\n\n\nsendUpdateToAllClients: "+JSON.stringify(difObj));
 	var sendFunction = function(sendable, clientLocationStr) {
 		//util.log("sendFunction: "+id);
@@ -47,6 +48,10 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 
 			var shortLoc;
 			if (obj && obj.destinationData) {
+				var selfLoc = obj.treeLoc;
+				var recipLoc = clientLocationStr;
+				var selfTeam = gameHandler.getTeamNameFromLocation(JSON.parse(selfLoc));
+				var recipTeam = gameHandler.getTeamNameFromLocation(JSON.parse(reciploc));
 				var shouldSend = obj.destinationData.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
 				if (!shouldSend)
 					return undefined;
