@@ -29,7 +29,26 @@ FragDestination.makeFromObj = function(obj) {
 	ret.destinationData = obj.dd;
 	return ret;
 }
-
+FragDestination.prototype.checkIfSend = function(myLoc, recipLoc, myTeam, recipTeam) {
+	//locs are treeLoc strings
+	//teams are teamname strings
+	var ret = true; //default is send, default is FragDestination.SEND
+	if (this.destinationDataCode == FragDestination.ME) {
+		if (myLoc == recipLoc) ret = true;
+		else ret = false;
+	} else if (this.destinationDataCode == FragDestination.MYTEAM) {
+		if (myTeam == recipTeam) ret = true;
+		else ret = false;
+	} else if (this.destinationDataCode == FragDestination.ALL) {
+		ret = true;
+	} else throw new Error("bad destinationDataCode");
+	
+	if (this.destinationKind == FragDestination.SEND)
+	  return ret;
+	else if (this.destinationKind == FragDestination.SKIP)
+	  return !ret;
+	else if throw new Error("bad destinationKind");
+}
 function Frag(specificData, identifier, updateTime) {
 	//this.typeCode = typeCode;
 	//this.objIndex = objIndex;
