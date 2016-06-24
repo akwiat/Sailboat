@@ -48,7 +48,9 @@ GameState.prototype.update = function(curtime) {
 GameState.prototype.clear = function() {
 	this.entity.clear();
 }
-
+GameState.prototype.getTeamNameFromLocation = function(loc) {
+	return this.entity.getObjFromPath(loc).getTeamName();
+}
 if (!this.___alexnorequire) {
 	exports.GameState = GameState
 	
