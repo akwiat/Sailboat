@@ -132,7 +132,9 @@ Frag.prototype.toJSON = function() {
 			dd:this.destination
 			/*,ms:this.message*/}
 }
-
+Frag.prototype.setDestination = function(destination) {
+	this.destination = destination;
+}
 
 if (!this.___alexnorequire) {
 	exports.Frag = Frag;
