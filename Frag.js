@@ -49,6 +49,12 @@ FragDestination.prototype.checkIfSend = function(myLoc, recipLoc, myTeam, recipT
 	  return !ret;
 	else if throw new Error("bad destinationKind");
 }
+FragDestination.notMe = function() {
+	var ret = new FragDestination();
+	ret.destinationKind = FragDestination.SKIP;
+	ret.destinationDataCode = FragDestination.ME;
+	return ret;
+}
 function Frag(specificData, identifier, updateTime) {
 	//this.typeCode = typeCode;
 	//this.objIndex = objIndex;
