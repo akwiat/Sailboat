@@ -47,14 +47,20 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 			var obj = this[key];
 
 			var shortLoc;
-			if (obj && obj.destinationData) {
-				var selfLoc = obj.treeLoc;
+			if (obj && obj.destination) {
+				var selfLoc = JSON.stringify(obj.treeLocation);
 				var recipLoc = clientLocationStr;
-				var selfTeam = gameHandler.getTeamNameFromLocation(JSON.parse(selfLoc));
-				var recipTeam = gameHandler.getTeamNameFromLocation(JSON.parse(reciploc));
-				var shouldSend = obj.destinationData.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
+				util.log("selfLoc: "+selfLoc);
+				util.log("recipLoc: "+recipLoc);
+				//util.log(selfLoc == recipLoc);
+				var selfTeam = undefined;
+				var recipTeam = undefined;
+				//var selfTeam = gameHandler.getTeamNameFromLocation(JSON.parse(selfLoc));
+				//var recipTeam = gameHandler.getTeamNameFromLocation(JSON.parse(reciploc));
+				var shouldSend = obj.destination.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
 				if (!shouldSend)
 					return undefined;
+				//util.log(shouldSend);
 			}
 			/*
 			if(obj && obj.clientProperty) {
@@ -77,7 +83,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 				return value;
 		}
 		var msg = JSON.stringify(difObj, theReplacer);
-		//util.log(msg);
+		util.log("msg: "+msg);
 		sendable.send(msg);
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);

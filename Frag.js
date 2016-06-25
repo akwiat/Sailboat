@@ -47,7 +47,7 @@ FragDestination.prototype.checkIfSend = function(myLoc, recipLoc, myTeam, recipT
 	  return ret;
 	else if (this.destinationKind == FragDestination.SKIP)
 	  return !ret;
-	else if throw new Error("bad destinationKind");
+	else throw new Error("bad destinationKind");
 }
 FragDestination.notMe = function() {
 	var ret = new FragDestination();
@@ -74,6 +74,7 @@ function Frag(specificData, identifier, updateTime) {
 }
 
 Frag.makeFromObj = function(obj) {
+  if(!obj) return undefined;
   var ret = new Frag(obj.sd,obj.id, obj.ut);
   if (obj.sr == true)
   	ret.shouldRemove = true;
@@ -135,7 +136,9 @@ Frag.prototype.toJSON = function() {
 Frag.prototype.setDestination = function(destination) {
 	this.destination = destination;
 }
-
+Frag.prototype.setDestinationNotMe = function() {
+	this.destination = FragDestination.notMe();
+}
 if (!this.___alexnorequire) {
 	exports.Frag = Frag;
 }

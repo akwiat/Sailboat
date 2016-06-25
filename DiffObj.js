@@ -44,7 +44,9 @@ DifferenceObj.makeFromObj = function(obj) {
 	//util.log(JSON.stringify(obj));
 	var ret = new DifferenceObj();
 	for (var i=0,l=obj.fl.length;i<l;i++) {
-		ret.fraglist.push(Frag.makeFromObj(obj.fl[i]));
+		var nFrag = Frag.makeFromObj(obj.fl[i]);
+			if (nFrag) ret.fraglist.push(nFrag);
+			
 	}
 	/*
 	if (obj.initp !== undefined)

@@ -512,6 +512,7 @@ Sailboat.Server = function(gameStructure) {
 
 		}
 		var others = pEnt.getSpecificFrag();
+		others.setDestinationNotMe();
 		util.log("other: "+JSON.stringify(others));
 		this["gameHandler"].sendstate.add(others);
 		

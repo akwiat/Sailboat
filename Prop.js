@@ -266,7 +266,11 @@ Prop.PropScalar.prototype.applySpecificData = function(obj) {
 		this.velocity = obj.v;
 	if (obj.ut)
 		this.updateTime = obj.ut;
+	else
+		throw new Error("bad updateTime");
 
+	if (this.updateTime == undefined)
+		throw new Erorr("bad updateTime on apply")
 	return this;
 }
 Prop.PropScalar.prototype.propagate = function(t, presentValues) {

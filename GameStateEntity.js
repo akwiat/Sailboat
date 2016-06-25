@@ -149,12 +149,13 @@ GameStateEntity.prototype.getSpecificFrag = function() {
 GameStateEntity.prototype.getSpecificFrag = function() {
 	if (this.isRoot())
 		throw new Error("shouldn't be root");
-	var retFrag = new Frag();
-	retFrag.treeLocation = this.parent.getPath();
+	//var retFrag = new Frag();
+	var retFrag = this.getFrag();
+	retFrag.treeLocation = this.getPath();
 	retFrag.isSpecificFrag = true;
 	//var childFrag = new Frag();
 	//childFrag.addChildAtIndex(this.getFrag(), this.getIndex());
-	retFrag.addChildAtIndex(this.getFrag(), this.getIndex());
+	//retFrag.addChildAtIndex(this.getFrag(), this.getIndex());
 	return retFrag;
 }
 /*
@@ -207,6 +208,7 @@ GameStateEntity.prototype.getPlayerIndex = function() {
 GameStateEntity.prototype.getRemovalFrag = function() {
 	if (this.isRoot())
 		throw new Error("shouldn't be root");
+/*
 	var f = new Frag();
 	f.treeLocation = this.parent.getPath();
 
@@ -218,6 +220,12 @@ GameStateEntity.prototype.getRemovalFrag = function() {
 
 	f.addChildAtIndex(childFrag, this.getIndex());
 	return f;
+	*/
+	var ret = new Frag();
+	ret.treeLocation = this.getPath();
+	ret.isSpecificFrag = true;
+	ret.shouldRemove = true;
+	return ret;
 }
 /*
 GameStateEntity.prototype.getRemovalFrag = function() {
@@ -291,9 +299,15 @@ GameStateEntity.prototype.applyFrag = function(frag, callbacks) {
 		obj = this.getObjFromPath(frag.treeLocation);
 		if (!obj) throw new Error("bad obj");
 
-		//obj.applyFrag(frag.specificData, callbacks);
 		frag.isSpecificFrag = false;
+		//frag.treeLocation = undefined;
 		obj.applyFrag(frag, callbacks);
+		frag.isSpecificFrag = true;
+		//var parentObj = obj.parent; if (!parentObj) throw new Error("badParent");
+		//var index = obj.getIndex();
+		//parentObj.applyFragLogic(index, frag, callbacks);
+		//obj.applyFrag(frag.specificData, callbacks);
+
 
 	} else {
 		//this.applyFragLogic(this,frag)

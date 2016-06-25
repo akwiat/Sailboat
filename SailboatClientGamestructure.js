@@ -5,7 +5,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	var updateLoop = function() {
 		if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
-		frag.setDestination(FragDestination.notMe);
+		frag.setDestination(FragDestination.notMe());
 		this["gameHandler"].sendstate.add(frag);
 		this["handlerBridge"].sendUpdateToServer();
 		}
