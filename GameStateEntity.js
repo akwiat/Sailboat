@@ -294,19 +294,22 @@ GameStateEntity.prototype.applyFrag = function(frag, callbacks) {
 		//if (!this.isRoot()) throw new Error("should be root");
 		if (frag.treeLocation.length == 0)
 			throw new Error("identifier length is 0");
-		//var tl = frag.treeLocation.slice(); //shallow copy
-		//var chIndex = tl.pop();
-		obj = this.getObjFromPath(frag.treeLocation);
-		if (!obj) throw new Error("bad obj");
-
+		var myIndex = frag.treeLocation[0];
+		var parentLoc = frag.treeLocation.slice(1);
+		//var myIndex = parentLoc.pop();
+		console.log("parentLoc and index: "+parentLoc+", "+myIndex);
+		var parentObj = this.getObjFromPath(parentLoc); if (!parentObj) throw new Error("bad parentObj");
 		frag.isSpecificFrag = false;
-		//frag.treeLocation = undefined;
-		obj.applyFrag(frag, callbacks);
+		parentObj.applyFragLogic(myIndex, frag, callbacks);
 		frag.isSpecificFrag = true;
-		//var parentObj = obj.parent; if (!parentObj) throw new Error("badParent");
-		//var index = obj.getIndex();
-		//parentObj.applyFragLogic(index, frag, callbacks);
-		//obj.applyFrag(frag.specificData, callbacks);
+		//obj = this.getObjFromPath(frag.treeLocation);
+		//if (!obj) throw new Error("bad obj");
+
+		//var myindex = frag.getIndex();
+		//frag.isSpecificFrag = false;
+		//parentObj.applyFragLogic(myindex, frag, callbacks);
+		//frag.isSpecificFrag = true;
+
 
 
 	} else {
