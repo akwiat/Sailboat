@@ -120,13 +120,11 @@ Sailboat.getInitObj = function() {
 	var settings = Sailboat.settings;
 	var getShipCircle = function(radius) {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
-		//var p = cm.position;
+
 		var x = cm.currentValues.x;
 		var y = cm.currentValues.y;
 		var r = radius;
-		//var r = Sailboat.settings.ShipRadius;
-		//var a = cm.angle.scalarValue;
-		
+
 		var ret = new SAT.Circle(new SAT.Vector(x,y), r);
 		return ret;
 	}
@@ -137,11 +135,11 @@ Sailboat.getInitObj = function() {
 		return getShipCircle.call(this, settings.AlienShipRadius);
 	}
 	var getShipAttackRect = function() {
-		// debugger;
+
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 		var x = cm.currentValues.x; //cm.currentValues.x
 		var y = cm.currentValues.y; 
-		//var l = settings.AlienAttackRadius;
+
 		var a = cm.currentValues.angle % (2 * Math.PI);
 
 		var ASR = settings.AlienShipRadius;
@@ -158,13 +156,12 @@ Sailboat.getInitObj = function() {
 			new SAT.Vector(0, width/2)
 		]);
 		rect.setOffset(new SAT.Vector(yoffset,0) );
-		// rect.setAngle(angle) or rect.rotate(angle)
+
 		rect.setAngle(a);
 
 		console.log(x,y);
 		console.log(rect.calcPoints);
-		// console.log(a);
-		// console.log(rect.points)
+
 		return rect;
 	}
 
@@ -184,12 +181,7 @@ Sailboat.getInitObj = function() {
 		var ret = new GameStateEntity("humanShip");
 		ret.addComponent( new GameStateEntity("position",
 		new Prop.PropCircleMover(posData).setBoostManager(humanBoostManager) ).setClientProperty());
-/*
-		ret.addComponent( new GameStateEntity("shield",
-			new Shield() ).setClientProperty()
-			);
-*/		
-		//ret.shipRadius = 25;
+
 		ret.setClientProperty();
 		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
 
@@ -225,11 +217,7 @@ Sailboat.getInitObj = function() {
 			if (p) return p.currentValues;
 			else throw new Error("problem with get currentValues");
 		}
-/*
-		ret.constructor.prototype.getTeam = function() {
-			return this.parent.parent.identifier;
-		}
-		*/
+
 		return ret;
 	}
 	var AlienShip = function(posData) {
@@ -297,11 +285,7 @@ Sailboat.getInitObj = function() {
 			if (myShip)
 			return myShip.checkShipShield();
 		}
-		/*
-		ret.constructor.prototype.getTeam = function() {
-			return this.parent.parent.identifier;
-		}
-		*/
+
 
 		return ret;
 	}
@@ -314,49 +298,7 @@ Sailboat.getInitObj = function() {
 		return ret;
 	}
 	
-	/*
-	var HAPlayer = function() {
-		var ret = new GameStateEntity("player");
-		var ships = new GameStateEntity("shipArray");
-		ships.addComponentArray(HAShip, 3);
-		ret.addComponent(ships);
 
-		var bullets = new GameStateEntity("bulletArray");
-		bullets.addComponentArray(HABullet, 0);
-		ret.addComponent(bullets);
-		return ret;
-	}
-	*/
-	/*
-	var SAPlayer = function() {
-		var ret = new GameStateEntity("player");
-
-		var shipArray = new GameStateEntity("shipArray");
-		shipArray.addComponentArray( SAShip, 1 );
-		ret.addComponent(shipArray);
-
-		/*
-		var respawnShip = function(sd) {
-			
-			var nShip = new SAShip();
-			nShip.findChildWithIdentifier("position").wrappedObj.applySpecificData(sd);
-			this.addComponent( nShip );
-			
-
-			//debugger;
-		}
-		ret.constructor.prototype.respawnShip = respawnShip;
-		* /
-		return ret;
-	}
-	*/
-	/*
-	var HumanTeam = function() {
-		var ret = new GameStateEntity("humanTeam");
-		ret.addComponentArray(SAPlayer, 0);
-		return ret;
-	}
-	*/
 	var gameStateType = function() {
 		var ret = new GameState();
 		var rootEntity = ret.entity;
@@ -366,11 +308,6 @@ Sailboat.getInitObj = function() {
 		rootEntity.addComponent(hTeam);
 
 
-		/*
-		var playerArray = new GameStateEntity("playerArray");
-		playerArray.addComponentArray(SAPlayer, 0);
-		ret.entity.addComponent(playerArray);
-		*/
 		var bulletArray = new GameStateEntity("bulletArray");
 		bulletArray.addComponentArray(SABullet, 0);
 		rootEntity.addComponent(bulletArray);
@@ -386,7 +323,7 @@ Sailboat.getInitObj = function() {
 	if (Sailboat.Client)
 		ret.client = new Sailboat.Client();
 	return ret;
-	//return {gameHandler: new GameHandler(gameStateType), client: new Sailboat.Client()};
+	
 }
 Sailboat.Server = function(gameStructure) {
 
@@ -405,45 +342,7 @@ Sailboat.Server = function(gameStructure) {
 	var serverNewConn = function() {
 
 	}
-	/*
-	var serverNewConn = function() {
 
-		
-		//var nEnt = this["gameHandler"].getObjByName("humanTeam").addObjToArrayNextAvailable();
-		//util.log(JSON.stringify(nEnt));
-		//var id = nEnt.getIndex();
-		var teamAllocator = function(gameHandler) {
-			var hArray = gameHandler.getObjByName("humanTeam");
-			var aArray = gameHandler.getObjByName("alienTeam");
-
-			var hNum = hArray.countChildren();
-			var aNum = aArray.countChildren();
-
-			var ret;
-
-			if (hNum == aNum)
-				ret = hArray;
-			else if (hNum > aNum)
-				ret = aArray;
-			else if (aNum > hNum)
-				ret = hArray;
-			return ret;
-		};
-
-		var array = teamAllocator( this["gameHandler"]);
-		var arrayName = array.getIdentifier();
-		var nEnt = array.addObjToArrayNextAvailable();
-		//if (console.log)console.log(nEnt);
-		//var nEnt = this["gameHandler"].getObjByName(arrayName).addObjToArrayNextAvailable();
-		//var index = nEnt.getIndex();
-
-		//var id = idManager.registerId(arrayName, index);
-		var locStr = JSON.stringify(nEnt.getPath());
-		util.log("onNewConnection: "+locStr);
-
-		return locStr;
-	}
-	*/
 	callbacks.register(serverNewConn.bind(gameStructure), GameStructureCodes.SERVERNEWCONN);
 
 	var goAlienTeam = function (id) {
@@ -489,10 +388,7 @@ Sailboat.Server = function(gameStructure) {
 		util.log("serverInitPlayer, gsid: "+locationStr);
 		var state = this["gameHandler"].gs;
 		
-		//var myArray = teamAllocator(this["gameHandler"]);
-		//var myArrayName = idManager.getArrayNameFromId(gsid);
-		//var myArray = state.entity.finDirectdChildWithIdentifier(myArrayName);
-		//var myIndex = idManager.getIndexFromId(gsid);
+
 		var loc = JSON.parse(locationStr);
 		var pEnt = state.entity.getObjFromPath(loc);
 		var arrayIdentifier = pEnt.parent.getIdentifier();
@@ -549,49 +445,9 @@ Sailboat.Server = function(gameStructure) {
 
 		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
 	}
-	/*
-	var getInitValues = function(gsid, shipnum) {
-		var x,y;
-		var vx, vy;
-		if (gsid == 0) {
-			x = 500;
-			y = 150;
-			vx = 0;
-			vy = 0.01;
-		} else if (gsid == 1) {
-			x = 500;
-			y = 850;
-			vx = 0;
-			vy = -0.01;
-		}
-		else {
-			throw new Error("bad gsid");
-		}
-
-		if (shipnum == 0) {
-
-		} else if (shipnum == 1) {
-			x += 300;
-			y -= 80;
-		} else if (shipnum == 2) {
-			x -= 300;
-			y -= 80;
-		} else {
-			throw new Error("bad shipnum: "+shipnum);
-		}
-		return {x:x, y:y, vx:vx, vy:vy};
-	}
-	*/
+	
 	var serverPlayerDisconnected = function(clientId) {
 		util.log("child::clientDisconnected: "+clientId);
-		//var p = this["gameHandler"].gs.getObject(Player.gameStateCode, clientId);
-		//var p = this["gameHandler"].gs.entity.children[0].children[clientId];
-		//var p = this["gameHandler"].getObjByName("playerArray").children[clientId];
-
-		//var arrayName = idManager.getArrayNameFromId(clientId);
-		//var index = idManager.getIndexFromId(clientId);
-
-		//var p = this["gameHandler"].getObjByName(arrayName).children[index];
 		util.log("disconnect: "+JSON.stringify(clientId));
 		var p = this["gameHandler"].gs.entity.getObjFromPath(JSON.parse(clientId));
 		//util.log("disconnect: "+JSON.stringify(clientId));
