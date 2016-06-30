@@ -1,6 +1,6 @@
 # Sailboat
 
-1. Reach running state
+1. Give the handler link a send to all clients method that handles the destination logic
 2. Client program flow
 3. jqery terminal / register commands
 4. crafty save/load universe
