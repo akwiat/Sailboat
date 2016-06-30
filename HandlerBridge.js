@@ -36,19 +36,16 @@ HandlerBridgeServerSide.destinationLogicReplacer = function(key, value) {
 }
 HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var difObj = this["gameHandler"].pullSendstate();
-	var gameHandler = this["gameHandler"];
-
+	this.sendObjectToAllClients(difObj);
+	difObj.clear();
+}
+HandlerBridgeServerSide.prototype.sendObjectToAllClients = function(obj) {
 	var sendFunction = function(sendable, clientLocationStr) {
-	
-		var theReplacer = function(key, value) {
-			
-		}
-		var msg = JSON.stringify(difObj, theReplacer);
-		util.log("msg: "+msg);
+		var msg = JSON.stringify(difObj, HandlerBridgeServerSide.destinationLogicReplacer);
+		util.log("sendObjToAllClients: "+msg);
 		sendable.send(msg);
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
-	difObj.clear();
 }
 HandlerBridgeServerSide.prototype.sendCustomMessage = function(sendable, msg) {
 	sendable.send(msg);
