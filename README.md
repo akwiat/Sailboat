@@ -1,7 +1,7 @@
 # Sailboat
 
 1. Give the handler link a send to all clients method that handles the destination logic
-2. Client program flow
+2. Client program flow - create gamestructure with default behavior then make customizations, split up client reasonably
 3. jqery terminal / register commands
 4. crafty save/load universe
 5. Modes
