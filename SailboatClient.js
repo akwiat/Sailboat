@@ -44,6 +44,7 @@ Sailboat.Client.prototype.onFrame = function(eventData) {
 	this.controlsManager.inputUpdates(eventData.dt/1000, gt);
 	this["gameHandler"].update();
 	this.checkCollisions();
+	//console.log("finish onFrame");
 }
 Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	// var shipNum = gameStateObj.getIndex();
@@ -52,8 +53,9 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 	this.shotCooldown.resetCooldown();
 	var ret = this.respawnCooldown.attempt(gt);
 	if (ret) {
-	var removeFrag = gameStateObj.getRemovalFrag();
+	var removeFrag = gameStateObj.getRemovalFrag();//removeFrag.setDestination(Destination.notMe());
 	this["gameHandler"].officialChange(removeFrag);
+	//debugger;
 	} else debugger;
 
 	//this.respawnShip(this["gameHandler"].getGameTime());

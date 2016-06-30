@@ -297,7 +297,8 @@ GameStateEntity.prototype.applyFrag = function(frag, callbacks) {
 		var myIndex = frag.treeLocation[0];
 		var parentLoc = frag.treeLocation.slice(1);
 		//var myIndex = parentLoc.pop();
-		console.log("parentLoc and index: "+parentLoc+", "+myIndex);
+		//console.log("parentLoc and index: "+parentLoc+", "+myIndex);
+		//debugger;
 		var parentObj = this.getObjFromPath(parentLoc); if (!parentObj) throw new Error("bad parentObj");
 		frag.isSpecificFrag = false;
 		parentObj.applyFragLogic(myIndex, frag, callbacks);

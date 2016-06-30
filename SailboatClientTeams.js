@@ -111,6 +111,8 @@ Sailboat.Client.prototype.setupAlienFunctions = function() {
 		var respawnBox = this.gameSettings.AlienRespawnBox;
 		 var loc = getRandInBox(respawnBox);
      //debugger;
+     console.log("gameTime respawn: "+gt);
+     //debugger;
      var sd = {p:{x:loc.x, y:loc.y, ut:gt}, a:{s:-1.0*Math.PI/2, ut:gt}, ut:gt};
      //this["gameStructure"]["gameHandler"].myPlayer.respawnShip(sd);
      var myP = this["gameHandler"].myPlayer;

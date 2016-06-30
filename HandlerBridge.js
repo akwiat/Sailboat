@@ -58,8 +58,10 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 				//var selfTeam = gameHandler.getTeamNameFromLocation(JSON.parse(selfLoc));
 				//var recipTeam = gameHandler.getTeamNameFromLocation(JSON.parse(reciploc));
 				var shouldSend = obj.destination.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
-				if (!shouldSend)
+				if (!shouldSend) {
+					util.log("not sending");
 					return undefined;
+				} else util.log("sending");
 				//util.log(shouldSend);
 			}
 			/*

@@ -3,6 +3,7 @@ if (!this.___alexnorequire) {
 var util = require("util");
 var DifferenceObj = require("./DiffObj").DifferenceObj;
 var GameStateEntity = require("./GameStateEntity").GameStateEntity;
+//var Destination = require("./Destination").Destination;
 }
 
 
@@ -54,6 +55,8 @@ GameHandler.prototype.applyFrag = function(frag) {
 	this.gs.applyFrag(frag);
 }
 GameHandler.prototype.officialChange = function(frag) {
+	//frag.setDestination(Destination.notMe());
+	frag.setDestinationNotMe();
 	this.sendstate.add(frag);
 	this.gs.applyFrag(frag);
 }
@@ -64,7 +67,10 @@ GameHandler.prototype.officialNewObj = function(identifier, initData, startObj) 
 	var nObj = array.addObjToArrayNextAvailable(undefined, initData);
 	this.gs.callbacks.trigger(nObj, "new", nObj.identifier);
 	//var index = this.gs.addNew(obj);
-	this.sendstate.add(nObj.getSpecificFrag());
+	//this.sendstate.add(nObj.getSpecificFrag());
+	var frag = nObj.getSpecificFrag();
+	frag.setDestinationNotMe();
+	this.sendstate.add(frag);
 	return nObj;
 }
 GameHandler.prototype.unOfficialNewObj = function(obj) {
