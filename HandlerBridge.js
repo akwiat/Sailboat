@@ -20,6 +20,20 @@ HandlerBridgeServerSide.prototype.sendUpdate = function(sendable, difObj) {
 	throw new Error("deprecated");
 	sendable.send(JSON.stringify(difObj));
 }
+HandlerBridgeServerSide.destinationLogicReplacer = function(key, value) {
+  var obj = this[key];
+
+  var shortLoc;
+  if (obj && obj.destination) {
+    var selfLoc = JSON.stringify(obj.treeLocation);
+    var recipLoc = clientLocationStr;
+    var shouldSend = obj.destination.checkIfSend(selfLoc, recipLoc);
+    if (!shouldSend) return undefined;
+  	
+  }
+
+  return value;
+}
 HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var difObj = this["gameHandler"].pullSendstate();
 	var gameHandler = this["gameHandler"];
@@ -27,23 +41,7 @@ HandlerBridgeServerSide.prototype.sendUpdateToAllClients = function(difObj) {
 	var sendFunction = function(sendable, clientLocationStr) {
 	
 		var theReplacer = function(key, value) {
-			var obj = this[key];
-
-			var shortLoc;
-			if (obj && obj.destination) {
-				var selfLoc = JSON.stringify(obj.treeLocation);
-				var recipLoc = clientLocationStr;
-				util.log("selfLoc: "+selfLoc);
-				util.log("recipLoc: "+recipLoc);
-				
-				var selfTeam = undefined;
-				var recipTeam = undefined;
-
-				var shouldSend = obj.destination.checkIfSend(selfLoc, recipLoc, selfTeam, recipTeam);
-				if (!shouldSend) return undefined;
-			}
-
-				return value;
+			
 		}
 		var msg = JSON.stringify(difObj, theReplacer);
 		util.log("msg: "+msg);
