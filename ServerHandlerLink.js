@@ -1,9 +1,13 @@
 var util = require("util");
 var GameStructureCodes = require("./GameStructureCodes").GameStructureCodes;
+var BasicIdManager = require("./AlexUtil").BasicIdManager;
 
 function ServerHandlerLink() {
 	this.serverHandlerMap = {};
 	this.handlerServerMap = {};
+
+	this.inactives = new BasicIdManager();
+	this.inactivesIdentifier = "inactives";
 
 	/*this.gameServer 
 	  this.handlerBridge
@@ -47,6 +51,12 @@ ServerHandlerLink.prototype.addConnection = function(serverId, handlerId) {
 	return hid;
 }
 ServerHandlerLink.prototype.changeHandlerId = function(oldId, newId) {
+    var len = this.inactivesIdentifier.length;
+    if (oldId.slice(0, len) == this.inactivesIdentifier)
+    	this.inactives.releaseId(oldId.slice(len));
+
+    util.log("changeHandlerId: "+oldId.slice(0,len)+", "+oldId.slice(len));
+
 	this.handlerServerMap[newId] = this.handlerServerMap[oldId];
 	this.handlerServerMap[oldId] = undefined;
 
@@ -63,7 +73,10 @@ ServerHandlerLink.prototype.onMessage = function(msg) {
 }
 ServerHandlerLink.prototype.onNewConnection = function(serverId) {
 	//var hid = this.handler.onNewConnection();
-	var hid = this.gameStructure.trigger(undefined, GameStructureCodes.SERVERNEWCONN, undefined, this.gameStructure);
+	//var hid = this.gameStructure.trigger(undefined, GameStructureCodes.SERVERNEWCONN, undefined, this.gameStructure);
+	//util.log("hid: "+hid);
+	
+	var hid = this.inactivesIdentifier + this.inactives.requestId();
 	var realId = this.addConnection(serverId, hid);
 	this.gameStructure.trigger(realId, GameStructureCodes.INFORMCLIENTID);
 
