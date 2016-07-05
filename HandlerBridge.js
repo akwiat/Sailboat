@@ -50,7 +50,10 @@ HandlerBridgeServerSide.prototype.sendObjectToAllClients = function(obj) {
 HandlerBridgeServerSide.prototype.sendCustomMessage = function(sendable, msg) {
 	sendable.send(msg);
 }
-
+HandlerBridgeServerSide.prototype.sendToClient = function() {
+	var shl = this["serverHandlerLink"];
+	shl.sendToClient.apply(shl, arguments);
+}
 
 //------HandlerBridgeClientSide
 function HandlerBridgeClientSide() {
