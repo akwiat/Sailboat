@@ -79,13 +79,13 @@ ServerHandlerLink.prototype.onNewConnection = function(serverId) {
 	var hid = this.inactivesIdentifier + this.inactives.requestId();
 	var realId = this.addConnection(serverId, hid);
 	//this.gameStructure.trigger(realId, GameStructureCodes.INFORMCLIENTID);
-	this["handlerBridge"].informClientId();
+	this["handlerBridge"].informClientId(realId);
 	//this.gameStructure.trigger(hid, GameStructureCodes.SERVERINITPLAYER, undefined, this.gameStructure);
 	//this.handler.connectionReady(hid);
 }
 ServerHandlerLink.prototype.clientDisconnected = function(serverId) {
 	var hid = this.getHandlerId(serverId);
-	this["handlerBridge"].clientDisconnected();
+	this["handlerBridge"].clientDisconnected(hid);
 	//this.gameStructure.trigger(hid, GameStructureCodes.SERVERCLIENTDISC, undefined, this.gameStructure);
 	this.removeConnection(serverId, hid);
 
