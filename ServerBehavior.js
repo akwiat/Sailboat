@@ -47,3 +47,6 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 		var msg = "p" + JSON.stringify(f);
 		this["handlerBridge"].sendToClient(locationStr, msg);
 }
+if (!this.___alexnorequire) {
+	exports.ServerBehavior = ServerBehavior;
+}
