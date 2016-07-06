@@ -1,5 +1,5 @@
-function ServerBehavior() {
-
+function ServerBehavior(settings) {
+  this.settings = settings;
 }
 
 ServerBehavior.prototype.receiveAndPassUpdate = function() { this["gameHandler"].receiveAndPassUpdate.apply(this["gameHandler"], arguments);}
@@ -46,4 +46,35 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 	
 		var msg = "p" + JSON.stringify(f);
 		this["handlerBridge"].sendToClient(locationStr, msg);
+}
+ServerBehavior.prototype.serverClientDisconnected = function(clientId) {
+	util.log("child::clientDisconnected: "+clientId);
+		util.log("disconnect: "+JSON.stringify(clientId));
+		var p = this["gameHandler"].gs.entity.getObjFromPath(JSON.parse(clientId));
+		//util.log("disconnect: "+JSON.stringify(clientId));
+		var f = p.getRemovalFrag();
+		//var f2 = p.getFrag();
+		//util.log(JSON.stringify(f2));
+		util.log(JSON.stringify(f));
+		//console.log(JSON.stringify(f));
+		this["gameHandler"].officialChange(f);
+		//util.log(JSON.stringify(this["gameHandler"].gs));
+}
+ServerBehavior.prototype.updateLoop = function() {
+	var difObj = this["gameHandler"].sendstate;
+	this["handlerBridge"].sendUpdateToAllClients(difObj);
+}
+ServerBehavior.prototype.activate = function() {
+	if (this.updateLoopId == undefined) {
+	  var updateLoopTime = this.settings.ServerUpdateLoopPeriod;
+	  if (updateLoopTime == undefined) updateLoopTime = 40;
+	  this.updateLoopId = setInterval(this.updateLoop.bind(this), updateLoopTime);
+	}
+}
+ServerBehavior.prototype.deactivate = function() {
+	clearInterval(this.updateLoopId);
+}
+}
+if (!this.___alexnorequire) {
+	exports.ServerBehavior = ServerBehavior;
 }
