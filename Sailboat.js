@@ -5,6 +5,8 @@ if (!this.___alexnorequire) {
 	var GameHandler = require("./GameHandler").GameHandler;
 	var Prop = require("./Prop").Prop
 	var util = require("util");
+	
+	var SailboatServerBehavior = require("./SailboatServerBehavior").SailboatServerBehavior;
 }
 function ClientIdManager() {
 	// this.maxId = Number.MAX_VALUE - 1;
@@ -325,6 +327,14 @@ Sailboat.getInitObj = function() {
 	return ret;
 	
 }
+Sailboat.getServerInitObj = function() {
+//	var ret = {};
+//	ret.gameHandler = new GameHandler(gameStateType)
+	var ret = Sailbot.getInitObj();
+	ret.serverBehavior = new SailboatServerBehavior();
+	return ret;
+}
+/*
 Sailboat.Server = function(gameStructure) {
 
 
@@ -467,7 +477,7 @@ Sailboat.Server = function(gameStructure) {
 	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 40);
 }
 
-
+*/
 
 if (!this.___alexnorequire) {
 	exports.Sailboat = Sailboat;
