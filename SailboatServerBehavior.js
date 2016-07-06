@@ -61,12 +61,13 @@ function SailboatServerBehavior() {
     var settings = Sailboat.settings;
 
   	var callbacks = gameStructure.callbacks;
+  	/*
    	var informClientId = function(hid) {
 	   	var msg  = "i" + hid;
 	  	this["serverHandlerLink"].sendToClient(hid, msg);
   	}
 	  callbacks.register(informClientId.bind(gameStructure), GameStructureCodes.INFORMCLIENTID);
-
+	*/
 
 
 	/*
