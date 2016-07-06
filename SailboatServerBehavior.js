@@ -135,3 +135,6 @@ function SailboatServerBehavior() {
 	*/
   }
 }
+if (!this.___alexnorequire) {
+	exports.SailboatServerBehavior = SailboatServerBehavior;
+}
