@@ -1,6 +1,6 @@
 if (!this.___alexnorequire) {
   var ServerBehavior = require("./ServerBehavior").ServerBehavior;
-  var Sailboat = require("./Sailboat).Sailboat;
+  var Sailboat = require("./Sailboat").Sailboat;
 }
 
 function SailboatServerBehavior() {
