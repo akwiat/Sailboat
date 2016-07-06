@@ -5,6 +5,7 @@ if (!this.___alexnorequire) {
 	var HandlerBridgeServerSide = require("./HandlerBridge").HandlerBridgeServerSide;
 	var GameHandler = require("./GameHandler").GameHandler;
 	var util = require("util");
+	var ServerBehavior = require("./ServerBehavior").ServerBehavior;
 } else {
 	util = console;
 }
@@ -75,6 +76,7 @@ function InitializeServerStructure(obj, instructions) {
 		instructions = [{n:"gameServer", d:GameServer},
 			{n:"serverHandlerLink", d:ServerHandlerLink},
 			{n:"handlerBridge", d:HandlerBridgeServerSide},
+			{n:"serverBehavior", d:ServerBehavior},
 			{n:"gameHandler", d:GameHandler}
 		];
 	}
