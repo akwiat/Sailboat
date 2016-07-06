@@ -1,11 +1,11 @@
 if (!this.___alexnorequire) {
   var ServerBehavior = require("./ServerBehavior").ServerBehavior;
-  var Sailboat = require("./Sailboat").Sailboat;
+  var SailboatSettings = require("./Sailboat").SailboatSettings;
 }
 
 function SailboatServerBehavior() {
   var serverBehavior = new ServerBehavior();
-  var settings = Sailboat.settings;
+  var settings = SailboatSettings;
   serverBehavior.goAlienTeam = function (id) {
 	  	var aName = settings.AlienTeamArray;
 		  var array = this["gameHandler"].getObjByName(aName);

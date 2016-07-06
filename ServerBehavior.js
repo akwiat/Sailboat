@@ -9,7 +9,7 @@ ServerBehavior.prototype.sendUpdateToAllClients = function() {
   difObj.clear();
 }
 
-ServerBehavior.prototype.getInitValues = function(arrayIdentifier, pEnt.getIndex(), gt) {
+ServerBehavior.prototype.getInitValues = function(arrayIdentifier, pEnt, gt) {
   throw new Error("should override getInitValues");
 }
 ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
@@ -73,7 +73,6 @@ ServerBehavior.prototype.activate = function() {
 }
 ServerBehavior.prototype.deactivate = function() {
 	clearInterval(this.updateLoopId);
-}
 }
 if (!this.___alexnorequire) {
 	exports.ServerBehavior = ServerBehavior;

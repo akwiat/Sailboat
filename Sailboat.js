@@ -84,9 +84,8 @@ var GeneralBoostManager = function(maxV, maxA, propPos, propAngle) {
 			if (propAngle.velocity > maxA) propAngle.velocity = maxA;
 			if (propAngle.velocity < -1.0*maxA) propAngle.velocity = -1.0*maxA;
 }
-function Sailboat() {}
-Sailboat.settings = {
-	InternalGameSize:1000
+SailboatSettings = {
+  InternalGameSize:1000
 	,HumanShipRadius:25
 	,AlienShipRadius:20
 	,AlienShieldThicknessRadiusUnits:0.25
@@ -116,10 +115,11 @@ Sailboat.settings = {
 	,AlienTeamCode:"a"
 	,HumanTeamArray:"humanTeam"
 	,AlienTeamArray:"alienTeam"
-}
+};
+function Sailboat() {}
 
 Sailboat.getInitObj = function() {
-	var settings = Sailboat.settings;
+	var settings = SailboatSettings;
 	var getShipCircle = function(radius) {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
 
@@ -330,7 +330,7 @@ Sailboat.getInitObj = function() {
 Sailboat.getServerInitObj = function() {
 //	var ret = {};
 //	ret.gameHandler = new GameHandler(gameStateType)
-	var ret = Sailbot.getInitObj();
+	var ret = Sailboat.getInitObj();
 	ret.serverBehavior = new SailboatServerBehavior();
 	return ret;
 }
@@ -481,4 +481,5 @@ Sailboat.Server = function(gameStructure) {
 
 if (!this.___alexnorequire) {
 	exports.Sailboat = Sailboat;
+	exports.SailboatSettings = SailboatSettings;
 }

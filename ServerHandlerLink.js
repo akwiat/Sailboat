@@ -1,6 +1,6 @@
 var util = require("util");
 var GameStructureCodes = require("./GameStructureCodes").GameStructureCodes;
-var BasicIdManager = require("./AlexUtil").BasicIdManager;
+var BasicIdManager = require("./AlexUtils").BasicIdManager;
 
 function ServerHandlerLink() {
 	this.serverHandlerMap = {};

@@ -3,7 +3,7 @@ if (!this.___alexnorequire) {
 	var TreeNode = require("./Tree").TreeNode;
 	var util = require("util");
 }
-function HandlerBridge() {//msg codes here}
+function HandlerBridge() {/*msg codes here*/}
 HandlerBridge.prototype.receiveMsg = function(msg) {}
 function HandlerBridgeServerSide() {}
 HandlerBridgeServerSide.prototype.informClientId = function(hid) {
@@ -98,3 +98,4 @@ if (!this.___alexnorequire) {
 	exports.HandlerBridgeServerSide = HandlerBridgeServerSide;
 	exports.HandlerBridge = HandlerBridge;
 }
+
