@@ -334,6 +334,9 @@ Sailboat.getServerInitObj = function() {
 	ret.serverBehavior = new SailboatServerBehavior();
 	return ret;
 }
+Sailboat.getClientInitObj = function() {
+	
+}
 /*
 Sailboat.Server = function(gameStructure) {
 
