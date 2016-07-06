@@ -6,6 +6,14 @@ if (!this.___alexnorequire) {
 function HandlerBridge() {//msg codes here}
 HandlerBridge.prototype.receiveMsg = function(msg) {}
 function HandlerBridgeServerSide() {}
+HandlerBridgeServerSide.prototype.informClientId = function(hid) {
+	var msg  = "i" + hid;
+	this["serverHandlerLink"].sendToClient(hid, msg);
+}
+HandlerBridgeServerSide.prototype.clientDisconnected = function(hid) {
+	var serverBehavior = this["serverBehavior"];
+	serverBehavior.serverClientDisconnected.apply(serverBehavior, arguments);
+}
 HandlerBridgeServerSide.prototype.receiveMsg = function(msg) {
    var c = msg.charAt(0);
    if (c == "{") {//is JSON
