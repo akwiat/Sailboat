@@ -12,7 +12,7 @@ function GeneralClient(loadGraphicsFn, initObj) {
 GeneralClient.prototype.onLoad = function() {
 	this.gameStructure = new InitializeClientStructure(this.initObj);
 }
-
+/*
 GeneralClient.prototype.updateLoop = function() {
 	if (this["gameHandler"].myPlayer) {
 		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
@@ -23,6 +23,7 @@ GeneralClient.prototype.updateLoop = function() {
 	}
 	
 }
+*/
 /*
 function BaseClient() {
 	
