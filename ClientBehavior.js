@@ -1,5 +1,15 @@
 function ClientBehavior() {
   this.loopManager = {};
+
+  this.graphics = undefined;
+
+  this.uiManager = undefined;
+  this.keyboardState = new THREEx.keyboardState();
+  this.controlsManager = undefined;
+  this.hudManager = undefined;
+  this.cooldownManager = undefined;
+  
+
 }
 ClientBehavior.prototype.registerLoop = function(name, period, fn) {
   if(this.loopManager[name] != undefined) throw new Error("repeated loop name");
