@@ -13,6 +13,17 @@ GeneralClient.prototype.onLoad = function() {
 	this.gameStructure = new InitializeClientStructure(this.initObj);
 }
 
+GeneralClient.prototype.updateLoop = function() {
+	if (this["gameHandler"].myPlayer) {
+		var frag = this["gameHandler"].myPlayer.getSpecificFrag();
+		frag.setDestinationNotMe();
+		//frag.setDestination(FragDestination.notMe());
+		this["gameHandler"].sendstate.add(frag);
+		this["handlerBridge"].sendUpdateToServer();
+	}
+	
+}
+/*
 function BaseClient() {
 	
 }
@@ -31,3 +42,4 @@ BaseClient.prototype.updateLoop = function() {
 BaseClient.prototype.activate = function() {
 	this.updateLoopId = setInterval(this.updateLoop.bind(this.gameStructure), 50);
 }
+*/
