@@ -64,8 +64,9 @@ function InitializeClientStructure(obj, instructions) {
 	if (instructions == undefined) {
 		instructions = [{n:"clientSocket", d:ClientSocket},
 		{n:"handlerBridge", d:HandlerBridgeClientSide},
-		{n:"gameHandler", d:GameHandler},
-		{n:"client", d:undefined}
+		{n:"client", d:undefined},
+		{n:"gameHandler", d:GameHandler}
+	
 		];
 	}
 	return new GameStructure(obj, instructions)
