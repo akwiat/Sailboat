@@ -14,7 +14,8 @@ function HandlerBridgeServerSide() {
 	this.customMessageManager.registerMessage(HandlerBridge.cmcInitPackage);
 }
 HandlerBridgeServerSide.prototype.informClientId = function(hid) {
-  this.customMessageManager.triggerMessage(HandlerBridge.cmcInformClientId, hid);
+  this.sendCustomMessage(hid, HandlerBridge.cmcInformClientId, hid);
+  //this.customMessageManager.triggerMessage(HandlerBridge.cmcInformClientId, hid);
 }
 HandlerBridgeServerSide.prototype.clientDisconnected = function(hid) {
 	var serverBehavior = this["serverBehavior"];
@@ -69,9 +70,11 @@ HandlerBridgeServerSide.prototype.sendObjectToAllClients = function(obj) {
 	}
 	this["serverHandlerLink"].sendToAllClientsCallback(sendFunction);
 }
+/*
 HandlerBridgeServerSide.prototype.sendCustomMessage = function(sendable, msg) {
 	sendable.send(msg);
 }
+*/
 HandlerBridgeServerSide.prototype.sendToClient = function() {
 	var shl = this["serverHandlerLink"];
 	shl.sendToClient.apply(shl, arguments);
@@ -86,10 +89,15 @@ function HandlerBridgeClientSide() {
 	this.customMessageManager.subscribeToMessage(HandlerBridge.cmcInformClientId, this.informClientId.bind(this));
 
 }
+HandlerBridgeClientSide.prototype.sendCustomMessage = function(msgCode, msg) {
+	var sendMessage = msgCode + msg;
+	this.sendToServer(sendMessage);
+}
 HandlerBridgeClientSide.prototype.subscribeToInitPackage = function(fn) {
 	this.customMessageManager.subscribeToMessage(HandlerBridge.cmcInitPackage, fn);
 }
 HandlerBridgeClientSide.prototype.informClientId = function(id) {
+	//throw new Error("should reach");
 	this["clientBehavior"].setMyId(id);
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
@@ -98,6 +106,7 @@ HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
 		var o = JSON.parse(msg);
 		this.gameHandler.receiveUpdate(o);
 	} else {
+		//debugger;
 		this.customMessageManager.triggerMessage(c, msg.slice(1));
 	}
 	/*
@@ -115,8 +124,11 @@ HandlerBridgeClientSide.prototype.sendCustomMessage = function(msg) {
 	this.clientSocket.send(msg);
 }
 */
-HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
+HandlerBridgeClientSide.prototype.sendToServer = function(msg) {
 	this["clientSocket"].send(msg);
+}
+HandlerBridgeClientSide.prototype.sendUpdate = function(msg) {
+	this.sendToServer(msg);
 }
 HandlerBridgeClientSide.prototype.sendUpdateToServer = function() {
 	var difObj = this.gameHandler.sendstate;

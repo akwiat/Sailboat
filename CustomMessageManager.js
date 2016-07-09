@@ -16,7 +16,7 @@ CustomMessageManager.prototype.subscribeToMessage = function(msgCode, callback) 
 }
 CustomMessageManager.prototype.triggerMessage = function(msgCode, msg) {
   var callbackList = this.dict[msgCode];
-  if (!callbackList) throw new Error("bad msgCode");
+  if (!callbackList) throw new Error("no callbacks registered for custom msg: "+msgCode);
   
   for (var i=0; i < callbackList.length; i++) {
     callbackList[i](msg);

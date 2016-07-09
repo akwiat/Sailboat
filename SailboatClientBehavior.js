@@ -1,11 +1,14 @@
-function SailboatClientBehavior(clientBehavior) {
+function SailboatClientBehavior(gameStructure) {
+	var clientBehavior = gameStructure["clientBehavior"];
 	var settings = SailboatSettings;
   //var clientBehavior = new ClientBehavior(settings);
   clientBehavior.graphics = new SailboatGraphics(settings);
   clientBehavior.controlsManager = new ThreexControlsManager(Crafty);
   clientBehavior.hudManager = new HudManager();
   clientBehavior.cooldownManager = new CooldownManager();
+  clientBehavior.uiManager = new UiManager();
 
+  clientBehavior.gameSettings = settings;
   clientBehavior.goAlienTeam = function() {
 	var code = this.gameSettings.AlienTeamCode;
 	var msg = code + this.myId;
@@ -17,6 +20,7 @@ function SailboatClientBehavior(clientBehavior) {
 
 
 }
+clientBehavior.uiManager.callbacks.register(clientBehavior.goAlienTeam.bind(clientBehavior), UiManager.ALIENBUTTON);
 clientBehavior.goHumanTeam = function() {
 	var code = this.gameSettings.HumanTeamCode;
 	var msg = code + this.myId;
@@ -25,6 +29,7 @@ clientBehavior.goHumanTeam = function() {
 	this.uiManager.hideTeamSelect();
 
 }
+clientBehavior.uiManager.callbacks.register(clientBehavior.goHumanTeam.bind(clientBehavior), UiManager.HUMANBUTTON);
 clientBehavior.onFrame = function(eventData) {
 
 	var gt = this["gameHandler"].getGameTime();

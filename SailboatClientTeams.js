@@ -132,15 +132,7 @@ clientBehavior.setupAlienFunctions = function() {
 	clientBehavior.respawnShip = alienRespawn;
    clientBehavior.getShipTypeName = alienShipName;
 
-   var alienShoot = function(gt) {
-   		var ship = this["gameHandler"].myPlayer.getShip();
-   		if (!ship) return;
-      var res = this.shotCooldown.attempt(gt);
-      if (res) {
-        var myP = this["gameHandler"].myPlayer;
-        myP.activateShield(gt);
-      }
-   }
+   
    clientBehavior.onShoot = alienShoot;
 
 

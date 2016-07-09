@@ -3,7 +3,7 @@ Sailboat.Client.initializeCollisions = function(clientBehavior) {
 	var myP = this["gameHandler"].myPlayer;
 	if (!myP) return;
 	var myShip = myP.findDirectChildWithIdentifier("shipArray").children[0];
-	if(myShip) { // myShip is not dead
+	if(myShip) { // myShip is not deaduuiM
 		if (myShip.checkShipShield) {
 			var s = myShip.checkShipShield();
 			if (s) return;
