@@ -4,7 +4,7 @@ function ClientBehavior() {
   this.graphics = undefined;
 
   this.uiManager = undefined;
-  this.keyboardState = new THREEx.keyboardState();
+  this.keyboardState = new THREEx.KeyboardState();
   this.controlsManager = undefined;
   this.hudManager = undefined;
   this.cooldownManager = undefined;

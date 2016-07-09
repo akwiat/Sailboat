@@ -116,7 +116,7 @@ SailboatSettings = {
 	,HumanTeamArray:"humanTeam"
 	,AlienTeamArray:"alienTeam"
 
-	
+
 };
 function Sailboat() {}
 
@@ -324,8 +324,8 @@ Sailboat.getInitObj = function() {
 	}
 
 	var ret = {gameHandler: new GameHandler(gameStateType)};
-	if (Sailboat.Client)
-		ret.client = new Sailboat.Client();
+	//if (Sailboat.Client)
+	//	ret.client = new Sailboat.Client();
 	return ret;
 	
 }
@@ -337,7 +337,8 @@ Sailboat.getServerInitObj = function() {
 	return ret;
 }
 Sailboat.getClientInitObj = function() {
-	
+	var ret = Sailboat.getInitObj();
+	return ret;
 }
 Sailboat.customizeClient = function(gStructure) {
 	SailboatClientBehavior(gStructure);

@@ -77,7 +77,7 @@ clientBehavior.onDeadShip = function(gameStateObj) {
 
 			//debugger;
 	}
-	this["handlerBridge"].subscribeToInitPackage(customMessageInitP);
+	clientBehavior["handlerBridge"].subscribeToInitPackage(customMessageInitP);
 
   
 	Sailboat.Client.registerGameStateCallbacks(clientBehavior);

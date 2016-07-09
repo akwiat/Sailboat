@@ -35,6 +35,17 @@
     <script src="Destination.js"></script>
     <script src="Frag.js"></script>
     <script src="DiffObj.js"></script>
+
+
+    <script src="Controls.js"></script>
+    <script src="threex_keyboardstate.js"></script>
+    <script src="ThreexControlsManager.js"></script>
+    <script src="HudManager.js"></script>
+    <script src="UiManager.js"></script>
+    <script src="CooldownManager.js"></script>
+
+
+    <script src="CustomMessageManager.js"></script>
     <script src="GameStateEntity.js"></script>
     <script src="GameState.js"></script>
     <script src="GameStructureCodes.js"></script>
@@ -45,15 +56,10 @@
     <script src="ServerBridge.js"></script>
     <script src="ClientSocket.js"></script>
     <script src="GeneralClient.js"></script>
+    <script src="ClientBehavior.js"></script>
     <script src="CraftyGraphics.js"></script>
     <!-- These gaps help keep track of which files are reusable or not  -->
 
-    <script src="Controls.js"></script>
-    <script src="threex_keyboardstate.js"></script>
-    <script src="ThreexControlsManager.js"></script>
-    <script src="HudManager.js"></script>
-    <script src="UiManager.js"></script>
-    <script src="CooldownManager.js"></script>
     <!-- These gaps help keep track of which files are reusable or not  -->
 
     <script src="Sailboat.js"></script>
@@ -63,12 +69,13 @@
     <script src="SailboatClientGamestate.js"></script>
     <script src="SailboatClientCollisions.js"></script>
     <script src="SailboatClientTeams.js"></script>
+    <script src="SailboatClientBehavior.js"></script>
 
     
 
 
     <script>
-      var theClient = new GeneralClient(SailboatGraphics.loadEverything, undefined, Sailboat.customizeClient);
+      var theClient = new GeneralClient(SailboatGraphics.loadEverything, Sailboat.getClientInitObj(), Sailboat.customizeClient);
     </script>
   </body>
 </html>

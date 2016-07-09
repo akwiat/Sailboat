@@ -1,6 +1,7 @@
 
 Sailboat.Client = function() {
 
+	throw new Error("deprecated");
 	this.graphicsSettings = Sailboat.settings;
 	this.gameSettings = Sailboat.settings;
 	this.worldBox = new SAT.Box(new SAT.Vector(0,0), this.graphicsSettings.InternalGameSize, this.graphicsSettings.InternalGameSize).toPolygon();
@@ -68,4 +69,4 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 Sailboat.Client.prototype.activate = function() {
 	
 }
-}
+
