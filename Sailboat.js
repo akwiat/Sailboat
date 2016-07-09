@@ -6,6 +6,7 @@ if (!this.___alexnorequire) {
 	var Prop = require("./Prop").Prop
 	var util = require("util");
 	
+	var SailboatBridge = require("./SailboatBridge").SailboatBridge;
 	var SailboatServerBehavior = require("./SailboatServerBehavior").SailboatServerBehavior;
 }
 function ClientIdManager() {
@@ -333,14 +334,19 @@ Sailboat.getServerInitObj = function() {
 //	var ret = {};
 //	ret.gameHandler = new GameHandler(gameStateType)
 	var ret = Sailboat.getInitObj();
-	ret.serverBehavior = new SailboatServerBehavior();
+	//ret.serverBehavior = new SailboatServerBehavior();
 	return ret;
 }
 Sailboat.getClientInitObj = function() {
 	var ret = Sailboat.getInitObj();
 	return ret;
 }
+Sailboat.customizeServer = function(gameStructure) {
+	SailboatBridge.Server(gameStructure["handlerBridge"]);
+	SailboatServerBehavior(gameStructure["serverBehavior"]);
+}
 Sailboat.customizeClient = function(gStructure) {
+	SailboatBridge.Client(gStructure["handlerBridge"]);
 	SailboatClientBehavior(gStructure);
 }
 /*

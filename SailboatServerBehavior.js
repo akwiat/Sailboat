@@ -1,18 +1,21 @@
 if (!this.___alexnorequire) {
   var ServerBehavior = require("./ServerBehavior").ServerBehavior;
   var SailboatSettings = require("./Sailboat").SailboatSettings;
+  var SailboatBridge = require("./SailboatBridge").SailboatBridge;
+  var util = require("util");
 }
-
-function SailboatServerBehavior() {
-  var serverBehavior = new ServerBehavior();
+function SailboatServerBehavior(serverBehavior) {
+  //var serverBehavior = new ServerBehavior();
   var settings = SailboatSettings;
+  util.log(JSON.stringify(settings));
+  serverBehavior.settings = SailboatSettings;
   serverBehavior.goAlienTeam = function (id) {
 	  	var aName = settings.AlienTeamArray;
 		  var array = this["gameHandler"].getObjByName(aName);
 		  //util.log("")
 	  	var nEnt = array.addObjToArrayNextAvailable();
 	  	var locStr = JSON.stringify(nEnt.getPath());
-		  util.log("goAlienTeam: "+locStr);
+		  util.log("goAlienTeam, oldId: "+id+", newId: "+locStr);
 
 		  this["handlerBridge"]["serverHandlerLink"].changeHandlerId(id, locStr);
 	  	//callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
@@ -25,13 +28,19 @@ function SailboatServerBehavior() {
 
 		var nEnt = array.addObjToArrayNextAvailable();
 		var locStr = JSON.stringify(nEnt.getPath());
-		util.log("goHumanTeam: "+locStr);
+		util.log("goHumanTeam, oldId: "+id+", newId: "+locStr);
 
 		this["handlerBridge"]["serverHandlerLink"].changeHandlerId(id, locStr);
 
 		//callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
 		this.serverInitPlayer(locStr);
 	}
+	serverBehavior.teamSelect = function(msg) {
+		if (msg.charAt(0) == this.settings.AlienTeamCode) goAlienTeam(msg.slice(1));
+		else if (msg.charAt(0) == settings.HumanTeamCode) goHumanTeam(msg.slice(1));
+		else throw new Error("bad team select code: "+msg);
+	}
+	serverBehavior["handlerBridge"].customMessageManager.subscribeToMessage(SailboatBridge.cmcTeamSelect, serverBehavior.teamSelect);
 	serverBehavior.getInitValues = function(arrayName, id, ut) {
 		var gsid = 0;
 		var team;

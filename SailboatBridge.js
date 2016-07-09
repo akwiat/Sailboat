@@ -1,11 +1,15 @@
 function SailboatBridge() {}
 SailboatBridge.cmcTeamSelect = "t";
 SailboatBridge.registerCustomMessages = function(bridge) {
-  bridge.customMessageManager.registerMessage(cmcTeamSelect);
+  bridge.customMessageManager.registerMessage(SailboatBridge.cmcTeamSelect);
 }
-function SailboatServerBridge(bridge) {
+SailboatBridge.Server = function(bridge) {
   SailboatBridge.registerCustomMessages(bridge);
 }
-function SailboatClientBridge(bridge) {
+SailboatBridge.Client = function(bridge) {
   SailboatBridge.registerCustomMessages(bridge);
+}
+
+if (!this.___alexnorequire) {
+	exports.SailboatBridge = SailboatBridge;
 }

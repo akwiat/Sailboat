@@ -10,23 +10,34 @@ function SailboatClientBehavior(gameStructure) {
 
   clientBehavior.gameSettings = settings;
   clientBehavior.goAlienTeam = function() {
-	var code = this.gameSettings.AlienTeamCode;
+	var msg = this.gameSettings.AlienTeamCode;
+	this["handlerBridge"].sendCustomMessage(SailboatBridge.cmcTeamSelect, msg);
+	
+	this.uiManager.hideTeamSelect();
+	/*
 	var msg = code + this.myId;
 	console.log("msg: "+msg);
 
 	this["gameStructure"].handlerBridge.sendCustomMessage(msg);
 
 	this.uiManager.hideTeamSelect();
+	*/
 
 
 }
 clientBehavior.uiManager.callbacks.register(clientBehavior.goAlienTeam.bind(clientBehavior), UiManager.ALIENBUTTON);
 clientBehavior.goHumanTeam = function() {
+	var msg = this.gameSettings.HumanTeamCode + this.myId;
+	this["handlerBridge"].sendCustomMessage(SailboatBridge.cmcTeamSelect, msg);
+	
+	this.uiManager.hideTeamSelect();
+	/*
 	var code = this.gameSettings.HumanTeamCode;
 	var msg = code + this.myId;
 
 	this["gameStructure"].handlerBridge.sendCustomMessage(msg);
 	this.uiManager.hideTeamSelect();
+	*/
 
 }
 clientBehavior.uiManager.callbacks.register(clientBehavior.goHumanTeam.bind(clientBehavior), UiManager.HUMANBUTTON);
