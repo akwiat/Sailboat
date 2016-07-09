@@ -115,6 +115,8 @@ SailboatSettings = {
 	,AlienTeamCode:"a"
 	,HumanTeamArray:"humanTeam"
 	,AlienTeamArray:"alienTeam"
+
+	
 };
 function Sailboat() {}
 
@@ -336,6 +338,9 @@ Sailboat.getServerInitObj = function() {
 }
 Sailboat.getClientInitObj = function() {
 	
+}
+Sailboat.customizeClient = function(gStructure) {
+	SailboatClientBehavior(gStructure);
 }
 /*
 Sailboat.Server = function(gameStructure) {

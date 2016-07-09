@@ -1,6 +1,11 @@
-function SailboatClientBehavior() {
-  var clientBehavior = new ClientBehavior();
-  
+function SailboatClientBehavior(clientBehavior) {
+	var settings = SailboatSettings;
+  //var clientBehavior = new ClientBehavior(settings);
+  clientBehavior.graphics = new SailboatGraphics(settings);
+  clientBehavior.controlsManager = new ThreexControlsManager(Crafty);
+  clientBehavior.hudManager = new HudManager();
+  clientBehavior.cooldownManager = new CooldownManager();
+
   clientBehavior.goAlienTeam = function() {
 	var code = this.gameSettings.AlienTeamCode;
 	var msg = code + this.myId;
@@ -42,5 +47,41 @@ clientBehavior.onDeadShip = function(gameStateObj) {
 
   }
 
+	var customMessageInitP = function(str) {
+		var state = this["gameStructure"]["gameHandler"].gs;
+			var frag = Frag.makeFromStr(str);
+			console.log(frag);
+			this["gameStructure"]["gameHandler"].setCurrentGameTime(frag.updateTime);
+			state.applyFrag(frag);
+			//this["gameStructure"]["gameHandler"].myPlayer = state.entity.children[0].children[frag.specificData];
+			this["gameStructure"]["gameHandler"].myPlayer = state.entity.getObjFromPath(frag.specificData);
+			var myPlayer = this["gameStructure"]["gameHandler"].myPlayer;
+			var arrayName = myPlayer.parent.getIdentifier();
+			//debugger;
+			this["gameStructure"]["client"].setupTeamFunctions(arrayName);
+
+			//var myShip = myPlayer.findChildWithIdentifier("ship")
+			var myShip = myPlayer.getChildByIdentifier("shipArray").children[0];
+			var myShipPos = myShip.findChildWithIdentifier("position").getWrappedObj();
+
+			//this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
+			this.shipControl = new ThreexControlsCircleMover(myShipPos, "w", "s", "d", "a");
+			this.teamSpecificControls(this.shipControl);
+			
+			this["gameStructure"]["client"].controlsManager.addControl(this.shipControl);
+
+			this["gameStructure"]["client"].controlsManager.addControl(
+				new ThreexControlsAction(this.onShoot.bind(this), " ")
+				);
+
+
+			//debugger;
+	}
+	this["handlerBridge"].subscribeToInitPackage(customMessageInitP);
+
+  
+	Sailboat.Client.registerGameStateCallbacks(clientBehavior);
+	Sailboat.Client.initializeTeamBehavior(clientBehavior);
+	Sailboat.Client.initializeCollisions(clientBehavior);
   return clientBehavior;
 }

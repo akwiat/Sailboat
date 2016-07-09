@@ -8,8 +8,11 @@ function ClientBehavior() {
   this.controlsManager = undefined;
   this.hudManager = undefined;
   this.cooldownManager = undefined;
-  
 
+
+}
+ClientBehavior.prototype.setMyId = function(id) {
+  this.myId = id;
 }
 ClientBehavior.prototype.registerLoop = function(name, period, fn) {
   if(this.loopManager[name] != undefined) throw new Error("repeated loop name");
@@ -32,3 +35,4 @@ ClientBehavior.prototype.deactivate = function() {
   
   if (this.customDeactivate) this.customDeactivate();
 }
+

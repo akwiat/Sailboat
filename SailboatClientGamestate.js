@@ -1,10 +1,10 @@
-Sailboat.Client.prototype.registerGameStateCallbacks = function() {
-	var gs = this["gameHandler"].gs;
+Sailboat.Client.registerGameStateCallbacks = function(clientBehavior) {
+	var gs = clientBehavior["gameHandler"].gs;
 	var callbacks = gs.callbacks;
-	var graphicsObj = this.graphics;
+	var graphicsObj = clientBehavior.graphics;
 	var onFrame = function() {
 		debugger;
-		this["gameHandler"].update();
+		clientBehavior["gameHandler"].update();
 		
 	}
 	
@@ -45,8 +45,8 @@ Sailboat.Client.prototype.registerGameStateCallbacks = function() {
 
 	callbacks.register(humanShipAdded, "new", "humanShip");
 	callbacks.register(alienShipAdded, "new", "alienShip");
-	callbacks.register(shipRemoved.bind(this), "removed", "humanShip");
-	callbacks.register(shipRemoved.bind(this), "removed", "alienShip");
+	callbacks.register(shipRemoved.bind(clientBehavior), "removed", "humanShip");
+	callbacks.register(shipRemoved.bind(clientBehavior), "removed", "alienShip");
 
 	callbacks.register(bulletAdded, "new", "bullet");
 	callbacks.register(objRemoved, "removed", "bullet");

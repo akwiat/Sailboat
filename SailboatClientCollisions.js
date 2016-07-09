@@ -1,4 +1,5 @@
-Sailboat.Client.prototype.checkCollisions = function() {
+Sailboat.Client.initializeCollisions = function(clientBehavior) {
+	var checkCollisions = function() {
 	var myP = this["gameHandler"].myPlayer;
 	if (!myP) return;
 	var myShip = myP.findDirectChildWithIdentifier("shipArray").children[0];
@@ -57,4 +58,6 @@ Sailboat.Client.prototype.checkCollisions = function() {
 			return;
 		}
 	}
+}
+clientBehavior.checkCollisions = checkCollisions;
 }

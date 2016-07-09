@@ -1,6 +1,6 @@
 Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	
-	
+	throw new Error("deprecated");
 	var gameStructureCallbacks = this.gameStructure.callbacks;
 	/*
 	var updateLoop = function() {
@@ -47,7 +47,7 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 
 			//debugger;
 	}
-	this.customMessageManager.subscribeToMessage("p", customMessageInitP);
+	clientBehavior["handlerBridge"].customMessageManager.subscribeToMessage("p", customMessageInitP.bind(this));
 	/*
 	var clientCustomMsg = function(msg) {
 		//console.log("client custom msg: "+msg);
@@ -95,7 +95,9 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	gameStructureCallbacks.register(clientCustomMsg.bind(this), GameStructureCodes.CLIENTGOTCUSTOMMSG);
 	*/
 	//this.updateLoopId = setInterval(updateLoop.bind(this.gameStructure), 50);
-	this.graphics = new SailboatGraphics(this.graphicsSettings);
+
+
+		this.graphics = new SailboatGraphics(this.graphicsSettings);
 	this.controlsManager = new ThreexControlsManager(Crafty);
 	
 	this.hudManager = new HudManager();
@@ -106,6 +108,6 @@ Sailboat.Client.prototype.gameStructureHasInitialized = function() {
 	this.graphics.callbacks.register(this.onFrame.bind(this), "OnFrame");
 	this.graphics.callbacks.register(this.onDeadShip.bind(this), "OnDeadShip");
 	this.registerGameStateCallbacks(); 
-}
+    }
 
 //Sailboat.Client.prototype.set

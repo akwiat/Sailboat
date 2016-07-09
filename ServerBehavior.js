@@ -44,8 +44,9 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 		//f.clientProperty = gsid;
 
 	
-		var msg = "p" + JSON.stringify(f);
-		this["handlerBridge"].sendToClient(locationStr, msg);
+		//var msg = "p" + JSON.stringify(f);
+		//this["handlerBridge"].sendToClient(locationStr, msg);
+		this["handlerBridge"].sendInitPackage(locationStr, msg);
 }
 ServerBehavior.prototype.serverClientDisconnected = function(clientId) {
 	util.log("child::clientDisconnected: "+clientId);

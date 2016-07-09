@@ -1,7 +1,7 @@
-function GeneralClient(loadGraphicsFn, initObj) {
+function GeneralClient(loadGraphicsFn, initObj, onLoadFn) {
   this.loadGraphicsFn = loadGraphicsFn;
   this.initObj = initObj;
-  
+  this.onLoadFn = onLoadFn;
   if (this.loadGraphicsFn)
     this.loadGraphicsFn(this.onLoad.bind(this));
   //this.loadGraphics();
@@ -11,6 +11,7 @@ function GeneralClient(loadGraphicsFn, initObj) {
 
 GeneralClient.prototype.onLoad = function() {
 	this.gameStructure = new InitializeClientStructure(this.initObj);
+	this.onLoadFn(this.gameStructure);
 }
 /*
 GeneralClient.prototype.updateLoop = function() {
