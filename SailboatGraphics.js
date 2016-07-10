@@ -1,6 +1,6 @@
-function SailboatGraphics(graphicsSettings) {
+function SailboatGraphics(graphicsSettings, onFrameCallback) {
 	
-	CraftyGraphics.call(this, graphicsSettings);
+	CraftyGraphics.call(this, graphicsSettings, onFrameCallback);
 
 	var HumanShipRadius = graphicsSettings.HumanShipRadius;
 	var AlienShipRadius = graphicsSettings.AlienShipRadius;

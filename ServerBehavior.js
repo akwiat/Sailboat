@@ -26,7 +26,7 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 
 		var iVals = this.getInitValues(arrayIdentifier, pEnt.getIndex(), gt);
 		
-		pEnt.applySpecificData(iVals);
+		pEnt.applyInitialValues(iVals);
 		
 
 		
@@ -35,7 +35,7 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 
 		var others = pEnt.getSpecificFrag();
 		others.setDestinationNotMe();
-		util.log("other: "+JSON.stringify(others));
+		//util.log("other: "+JSON.stringify(others));
 		this["gameHandler"].sendstate.add(others);
 		
 		var f = state.entity.getFrag();
@@ -46,17 +46,18 @@ ServerBehavior.prototype.serverInitPlayer = function(locationStr) {
 	
 		//var msg = "p" + JSON.stringify(f);
 		//this["handlerBridge"].sendToClient(locationStr, msg);
-		this["handlerBridge"].sendInitPackage(locationStr, msg);
+		//this["handlerBridge"].sendInitPackage(locationStr, msg);
+		this["handlerBridge"].sendCustomMessage(locationStr, this["handlerBridge"].cmcInitPackage, JSON.stringify(f));
 }
 ServerBehavior.prototype.serverClientDisconnected = function(clientId) {
-	util.log("child::clientDisconnected: "+clientId);
-		util.log("disconnect: "+JSON.stringify(clientId));
+	//util.log("child::clientDisconnected: "+clientId);
+		//util.log("disconnect: "+JSON.stringify(clientId));
 		var p = this["gameHandler"].gs.entity.getObjFromPath(JSON.parse(clientId));
 		//util.log("disconnect: "+JSON.stringify(clientId));
 		var f = p.getRemovalFrag();
 		//var f2 = p.getFrag();
 		//util.log(JSON.stringify(f2));
-		util.log(JSON.stringify(f));
+		//util.log(JSON.stringify(f));
 		//console.log(JSON.stringify(f));
 		this["gameHandler"].officialChange(f);
 		//util.log(JSON.stringify(this["gameHandler"].gs));

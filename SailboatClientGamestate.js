@@ -9,7 +9,7 @@ Sailboat.Client.registerGameStateCallbacks = function(clientBehavior) {
 	}
 	
 	var humanShipAdded = function(shipObj) {
-
+		//debugger;
 		var gObj = graphicsObj.getNewHumanShip(shipObj);
 		shipObj.setGraphicsObj(gObj);
 

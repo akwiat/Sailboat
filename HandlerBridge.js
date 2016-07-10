@@ -12,6 +12,10 @@ function HandlerBridgeServerSide() {
 	this.customMessageManager = new CustomMessageManager();
 	this.customMessageManager.registerMessage(HandlerBridge.cmcInformClientId);
 	this.customMessageManager.registerMessage(HandlerBridge.cmcInitPackage);
+
+	for (var i in HandlerBridge)
+		if (HandlerBridge.hasOwnProperty(i))
+		  this[i] = HandlerBridge[i];
 }
 HandlerBridgeServerSide.prototype.informClientId = function(hid) {
   this.sendCustomMessage(hid, HandlerBridge.cmcInformClientId, hid);

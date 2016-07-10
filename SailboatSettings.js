@@ -33,4 +33,5 @@ SailboatSettings = {
 
 };
 
+if (!this.___alexnorequire)
 exports.SailboatSettings = SailboatSettings;

@@ -1,15 +1,15 @@
 if (!this.___alexnorequire) {
   var ServerBehavior = require("./ServerBehavior").ServerBehavior;
-  var SailboatSettings = require("./Sailboat").SailboatSettings;
+  var SailboatSettings = require("./SailboatSettings").SailboatSettings;
   var SailboatBridge = require("./SailboatBridge").SailboatBridge;
   var util = require("util");
 }
-function SailboatServerBehavior(serverBehavior) {
+function SailboatServerBehavior() {
   //var serverBehavior = new ServerBehavior();
   var settings = SailboatSettings;
-  util.log(JSON.stringify(settings));
-  serverBehavior.settings = SailboatSettings;
-  serverBehavior.goAlienTeam = function (id) {
+  //util.log(JSON.stringify(settings));
+  this.settings = SailboatSettings;
+  this.goAlienTeam = function (id) {
 	  	var aName = settings.AlienTeamArray;
 		  var array = this["gameHandler"].getObjByName(aName);
 		  //util.log("")
@@ -21,8 +21,8 @@ function SailboatServerBehavior(serverBehavior) {
 	  	//callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
 	  	this.serverInitPlayer(locStr);
 
-	  }
-	serverBehavior.goHumanTeam = function(id) {
+	  }.bind(this);
+	this.goHumanTeam = function(id) {
 		var aName = settings.HumanTeamArray;
 		var array = this["gameHandler"].getObjByName(aName);
 
@@ -34,14 +34,15 @@ function SailboatServerBehavior(serverBehavior) {
 
 		//callbacks.trigger(locStr, GameStructureCodes.SERVERINITPLAYER);
 		this.serverInitPlayer(locStr);
-	}
-	serverBehavior.teamSelect = function(msg) {
-		if (msg.charAt(0) == this.settings.AlienTeamCode) goAlienTeam(msg.slice(1));
-		else if (msg.charAt(0) == settings.HumanTeamCode) goHumanTeam(msg.slice(1));
+	}.bind(this);
+	this.teamSelect = function(msg) {
+		//util.log("teamselect: "+JSON.stringify(this.settings));
+		if (msg.charAt(0) == this.settings.AlienTeamCode) this.goAlienTeam(msg.slice(1));
+		else if (msg.charAt(0) == settings.HumanTeamCode) this.goHumanTeam(msg.slice(1));
 		else throw new Error("bad team select code: "+msg);
-	}
-	serverBehavior["handlerBridge"].customMessageManager.subscribeToMessage(SailboatBridge.cmcTeamSelect, serverBehavior.teamSelect);
-	serverBehavior.getInitValues = function(arrayName, id, ut) {
+	}.bind(this);
+	this["handlerBridge"].customMessageManager.subscribeToMessage(SailboatBridge.cmcTeamSelect, this.teamSelect);
+	this.getInitValues = function(arrayName, id, ut) {
 		var gsid = 0;
 		var team;
 		if (arrayName == "humanTeam") team = 0;
@@ -64,8 +65,8 @@ function SailboatServerBehavior(serverBehavior) {
 
 		return { p:{x:x,y:y, ut:ut}, a:{s:angle, ut:ut}, ut:ut };
 	}
-	
-  serverBehavior.gameStructureHasInitialized = function(gameStructure) {
+/*
+  this.gameStructureHasInitialized = function(gameStructure) {
   
     var settings = Sailboat.settings;
 
@@ -76,7 +77,7 @@ function SailboatServerBehavior(serverBehavior) {
 	  	this["serverHandlerLink"].sendToClient(hid, msg);
   	}
 	  callbacks.register(informClientId.bind(gameStructure), GameStructureCodes.INFORMCLIENTID);
-	*/
+	* /
 
 
 	/*
@@ -92,9 +93,9 @@ function SailboatServerBehavior(serverBehavior) {
 			throw new Error("bad custom msg");
 		//util.log("server got custom msg: "+msg);
 	}
-	*/
+	* /
 	//callbacks.register(serverCustomMsg.bind(gameStructure), GameStructureCodes.SERVERGOTCUSTOMMSG);
-	/*
+	/ *
 	var serverInitPlayer = function(locationStr) {
 
 		//init conditions, send everything
@@ -135,15 +136,16 @@ function SailboatServerBehavior(serverBehavior) {
 		this["serverHandlerLink"].sendToClient(locationStr, msg);
 	};
 	callbacks.register(serverInitPlayer.bind(gameStructure), GameStructureCodes.SERVERINITPLAYER);
-	*/
-	/*
+	* /
+	/ *
 	var updateLoop = function() {
 		var difObj = this["gameHandler"].sendstate;
 		this["handlerBridge"].sendUpdateToAllClients(difObj);
 	}
 	gameStructure.updateLoopId = setInterval(updateLoop.bind(gameStructure), 40);
-	*/
+	* /
   }
+  */
 }
 if (!this.___alexnorequire) {
 	exports.SailboatServerBehavior = SailboatServerBehavior;

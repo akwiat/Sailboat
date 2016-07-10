@@ -58,6 +58,6 @@ Sailboat.Client.initializeCollisions = function(clientBehavior) {
 			return;
 		}
 	}
-}
+}.bind(clientBehavior);
 clientBehavior.checkCollisions = checkCollisions;
 }

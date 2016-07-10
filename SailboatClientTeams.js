@@ -1,7 +1,7 @@
 Sailboat.Client.initializeTeamBehavior = function(clientBehavior) {
 
 
-
+var settings = clientBehavior.settings;
 var getRandInRange = function(start, range) {
   return Math.random()*(range) + start;
 }
@@ -97,6 +97,15 @@ var humanShoot = function(gt) {
      //this.shotTimer.resetCooldown();
   }
   var alienShipName = function() {return "Alien"};
+  var alienShoot = function(gt) {
+       var ship = this["gameHandler"].myPlayer.getShip();
+       if (!ship) return;
+       var res = this.shotCooldown.attempt(gt);
+       if (res) {
+         var myP = this["gameHandler"].myPlayer;
+         myP.activateShield(gt);
+       }
+    }
 clientBehavior.setupTeamFunctions = function(arrayName) {
   var hArray = "humanTeam";
   var aArray = "alienTeam";

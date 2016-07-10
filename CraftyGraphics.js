@@ -1,5 +1,6 @@
-function CraftyGraphics(graphicsSettings) {
+function CraftyGraphics(graphicsSettings, onFrameCallback) {
   this.callbacks = new Callbacks();
+  this.onFrameCallback = onFrameCallback;
   var graphicsCallbacks = this.callbacks; //see it in the closure
   
   var InternalGameSize = graphicsSettings.InternalGameSize;
@@ -152,11 +153,12 @@ function CraftyGraphics(graphicsSettings) {
 	
 	Crafty.bind("EnterFrame", function(eventData) {
 
-		graphicsCallbacks.trigger(eventData, "OnFrame");
-	
+		//graphicsCallbacks.trigger(eventData, "OnFrame");
+
+		this.onFrameCallback(eventData);
 		Crafty.trigger("UpdateFromGameState");
 
-	} );
+	}.bind(this) );
 	
 	
 	

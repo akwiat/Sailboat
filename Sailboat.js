@@ -8,6 +8,7 @@ if (!this.___alexnorequire) {
 	
 	var SailboatBridge = require("./SailboatBridge").SailboatBridge;
 	var SailboatServerBehavior = require("./SailboatServerBehavior").SailboatServerBehavior;
+	var SailboatSettings = require("./SailboatSettings").SailboatSettings;
 }
 function ClientIdManager() {
 	// this.maxId = Number.MAX_VALUE - 1;
@@ -141,7 +142,7 @@ Sailboat.getInitObj = function() {
 		var p = this.findChildWithIdentifier("position").getWrappedObj();
 		var x = p.currentValues.x;
 		var y = p.currentValues.y;
-		var r = Sailboat.settings.BulletRadius;
+		var r = settings.BulletRadius;
 
 		var circle = new SAT.Circle(new SAT.Vector(x,y), r);
 		return circle;
@@ -189,7 +190,11 @@ Sailboat.getInitObj = function() {
 			if (p) return p.currentValues;
 			else throw new Error("problem with get currentValues");
 		}
+		ret.applyInitialValues = function(ivals) {
+			var ship = this.getShip();
+			ship.getChildByIdentifier("position").applySpecificData(ivals);
 
+		}.bind(ret);
 		return ret;
 	}
 	var AlienShip = function(posData) {
@@ -258,7 +263,10 @@ Sailboat.getInitObj = function() {
 			return myShip.checkShipShield();
 		}
 
-
+		ret.applyInitialValues = function(ivals) {
+			var ship = this.getShip();
+			ship.getChildByIdentifier("position").applySpecificData(ivals);
+		}.bind(ret);
 		return ret;
 	}
 	var SABullet = function(sd) {
@@ -310,7 +318,7 @@ Sailboat.getClientInitObj = function() {
 }
 Sailboat.customizeServer = function(gameStructure) {
 	SailboatBridge.Server(gameStructure["handlerBridge"]);
-	SailboatServerBehavior(gameStructure["serverBehavior"]);
+	SailboatServerBehavior.apply(gameStructure["serverBehavior"]);
 }
 Sailboat.customizeClient = function(gStructure) {
 	SailboatBridge.Client(gStructure["handlerBridge"]);
@@ -463,5 +471,5 @@ Sailboat.Server = function(gameStructure) {
 
 if (!this.___alexnorequire) {
 	exports.Sailboat = Sailboat;
-	exports.SailboatSettings = SailboatSettings;
+	//exports.SailboatSettings = SailboatSettings;
 }
