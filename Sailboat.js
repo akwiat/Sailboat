@@ -10,7 +10,9 @@ if (!this.___alexnorequire) {
 	var SailboatServerBehavior = require("./SailboatServerBehavior").SailboatServerBehavior;
 	var SailboatSettings = require("./SailboatSettings").SailboatSettings;
 }
+/*
 function ClientIdManager() {
+	throw new Error("deprecated");
 	// this.maxId = Number.MAX_VALUE - 1;
 	this.maxId = 10000;
 	this.idMapping = {}
@@ -39,7 +41,7 @@ ClientIdManager.prototype.registerId = function(arrayName, index) {
 ClientIdManager.prototype.unregisterId = function(id) {
 	delete this.idMapping[id];
 }
-
+*/
 function Shield() {
 	this.shieldUp = false;
 	this.updateTime = undefined;
@@ -89,7 +91,7 @@ var GeneralBoostManager = function(maxV, maxA, propPos, propAngle) {
 
 function Sailboat() {}
 
-Sailboat.getInitObj = function() {
+Sailboat.getGameStateCustomizer = function() {
 	var settings = SailboatSettings;
 	var getShipCircle = function(radius) {
 		var cm = this.findChildWithIdentifier("position").getWrappedObj();
@@ -156,7 +158,7 @@ Sailboat.getInitObj = function() {
 		new Prop.PropCircleMover(posData).setBoostManager(humanBoostManager) ).setClientProperty());
 
 		ret.setClientProperty();
-		ret.constructor.prototype.getShipCircle = getHumanShipCircle;
+		ret.getShipCircle = getHumanShipCircle.bind(ret);
 
 		ret.getCurrentValues = function() {
 			//var ship = this.getShip();
@@ -176,12 +178,12 @@ Sailboat.getInitObj = function() {
 		shipArray.addComponentArray( HumanShip, 1 );
 		ret.addComponent(shipArray);
 
-		ret.constructor.prototype.getShip = function() {
+		ret.getShip = function() {
 			var shipArray = this.findDirectChildWithIdentifier("shipArray");
 			var ship = shipArray.children[0];
 			//if (ship == undefined) throw new Error("ship problem");
 			return ship;
-		}
+		}.bind(ret);
 
 		ret.getCurrentValues = function() {
 			throw new Error("deprecated");
@@ -210,12 +212,12 @@ Sailboat.getInitObj = function() {
 		ret.addComponent(shieldEntity);
 
 		ret.setClientProperty();
-		ret.constructor.prototype.setShield = function(sd) {
+		ret.setShield = function(sd) {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			shield.applySpecificData(sd);
-		}
-		ret.constructor.prototype.getShipCircle = getAlienShipCircle;
-		ret.constructor.prototype.getShipAttackRect = getShipAttackRect;
+		}.bind(ret);
+		ret.getShipCircle = getAlienShipCircle.bind(ret);
+		ret.getShipAttackRect = getShipAttackRect.bind(ret);
 		ret.checkShipShield = function() {
 			var shield = this.findDirectChildWithIdentifier("shield");
 			return shield.wrappedObj.checkShield();
@@ -231,7 +233,7 @@ Sailboat.getInitObj = function() {
 			//else throw new Error("problem with get currentValues");
 		}
 		return ret;
-		//ret.constructor.prototype.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
+		//ret.constructor.getShipCircle = getShipCircle.bind(undefined, settings.AlienShipRadius);
 	}
 	var AlienPlayer = function() {
 		var ret = new GameStateEntity("player");
@@ -240,28 +242,28 @@ Sailboat.getInitObj = function() {
 		shipArray.addComponentArray( AlienShip, 1 );
 		ret.addComponent(shipArray);
 
-		ret.constructor.prototype.getShip = function() {
+		ret.getShip = function() {
 			var shipArray = this.findDirectChildWithIdentifier("shipArray");
 			var ship = shipArray.children[0];
 			//if (ship == undefined) throw new Error("ship problem");
 			return ship;
-		}
-		ret.constructor.prototype.activateShield = function(gt) {
+		}.bind(ret);
+		ret.activateShield = function(gt) {
 			if (console.log) console.log("activateShield");
 			var ship = this.getShip();
 			if (ship != undefined)
 				ship.setShield({s:1, ut:gt});
-		}
-		ret.constructor.prototype.deactivateShield = function(gt) {
+		}.bind(ret);
+		ret.deactivateShield = function(gt) {
 			var ship = this.getShip();
 			if (ship != undefined)
 				ship.setShield({s:0, ut:gt});
-		}
-		ret.constructor.prototype.checkShield = function() {
+		}.bind(ret);
+		ret.checkShield = function() {
 			var myShip = this.getShip();
 			if (myShip)
 			return myShip.checkShipShield();
-		}
+		}.bind(ret);
 
 		ret.applyInitialValues = function(ivals) {
 			var ship = this.getShip();
@@ -274,14 +276,14 @@ Sailboat.getInitObj = function() {
 		ret.addComponent( new GameStateEntity("position",
 			new Prop.PropVector2d(sd) ) );
 
-		ret.constructor.prototype.getBulletCircle = getBulletCircle;
+		ret.getBulletCircle = getBulletCircle.bind(ret);
 		return ret;
 	}
 	
 
-	var gameStateType = function() {
-		var ret = new GameState();
-		var rootEntity = ret.entity;
+	var gameStateCustomizer = function(gs) {
+		//var ret = new GameState();
+		var rootEntity = gs.entity;
 
 		var hTeam = new GameStateEntity("humanTeam");
 		hTeam.addComponentArray(HumanPlayer, 0);
@@ -296,33 +298,39 @@ Sailboat.getInitObj = function() {
 		ateam.addComponentArray(AlienPlayer, 0);
 		rootEntity.addComponent(ateam);
 
-		return ret;
+		return gs;
 	}
 
-	var ret = {gameHandler: new GameHandler(gameStateType)};
+	return gameStateCustomizer;
+
+	//var ret = new gameStateType;
+	//var ret = {gameHandler: new GameHandler(gameStateType)};
 	//if (Sailboat.Client)
 	//	ret.client = new Sailboat.Client();
-	return ret;
+	//return ret;
 	
 }
+Sailboat.gameStateCustomizer = Sailboat.getGameStateCustomizer();
 Sailboat.getServerInitObj = function() {
-//	var ret = {};
-//	ret.gameHandler = new GameHandler(gameStateType)
-	var ret = Sailboat.getInitObj();
-	//ret.serverBehavior = new SailboatServerBehavior();
-	return ret;
+	//---var ret = Sailboat.getInitObj();
+
+	//return ret;
 }
 Sailboat.getClientInitObj = function() {
-	var ret = Sailboat.getInitObj();
-	return ret;
+	//var ret = Sailboat.getInitObj();
+	//return ret;
 }
 Sailboat.customizeServer = function(gameStructure) {
 	SailboatBridge.Server(gameStructure["handlerBridge"]);
 	SailboatServerBehavior.apply(gameStructure["serverBehavior"]);
+	Sailboat.gameStateCustomizer(gameStructure["gameHandler"].gs)
+	//gameStructure["gameHandler"].gs = new Sailboat.GameStateType();
 }
 Sailboat.customizeClient = function(gStructure) {
 	SailboatBridge.Client(gStructure["handlerBridge"]);
 	SailboatClientBehavior(gStructure);
+	Sailboat.gameStateCustomizer(gStructure["gameHandler"].gs);
+	//gameStructure["gameHandler"].gs = new Sailboat.GameStateType();
 }
 /*
 Sailboat.Server = function(gameStructure) {

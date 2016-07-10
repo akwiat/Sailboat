@@ -3,14 +3,16 @@ if (!this.___alexnorequire) {
 var util = require("util");
 var DifferenceObj = require("./DiffObj").DifferenceObj;
 var GameStateEntity = require("./GameStateEntity").GameStateEntity;
+var GameState = require("./GameState").GameState;
 //var Destination = require("./Destination").Destination;
 }
 
 
 
-function GameHandler(GameStateType) {
+function GameHandler() {
 
-	this.gs = new GameStateType();
+	this.gs = new GameState();
+	//this.gs = new GameStateType();
 	this.playerList = [];
 	this.st = undefined;
 	this.sendstate = new DifferenceObj();
