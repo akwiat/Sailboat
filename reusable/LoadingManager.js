@@ -24,5 +24,7 @@ define( function() {
       this.completeFunction();
       return true;
     }
+    
+    return LoadingManager;
   }
 );
