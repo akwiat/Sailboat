@@ -69,7 +69,8 @@ function InitializeClientStructure(obj, instructions) {
 	
 		];
 	}
-	return new GameStructure(obj, instructions)
+	var gst = new GameStructure(obj, instructions);
+	gst.CONNECTEDTOSERVER = "connectedtoserver";
 }
 function InitializeServerStructure(obj, instructions) {
 	obj = obj || {};
