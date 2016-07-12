@@ -1,4 +1,7 @@
-
+define(function () { //is SailboatClient
+   
+});
+/*
 Sailboat.Client = function() {
 
 	throw new Error("deprecated");
@@ -69,4 +72,4 @@ Sailboat.Client.prototype.onDeadShip = function(gameStateObj) {
 Sailboat.Client.prototype.activate = function() {
 	
 }
-
+*/
