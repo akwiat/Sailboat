@@ -3,10 +3,10 @@ define(["./Sailboat", "./SailboatGraphics", "reuseable/LoadingManager"], functio
      this.gameStructure = new Sailboat.ClientStructure();
      var clientSocket = this.gameStructure.clientSocket;
      this.loadingManager = new LoadingManager(this.activate.bind(this));
-     this.loadingManager.registerRequirement("loadGraphics", SailboatGraphics.loadEverything);
-     this.serverConnectCallback = this.loadingManager.registerRequirement("connectServer", clientSocket.initializeConnection.bind(clientSocket), LoadingManager.RETURNCALLBACK);
-     this.gameStructure.callbacks.registerSingle(this.serverConnectCallback, this.gameStructure.CONNECTEDTOSERVER);
-     this.loadingManager.beginLoading();
+       this.loadingManager.registerRequirement("loadGraphics", SailboatGraphics.loadEverything);
+       this.serverConnectCallback = this.loadingManager.registerRequirement("connectServer", clientSocket.connectToServer.bind(clientSocket), LoadingManager.codes.returncallback);
+         this.gameStructure.callbacks.registerSingle(this.serverConnectCallback, this.gameStructure.CONNECTEDTOSERVER);
+       this.loadingManager.beginLoading();
      
      
    }
