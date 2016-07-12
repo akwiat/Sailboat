@@ -1,5 +1,22 @@
-define(function () { //is SailboatClient
-   
+define(["./Sailboat", "./SailboatGraphics", "reuseable/LoadingManager"], function (Sailboat, SailboatGraphics, LoadingManager) { 
+   function SailboatClient() {
+     this.gameStructure = new Sailboat.ClientStructure();
+     var clientSocket = this.gameStructure.clientSocket;
+     this.loadingManager = new LoadingManager(this.activate.bind(this));
+     this.loadingManager.registerRequirement("loadGraphics", SailboatGraphics.loadEverything);
+     this.serverConnectCallback = this.loadingManager.registerRequirement("connectServer", clientSocket.initializeConnection.bind(clientSocket), LoadingManager.RETURNCALLBACK);
+     this.gameStructure.callbacks.registerSingle(this.serverConnectCallback, this.gameStructure.CONNECTEDTOSERVER);
+     this.loadingManager.beginLoading();
+     
+     
+   }
+   SailboatClient.prototype.graphicsDidLoad = function() {
+   	this.loadingManager.completeRequirement("loadGraphics");
+   }
+   SailboatClient.prototype.activate = function() {
+   	deugger;
+   	this.gameStructure["clientBehavior"].activate();
+   }
 });
 /*
 Sailboat.Client = function() {
