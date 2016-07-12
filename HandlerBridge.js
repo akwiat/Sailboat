@@ -103,7 +103,7 @@ HandlerBridgeClientSide.prototype.subscribeToInitPackage = function(fn) {
 HandlerBridgeClientSide.prototype.informClientId = function(id) {
 	//throw new Error("should reach");
 	this["clientBehavior"].setMyId(id);
-	this.gameStructure.trigger(undefined, GameStructureCodes.INFORMCLIENTID);
+	this.gameStructure.trigger(undefined, this.gameStructure.CONNECTEDTOSERVER);
 }
 HandlerBridgeClientSide.prototype.receiveMsg = function(msg) {
 	var c = msg.charAt(0);
