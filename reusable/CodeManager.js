@@ -5,6 +5,9 @@ define( function() {
     var irep = internal || str;
     this[str] = irep;
   }  
-
+  CodeManager.prototype.mergeOther = function(otherCodes) {
+    for (var i in otherCodes)
+      this[i] = otherCodes[i];
+  }
 }  
 );
