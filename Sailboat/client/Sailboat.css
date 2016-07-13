@@ -1,0 +1,29 @@
+h1{
+	font-family: "Verdana, Geneva, sans-serif";
+	font-size: 16pt;
+	color: #ffffff;
+}
+
+#teamSelect{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	padding-top: 50px;
+	background: #000000;
+	opacity: 0.8;
+	z-index: 999;
+}
+
+#innerTeamSelect{
+	margin-left: 10%;
+}
+
+#hud {
+	font-family: "Courier New";
+	font-size: 12pt;
+    color: white;
+	position: absolute;
+	top: 15;
+	left: 15;
+	z-index: 100;
+}

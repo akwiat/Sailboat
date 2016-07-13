@@ -1,0 +1,87 @@
+<html>
+  <head>
+
+  	<Title>Spaceboat -- Alex Kwiatkowski</Title>
+  	<meta name="description" content="what does this do?" />
+  	<link rel="shortcut icon" href="about:blank">
+  	<link rel="stylesheet" type="text/css" href="Sailboat.css" />
+  </head>
+  <body>
+    <div id="teamSelect">
+      <div id="innerTeamSelect">
+        <h1>Select your team</h1>
+        <button type="button" id="aliensButton">Aliens</button>
+        <button type="button" id="humansButton">Humans</button>
+      </div>
+    </div>
+    <div id="game"></div>
+    <div id="hud">
+    	Score: <span id="scoreHud" ></span>
+    	<br/>
+    	cooldown: <span id="cooldownTime"></span>
+    	<br/>
+    	respawn: <span id="respawnTime"></span>	
+    	
+
+    </div>
+    
+    <script>var ___alexnorequire = true; </script>
+
+    <script src="crafty.js"></script>
+    <script src="SAT.js"></script>
+
+    <script data-main="app" src="lib/require.js"></script>
+
+    
+    <script src="Prop.js"></script>
+    <script src="Callbacks.js"></script>
+    <script src="Tree.js"></script>
+    <script src="Destination.js"></script>
+    <script src="Frag.js"></script>
+    <script src="DiffObj.js"></script>
+
+
+    <script src="Controls.js"></script>
+    <script src="threex_keyboardstate.js"></script>
+    <script src="ThreexControlsManager.js"></script>
+    <script src="HudManager.js"></script>
+    <script src="UiManager.js"></script>
+    <script src="CooldownManager.js"></script>
+
+
+    <script src="CustomMessageManager.js"></script>
+    <script src="GameStateEntity.js"></script>
+    <script src="GameState.js"></script>
+    <script src="GameStructureCodes.js"></script>
+    <script src="GameStructure.js"></script>
+    <script src="ClientSocket.js"></script>
+    <script src="GameHandler.js"></script>
+    <script src="HandlerBridge.js"></script>
+    <script src="ServerBridge.js"></script>
+    <script src="ClientSocket.js"></script>
+    <script src="GeneralClient.js"></script>
+    <script src="ClientBehavior.js"></script>
+    <script src="CraftyGraphics.js"></script>
+    <!-- These gaps help keep track of which files are reusable or not  -->
+
+    <!-- These gaps help keep track of which files are reusable or not  -->
+
+    <script src="SailboatSettings.js"></script>
+    <script src="Sailboat.js"></script>
+    <script src="SailboatGraphics.js"></script>
+    <script src="SailboatBridge.js"></script>
+    <script src="SailboatClient.js"></script>
+    <script src="SailboatClientGamestructure.js"></script>
+    <script src="SailboatClientGamestate.js"></script>
+    <script src="SailboatClientCollisions.js"></script>
+    <script src="SailboatClientTeams.js"></script>
+    <script src="SailboatClientBehavior.js"></script>
+
+    
+
+
+    <script>
+      var theClient = new GeneralClient(SailboatGraphics.loadEverything, Sailboat.getClientInitObj(), Sailboat.customizeClient);
+    </script>
+  </body>
+</html>
