@@ -5,20 +5,24 @@ if (!this.___alexnorequire) {
 	var CustomMessageManager = require("./CustomMessageManager").CustomMessageManager;
 }
 function HandlerBridge() {/*msg codes here*/}
-HandlerBridge.cmcInformClientId = "i";
-HandlerBridge.cmcInitPackage = "p";
+var hbCodes = new CodeManager();
+hbCodes.registerCode("cmcInformClientId", "i");
+hbCodes.registerCode("cmcInitPackage", "p");
+//HandlerBridge.cmcInformClientId = "i";
+//HandlerBridge.cmcInitPackage = "p";
 HandlerBridge.prototype.receiveMsg = function(msg) {}
 function HandlerBridgeServerSide() {
+	this.codes = hbCodes;
 	this.customMessageManager = new CustomMessageManager();
-	this.customMessageManager.registerMessage(HandlerBridge.cmcInformClientId);
-	this.customMessageManager.registerMessage(HandlerBridge.cmcInitPackage);
+	this.customMessageManager.registerMessage(this.codes.cmcInformClientId);
+	this.customMessageManager.registerMessage(this.codes.cmcInitPackage);
 
 	for (var i in HandlerBridge)
 		if (HandlerBridge.hasOwnProperty(i))
 		  this[i] = HandlerBridge[i];
 }
 HandlerBridgeServerSide.prototype.informClientId = function(hid) {
-  this.sendCustomMessage(hid, HandlerBridge.cmcInformClientId, hid);
+  this.sendCustomMessage(hid, this.codes.cmcInformClientId, hid);
   //this.customMessageManager.triggerMessage(HandlerBridge.cmcInformClientId, hid);
 }
 HandlerBridgeServerSide.prototype.clientDisconnected = function(hid) {
@@ -30,7 +34,7 @@ HandlerBridgeServerSide.prototype.sendCustomMessage = function(locationStr, msgC
 	this["serverHandlerLink"].sendToClient(locationStr, sendMessage);
 }
 HandlerBridgeServerSide.prototype.sendInitPackage = function(locationStr, msg) {
-	this.sendCustomMessage(locationStr, HandlerBridge.cmcInitPackage, msg);
+	this.sendCustomMessage(locationStr, this.codes.cmcInitPackage, msg);
 }
 HandlerBridgeServerSide.prototype.receiveMsg = function(msg) {
    var c = msg.charAt(0);
@@ -86,11 +90,12 @@ HandlerBridgeServerSide.prototype.sendToClient = function() {
 
 //------HandlerBridgeClientSide
 function HandlerBridgeClientSide() {
+	this.codes = hbCodes;
 	this.customMessageManager = new CustomMessageManager();
-	this.customMessageManager.registerMessage(HandlerBridge.cmcInformClientId);
-	this.customMessageManager.registerMessage(HandlerBridge.cmcInitPackage);
+	this.customMessageManager.registerMessage(this.codes.cmcInformClientId);
+	this.customMessageManager.registerMessage(this.codes.cmcInitPackage);
 
-	this.customMessageManager.subscribeToMessage(HandlerBridge.cmcInformClientId, this.informClientId.bind(this));
+	this.customMessageManager.subscribeToMessage(this.codes.cmcInformClientId, this.informClientId.bind(this));
 
 }
 HandlerBridgeClientSide.prototype.sendCustomMessage = function(msgCode, msg) {
@@ -98,7 +103,7 @@ HandlerBridgeClientSide.prototype.sendCustomMessage = function(msgCode, msg) {
 	this.sendToServer(sendMessage);
 }
 HandlerBridgeClientSide.prototype.subscribeToInitPackage = function(fn) {
-	this.customMessageManager.subscribeToMessage(HandlerBridge.cmcInitPackage, fn);
+	this.customMessageManager.subscribeToMessage(this.codes.cmcInitPackage, fn);
 }
 HandlerBridgeClientSide.prototype.informClientId = function(id) {
 	//throw new Error("should reach");
