@@ -70,7 +70,8 @@ function InitializeClientStructure(obj, instructions) {
 		];
 	}
 	var gst = new GameStructure(obj, instructions);
-	gst.CONNECTEDTOSERVER = "connectedtoserver";
+	gst.codes = new CodeManager();
+	gst.codes.registerCode("connectedToServer");
 }
 function InitializeServerStructure(obj, instructions) {
 	obj = obj || {};
