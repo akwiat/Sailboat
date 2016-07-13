@@ -5,7 +5,7 @@ define(["./Sailboat", "./SailboatGraphics", "reuseable/LoadingManager"], functio
      this.loadingManager = new LoadingManager(this.activate.bind(this));
        this.loadingManager.registerRequirement("loadGraphics", SailboatGraphics.loadEverything);
        this.serverConnectCallback = this.loadingManager.registerRequirement("connectServer", clientSocket.connectToServer.bind(clientSocket), LoadingManager.codes.returncallback);
-         this.gameStructure.callbacks.registerSingle(this.serverConnectCallback, this.gameStructure.CONNECTEDTOSERVER);
+         this.gameStructure.callbacks.registerSingle(this.serverConnectCallback, this.gameStructure.codes.connectedToServer);
        this.loadingManager.beginLoading();
      
      
