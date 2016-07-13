@@ -1,8 +1,9 @@
 define( function() {
   function CodeManager() {
   }
-  CodeManager.prototype.registerCode = function(str) {
-    this[str] = str;
+  CodeManager.prototype.registerCode = function(str, internal) {
+    var irep = internal || str;
+    this[str] = irep;
   }  
 
 }  
