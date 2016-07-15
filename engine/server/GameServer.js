@@ -1,9 +1,5 @@
-var util = require("util");					// Utility resources (logging, object inspection, etc)
-//var GameHandler = require("./GameHandler").GameHandler;
+var util = require("util");				
 
-//var ServerSideDetails = require("./GameServerDetails.js").ServerSideDetails;
-//var ServerBridge = require("./HandlerBridge.js").HandlerBridgeServerSide;
-//var DifferenceObj = require("./DiffObj.js").DifferenceObj;
 var AlexUtil = require("./AlexUtils").AlexUtil;
 var ServerBridge = require("./ServerBridge").ServerBridge;
 var WebSocketServer = require('ws').Server
@@ -16,18 +12,11 @@ var WebSocketServer = require('ws').Server
 
 
 
-//function GameServer(handlerLink, serverBridge) {
+
 function GameServer() {
-
-/*
-this.serverHandlerLink
-implicit from structure
-*/
-//this.handlerLink = handlerLink;
-
-//this.serverBridge = serverBridge; //details that are synchronized between server/client
+ween server/client
 this.serverBridge = new ServerBridge();
-//this.onMessage = undefined;
+
 
 this.server = http.createServer(app);
 
@@ -55,23 +44,15 @@ this.wss.on('connection', this.onSocketConnection.bind(this))
 GameServer.prototype.onMessage = function(msg) {
   this.serverHandlerLink.onMessage(msg);
 }
-/*
-GameServer.prototype.setOnMessage = function(fn) {
-  this.onMessage = fn;
-}
-*/
+
 GameServer.prototype.onSocketConnection = function(ws) {
   util.log("New player has connected.");
 
 
 
 ws.on('close',this.onSocketClose.bind(this));
-/*
-var gotMsg = function(msg) {
-  this.onMessage(msg);
-}
-*/
 ws.on('message', this.onMessage.bind(this));
+
 var id = this.makeNewId(ws);
 this.serverHandlerLink.onNewConnection(id);
 
