@@ -1,14 +1,18 @@
+define( ["util", "reusable/AlexUtils", "engine/ServerBridge", "ws"], function(util, AlexUtil, ServerBridge, WebSocketServer) {
+
+/*
 var util = require("util");				
 
 var AlexUtil = require("./AlexUtils").AlexUtil;
 var ServerBridge = require("./ServerBridge").ServerBridge;
 var WebSocketServer = require('ws').Server
-  , http = require('http')
-  , express = require('express')
-  , app = express()
+*/
+ // , http = require('http')
+ // , express = require('express')
+ //  , app = express()
  // , port = process.env.PORT || 8000;
 
-  app.use(express.static(__dirname + '/'));
+ // app.use(express.static(__dirname + '/'));
 
 
 
@@ -98,5 +102,7 @@ GameServer.prototype.onSocketClose = function() {
     }
   }
 }
-exports.GameServer = GameServer;
+return GameServer;
+});
+//exports.ServerSocket = ServerSocket;
 
